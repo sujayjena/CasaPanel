@@ -1,0 +1,15 @@
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\bin\Debug\net7.0\CasaAPI.Interfaces.deps.json
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\bin\Debug\net7.0\CasaAPI.Interfaces.dll
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\bin\Debug\net7.0\CasaAPI.Interfaces.pdb
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\bin\Debug\net7.0\CasaAPI.Models.dll
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\bin\Debug\net7.0\CasaAPI.Models.pdb
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\obj\Debug\net7.0\CasaAPI.Interfaces.csproj.AssemblyReference.cache
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\obj\Debug\net7.0\CasaAPI.Interfaces.GeneratedMSBuildEditorConfig.editorconfig
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\obj\Debug\net7.0\CasaAPI.Interfaces.AssemblyInfoInputs.cache
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\obj\Debug\net7.0\CasaAPI.Interfaces.AssemblyInfo.cs
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\obj\Debug\net7.0\CasaAPI.Interfaces.csproj.CoreCompileInputs.cache
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\obj\Debug\net7.0\CasaAPI.Interfaces.csproj.CopyComplete
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\obj\Debug\net7.0\CasaAPI.Interfaces.dll
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\obj\Debug\net7.0\refint\CasaAPI.Interfaces.dll
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\obj\Debug\net7.0\CasaAPI.Interfaces.pdb
+G:\Project\PANEL_CRM_API-DevAPI\PANEL_CRM_API-DevAPI\CasaAPI.Interfaces\obj\Debug\net7.0\ref\CasaAPI.Interfaces.dll

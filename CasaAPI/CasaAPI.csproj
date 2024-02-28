@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="6.2.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CasaAPI.Helpers\CasaAPI.Helpers.csproj" />
+    <ProjectReference Include="..\CasaAPI.Interfaces\CasaAPI.Interfaces.csproj" />
+    <ProjectReference Include="..\CasaAPI.Models\CasaAPI.Models.csproj" />
+    <ProjectReference Include="..\CasaAPI.Repositories\CasaAPI.Repositories.csproj" />
+    <ProjectReference Include="..\CasaAPI.Services\CasaAPI.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TempFiles\" />
+  </ItemGroup>
+
+</Project>
