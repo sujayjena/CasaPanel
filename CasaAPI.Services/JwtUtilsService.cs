@@ -1,13 +1,15 @@
 ﻿using CasaAPI.Helpers;
-using CasaAPI.Models;
 using CasaAPI.Interfaces.Services;
+using CasaAPI.Models;
+using Interfaces.Services;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Models;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 
-namespace CasaAPI.Services
+namespace Services
 {
     public class JwtUtilsService : IJwtUtilsService
     {
@@ -29,25 +31,23 @@ namespace CasaAPI.Services
             DateTime tokenExpiryDateTime;
 
             claims.Add(new Claim("Id", EncryptDecryptHelper.EncryptString(parameters.UserId.ToString())));
-            if (parameters.EmailAddress != null)
-            {
-                claims.Add(new Claim("EmailAddress", parameters.EmailAddress));
-            }
+            claims.Add(new Claim("EmailId", parameters.EmailId));
             claims.Add(new Claim("MobileNo", parameters.MobileNo));
 
             if (parameters.EmployeeId != null)
             {
-                //claims.Add(new Claim("EmployeeCode", parameters.EmployeeCode));
-                //claims.Add(new Claim("Name", parameters.EmployeeName));
-                //claims.Add(new Claim("RoleName", parameters.RoleName));
+                claims.Add(new Claim("EmployeeCode", parameters.EmployeeCode));
+                claims.Add(new Claim("Name", parameters.EmployeeName));
+                claims.Add(new Claim("RoleName", parameters.RoleName));
             }
-            //else if (parameters.CustomerId != null)
-            //{
-            //    //claims.Add(new Claim("Name", parameters.CompanyName));
-            //    //claims.Add(new Claim("CustomerTypeName", parameters.CustomerTypeName));
-            //}
+            else if (parameters.CustomerId != null)
+            {
+                claims.Add(new Claim("Name", parameters.CompanyName));
+                claims.Add(new Claim("CustomerTypeName", parameters.CustomerTypeName));
+            }
 
-            tokenExpiryDateTime = DateTime.Now.AddMinutes(60);
+            //tokenExpiryDateTime = DateTime.Now.AddMinutes(60);
+            tokenExpiryDateTime = DateTime.Now.AddDays(365);
 
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -67,7 +67,7 @@ namespace CasaAPI.Services
             byte[] key;
             JwtSecurityTokenHandler tokenHandler;
             JwtSecurityToken jwtToken;
-            UsersLoginSessionData? response=null;
+            UsersLoginSessionData? response;
 
             if (string.IsNullOrEmpty(token))
             {
@@ -90,8 +90,12 @@ namespace CasaAPI.Services
 
                 jwtToken = (JwtSecurityToken)validatedToken;
 
-                //LastAccessOn in UsersLoginHistory table is updating here from SP "GetProfileDetailsByToken"
+
+
                 response = await _profileService.GetProfileDetailsByToken(token);
+
+                //Update LastAccessOn in UsersLoginHistory table
+
 
                 return response;
             }

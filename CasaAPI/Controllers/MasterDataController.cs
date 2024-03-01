@@ -101,14 +101,6 @@ namespace AVSalesBoosterAPI.Controllers
         }
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetBloodForSelectList(CommonSelectListRequestModel parameters)
-        {
-            IEnumerable<SelectListResponse> lstResponse = await _adminService.GetBloodForSelectList(parameters);
-            _response.Data = lstResponse.ToList();
-            return _response;
-        }
-        [Route("[action]")]
-        [HttpPost]
         public async Task<ResponseModel> GetSubVendorForSelectList(CommonSelectListRequestModel parameters)
         {
             IEnumerable<SelectListResponse> lstResponse = await _adminService.GetSubVendorForSelectList(parameters);

@@ -12,5 +12,14 @@ namespace CasaAPI.Models
     {
         public bool? IsActive { get; set; }
     }
+    public class CustomerSelectListRequestModel : CommonSelectListRequestModel
+    {
+        public long? CustomerTypeId { get; set; }
+    }
 
+    public class ReportingToEmpListParameters
+    {
+        public long RoleId { get; set; }
+        public long? RegionId { get; set; }
+    }
 }

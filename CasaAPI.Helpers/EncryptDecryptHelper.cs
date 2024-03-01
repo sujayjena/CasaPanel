@@ -6,7 +6,7 @@ namespace CasaAPI.Helpers
     public class EncryptDecryptHelper
     {
         #region Encrypt and Decrypt String
-        public static string EncryptString(string plainText, string key = "b14ca54133bbc898a4ee2ea2191315a6")
+        public static string EncryptString(string plainText, string key = "b14ca5898a4e4133bbce2ea2315a1916")
         {
             byte[] iv = new byte[16];
             byte[] array;
@@ -30,7 +30,7 @@ namespace CasaAPI.Helpers
             return Convert.ToBase64String(array);
         }
 
-        public static string DecryptString(string cipherText, string key = "b14ca54133bbc898a4ee2ea2191315a6")
+        public static string DecryptString(string cipherText, string key = "b14ca5898a4e4133bbce2ea2315a1916")
         {
             byte[] iv = new byte[16];
             byte[] buffer = Convert.FromBase64String(cipherText);

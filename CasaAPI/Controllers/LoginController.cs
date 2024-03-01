@@ -4,6 +4,7 @@ using CasaAPI.Models.Constants;
 using CasaAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using CasaAPI.CustomAttributes;
+using Interfaces.Services;
 
 namespace CasaAPI.Controllers
 {
@@ -14,11 +15,13 @@ namespace CasaAPI.Controllers
         private ResponseModel _response;
         private IProfileService _profileService;
         private IJwtUtilsService _jwt;
+        private INotificationService _notificationService;
 
-        public LoginController(IProfileService profileService, IJwtUtilsService jwt)
+        public LoginController(IProfileService profileService, IJwtUtilsService jwt, INotificationService notificationService)
         {
             _profileService = profileService;
             _jwt = jwt;
+            _notificationService = notificationService;
 
             _response = new ResponseModel();
             _response.IsSuccess = true;
@@ -26,75 +29,77 @@ namespace CasaAPI.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<ResponseModel> Login(LoginByEmailRequestModel parameters)
+        public async Task<ResponseModel> MobileAppLogin(MobileAppLoginRequestModel parameters)
+        {
+            LoginByMobileNoRequestModel loginParameters = new LoginByMobileNoRequestModel();
+            loginParameters.MobileNo = parameters.MobileNo;
+            loginParameters.Password = parameters.Password;
+            loginParameters.MobileUniqueId = parameters.MobileUniqueId;
+            loginParameters.Remember = parameters.Remember;
+            loginParameters.IsWebOrMobileUser = parameters.IsWebOrMobileUser;
+
+            //_response.Data = await Login(loginParameters);
+
+            var vLoginObj = new ResponseModel();
+            vLoginObj.Data = await Login(loginParameters);
+
+            return vLoginObj;
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<ResponseModel> Login(LoginByMobileNoRequestModel parameters)
         {
             (string, DateTime) tokenResponse;
             SessionDataEmployee employeeSessionData;
-            //SessionDataCustomer customerSessionData;
-            UsersLoginSessionData? loginResponse=null;
+            SessionDataCustomer customerSessionData;
+            UsersLoginSessionData? loginResponse;
             UserLoginHistorySaveParameters loginHistoryParameters;
 
-            loginResponse = await _profileService.ValidateUserLoginByUsername(parameters);
-            
-            _response.IsSuccess = false;
+            parameters.Password = EncryptDecryptHelper.EncryptString(parameters.Password);
 
-            if (loginResponse == null)
-            {
-                _response.Message = ErrorConstants.UserNotExistsError;
-            }
-            else if (loginResponse != null)
-            {
-                if (loginResponse.IsCorrectPassword == false)
-                {
-                    _response.Data = new
-                    {
-                        LoginRetryAttempt = loginResponse?.LoginRetryAttempt,
-                        IsUserLocked = loginResponse?.IsUserLocked
-                    };
+            loginResponse = await _profileService.ValidateUserLoginByEmail(parameters);
 
-                    _response.Message = ErrorConstants.InvalidCredentialsError;
-                }
-                else if (loginResponse.IsActive == false)
-                {
-                    _response.Message = ErrorConstants.InactiveProfileError;
-                }
-                else if (loginResponse.IsUserLocked == true)
-                {
-                    _response.Message = ErrorConstants.LockedProfileError;
-                }
-                else
+            if (loginResponse != null)
+            {
+                if (loginResponse.IsActive == true && (loginResponse.IsWebUser == true && parameters.IsWebOrMobileUser == "W" || loginResponse.IsMobileUser == true && parameters.IsWebOrMobileUser == "M"))
                 {
                     tokenResponse = _jwt.GenerateJwtToken(loginResponse);
 
                     if (loginResponse.EmployeeId != null)
                     {
+                        var vRoleList = await _profileService.GetRoleMaster_Employee_PermissionById(Convert.ToInt64(loginResponse.EmployeeId));
+                        var vUserNotificationList = await _notificationService.GetNotificationListById(Convert.ToInt64(loginResponse.EmployeeId));
+
                         employeeSessionData = new SessionDataEmployee
                         {
                             EmployeeId = loginResponse.EmployeeId,
-                            EmailAddress = loginResponse.EmailAddress,
-                            MobileNo = loginResponse.MobileNo,
-                            EmployeeName = loginResponse.EmployeeName,
                             EmployeeCode = loginResponse.EmployeeCode,
+                            Name = loginResponse.EmployeeName,
                             RoleId = loginResponse.RoleId,
+                            EmailId = loginResponse.EmailId,
+                            MobileNo = loginResponse.MobileNo,
                             RoleName = loginResponse.RoleName,
-                            Token = tokenResponse.Item1
+                            Token = tokenResponse.Item1,
+                            UserRoleList = vRoleList.ToList(),
+                            UserNotificationList = vUserNotificationList.ToList()
                         };
 
                         _response.Data = employeeSessionData;
                     }
-                    //else if (loginResponse.CustomerId != null)
-                    //{
-                    //    customerSessionData = new SessionDataCustomer
-                    //    {
-                    //        EmailAddress = loginResponse.EmailAddress,
-                    //        MobileNo = loginResponse.MobileNo,
-                    //        //Name = loginResponse.CompanyName,
-                    //        //CustomerTypeName = loginResponse.CustomerTypeName,
-                    //        Token = tokenResponse.Item1
-                    //    };
+                    else if (loginResponse.CustomerId != null)
+                    {
+                        customerSessionData = new SessionDataCustomer
+                        {
+                            Name = loginResponse.CompanyName,
+                            EmailId = loginResponse.EmailId,
+                            MobileNo = loginResponse.MobileNo,
+                            CustomerTypeName = loginResponse.CustomerTypeName,
+                            Token = tokenResponse.Item1
+                        };
 
-                    //    _response.Data = customerSessionData;
-                    //}
+                        _response.Data = customerSessionData;
+                    }
 
                     //Login History
                     loginHistoryParameters = new UserLoginHistorySaveParameters
@@ -110,9 +115,18 @@ namespace CasaAPI.Controllers
 
                     await _profileService.SaveUserLoginHistory(loginHistoryParameters);
 
-                    _response.IsSuccess = true;
                     _response.Message = MessageConstants.LoginSuccessful;
                 }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = ErrorConstants.InactiveProfileError;
+                }
+            }
+            else
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Invalid credential, please try again with correct credential";
             }
 
             return _response;
@@ -143,6 +157,8 @@ namespace CasaAPI.Controllers
 
             return _response;
         }
+
+
         //[HttpPost]
         //[Route("[action]")]
         //public async Task<ResponseModel> GetOTPForCustomerLogin(LoginOTPRequestModel parameters)

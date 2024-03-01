@@ -6,7 +6,7 @@ using CasaAPI.Repositories;
 using static CasaAPI.Models.BloodModel;
 using static CasaAPI.Models.BrandModel;
 using static CasaAPI.Models.CategoryModel;
-using static CasaAPI.Models.CollectionModel;
+using static CasaAPI.Models.Collection_PanelModel;
 using static CasaAPI.Models.ContactTypeModel;
 using static CasaAPI.Models.CuttingSizeModel;
 using static CasaAPI.Models.GendorModel;
@@ -69,21 +69,21 @@ namespace CasaAPI.Services
         #endregion
 
         #region Collection
-        public async Task<int> SaveCollection(CollectionSaveParameters request)
+        public async Task<int> SaveCollection_Panel(Collection_PanelSaveParameters request)
         {
-            return await _adminRepository.SaveCollection(request);
+            return await _adminRepository.SaveCollection_Panel(request);
         }
-        public async Task<IEnumerable<CollectionDetailsResponse>> GetCollectionsList(CollectionSearchParameters request)
+        public async Task<IEnumerable<CollectionDetails_PanelResponse>> GetCollectionsList_Panel(Collection_PanelSearchParameters request)
         {
-            return await _adminRepository.GetCollectionsList(request);
+            return await _adminRepository.GetCollectionsList_Panel(request);
         }
-        public async Task<CollectionDetailsResponse?> GetCollectionDetailsById(long id)
+        public async Task<CollectionDetails_PanelResponse?> GetCollectionDetailsById_Panel(long id)
         {
-            return await _adminRepository.GetCollectionDetailsById(id);
+            return await _adminRepository.GetCollectionDetailsById_Panel(id);
         }
-        public async Task<IEnumerable<CollectionFailToImportValidationErrors>> ImportCollectionsDetails(List<CollectionImportSaveParameters> request)
+        public async Task<IEnumerable<Collection_PanelFailToImportValidationErrors>> ImportCollectionsDetails_Panel(List<Collection_PanelImportSaveParameters> request)
         {
-            return await _adminRepository.ImportCollectionsDetails(request);
+            return await _adminRepository.ImportCollectionsDetails_Panel(request);
         }
         #endregion
 
@@ -314,28 +314,6 @@ namespace CasaAPI.Services
         }
         #endregion
 
-
-        #region Blood
-        public async Task<int> SaveBlood(BloodSaveParameters request)
-        {
-            return await _adminRepository.SaveBlood(request);
-        }
-        public async Task<IEnumerable<BloodDetailsResponse>> GetBloodsList(BloodSearchParameters request)
-        {
-            return await _adminRepository.GetBloodsList(request);
-        }
-        public async Task<BloodDetailsResponse?> GetBloodDetailsById(long id)
-        {
-            return await _adminRepository.GetBloodDetailsById(id);
-        }
-        public async Task<IEnumerable<BloodFailToImportValidationErrors>> ImportBloodsDetails(List<BloodImportSaveParameters> request)
-        {
-            return await _adminRepository.ImportBloodsDetails(request);
-        }
-        public async Task<IEnumerable<SelectListResponse>> GetBloodForSelectList(CommonSelectListRequestModel parameters)
-        {
-            return await _adminRepository.GetBloodForSelectList(parameters);
-        }
         public async Task<IEnumerable<SelectListResponse>> GetSubVendorForSelectList(CommonSelectListRequestModel parameters)
         {
             return await _adminRepository.GetSubVendorForSelectList(parameters);
@@ -348,7 +326,7 @@ namespace CasaAPI.Services
         {
             return await _adminRepository.GetReferralForSelectList(parameters);
         }
-        #endregion
+
         #region TileType
         public async Task<int> SaveTileType(TileTypeSaveParameters request)
         {
@@ -388,8 +366,6 @@ namespace CasaAPI.Services
         }
         #endregion
 
-
-
         #region WeekClose
         public async Task<int> SaveWeekClose(WeekCloseSaveParameters request)
         {
@@ -427,73 +403,6 @@ namespace CasaAPI.Services
         public async Task<IEnumerable<GendorFailToImportValidationErrors>> ImportGendorsDetails(List<GendorImportSaveParameters> request)
         {
             return await _adminRepository.ImportGendorsDetails(request);
-        }
-        #endregion
-
-        #region Role
-        public async Task<int> SaveRole(RoleSaveParameters request)
-        {
-            return await _adminRepository.SaveRole(request);
-        }
-        public async Task<IEnumerable<RoleDetailsResponse>> GetRoleList(RoleSearchParameters request)
-        {
-            return await _adminRepository.GetRoleList(request);
-        }
-
-        public async Task<RoleDetailsResponse?> GetRoleDetailsById(long id)
-        {
-            return await _adminRepository.GetRoleDetailsById(id);
-        }
-        public async Task<IEnumerable<RoleFailToImportValidationErrors>> ImportRoleDetails(List<RoleImportSaveParameters> request)
-        {
-            return await _adminRepository.ImportRoleDetails(request);
-        }
-
-        #endregion
-
-        #region ReportingHierarchy
-
-        public async Task<IEnumerable<SelectListResponse>> GetRoleHierarchyDetailsByRoleId(long roleId)
-        {
-            return await _adminRepository.GetRoleHierarchyDetailsByRoleId(roleId);
-        }
-        public async Task<int> SaveReportingHierarchy(ReportingHierarchySaveParameters request)
-        {
-            return await _adminRepository.SaveReportingHierarchy(request);
-        }
-        public async Task<IEnumerable<ReportingHierarchyDetailsResponse>> GetReportingHierarchyList(ReportingHierarchySearchParameters request)
-        {
-            return await _adminRepository.GetReportingHierarchyList(request);
-        }
-
-        public async Task<ReportingHierarchyDetailsResponse?> GetReportingHierarchyDetailsById(long id)
-        {
-            return await _adminRepository.GetReportingHierarchyDetailsById(id);
-        }
-        public async Task<IEnumerable<ReportingHierarchyFailToImportValidationErrors>> ImportReportingHierarchyDetails(List<ReportingHierarchyImportSaveParameters> request)
-        {
-            return await _adminRepository.ImportReportingHierarchyDetails(request);
-        }
-
-        #endregion
-
-        #region Employee
-        public async Task<int> SaveEmployee(EmployeeSaveParameters request)
-        {
-            return await _adminRepository.SaveEmployee(request);
-        }
-        public async Task<IEnumerable<EmployeeDetailsResponse>> GetEmployeeList(EmployeeSearchParameters request)
-        {
-            return await _adminRepository.GetEmployeeList(request);
-        }
-
-        public async Task<EmployeeDetailsResponse?> GetEmployeeDetailsById(long id)
-        {
-            return await _adminRepository.GetEmployeeDetailsById(id);
-        }
-        public async Task<IEnumerable<EmployeeDetailsResponse>> GetEmployeeListByRoleId(long roleId)
-        {
-            return await _adminRepository.GetEmployeeListByRoleId(roleId);
         }
         #endregion
 
@@ -590,6 +499,209 @@ namespace CasaAPI.Services
             return await _adminRepository.GetEmployeePermissionList(request);
         }
 
+        #endregion
+
+
+        #region sales
+        public async Task<IEnumerable<Users>> GetUsersList()
+        {
+            return await _adminRepository.GetUsersList();
+        }
+
+        #region Product API Service
+        public async Task<IEnumerable<ProductResponse>> GetProductsList(SearchProductRequest request)
+        {
+            return await _adminRepository.GetProductsList(request);
+        }
+
+        public async Task<int> SaveProduct(ProductRequest productRequest)
+        {
+            return await _adminRepository.SaveProduct(productRequest);
+        }
+
+        public async Task<IEnumerable<ProductDataValidationErrors>> ImportProductsDetails(List<ImportedProductDetails> request)
+        {
+            return await _adminRepository.ImportProductsDetails(request);
+        }
+
+        public async Task<ProductResponse?> GetProductDetailsById(long id)
+        {
+            return await _adminRepository.GetProductDetailsById(id);
+        }
+        #endregion Product API Service
+
+        #region Design Type API Service
+        public async Task<IEnumerable<DesignTypeResponse>> GetDesignTypesList(SearchDesignTypeRequest request)
+        {
+            return await _adminRepository.GetDesignTypesList(request);
+        }
+
+        public async Task<int> SaveDesignType(DesignTypeRequest designTypeRequest)
+        {
+            return await _adminRepository.SaveDesignType(designTypeRequest);
+
+        }
+        public async Task<DesignTypeResponse?> GetDesignTypeDetailsById(long id)
+        {
+            return await _adminRepository.GetDesignTypeDetailsById(id);
+        }
+        public async Task<IEnumerable<DesignTypeDataValidationErrors>> ImportDesignTypesDetails(List<ImportedDesignTypeDetails> request)
+        {
+            return await _adminRepository.ImportDesignTypesDetails(request);
+        }
+        #endregion Design Type API Service
+
+        #region Series API Service
+        public async Task<IEnumerable<SeriesResponse>> GetSeriesList(SearchSeriesRequest request)
+        {
+            return await _adminRepository.GetSeriesList(request);
+        }
+
+        public async Task<int> SaveSeries(SeriesRequest seriesRequest)
+        {
+            return await _adminRepository.SaveSeries(seriesRequest);
+
+        }
+        public async Task<SeriesResponse?> GetSeriesDetailsById(long id)
+        {
+            return await _adminRepository.GetSeriesDetailsById(id);
+        }
+        public async Task<IEnumerable<SeriesDataValidationErrors>> ImportSeriesDetails(List<ImportedSeriesDetails> request)
+        {
+            return await _adminRepository.ImportSeriesDetails(request);
+        }
+        #endregion Series API Service
+
+
+        #region Base Design API Service
+        public async Task<IEnumerable<BaseDesignResponse>> GetBaseDesignsList(SearchBaseDesignRequest request)
+        {
+            return await _adminRepository.GetBaseDesignsList(request);
+        }
+
+        public async Task<int> SaveBaseDesign(BaseDesignRequest baseDesignRequest)
+        {
+            return await _adminRepository.SaveBaseDesign(baseDesignRequest);
+
+        }
+        public async Task<BaseDesignResponse?> GetBaseDesignDetailsById(long id)
+        {
+            return await _adminRepository.GetBaseDesignDetailsById(id);
+        }
+        public async Task<IEnumerable<BaseDesignDataValidationErrors>> ImportBaseDesignsDetails(List<ImportedBaseDesignDetails> request)
+        {
+            return await _adminRepository.ImportBaseDesignsDetails(request);
+        }
+        #endregion Base Design API Service
+
+
+        #region Customer Type API Service
+        public async Task<IEnumerable<CustomerTypeResponse>> GetCustomerTypesList(SearchCustomerTypeRequest request)
+        {
+            return await _adminRepository.GetCustomerTypesList(request);
+        }
+
+        public async Task<int> SaveCustomerType(CustomerTypeRequest customerTypeRequest)
+        {
+            return await _adminRepository.SaveCustomerType(customerTypeRequest);
+        }
+        public async Task<CustomerTypeResponse?> GetCustomerTypeDetailsById(long id)
+        {
+            return await _adminRepository.GetCustomerTypeDetailsById(id);
+        }
+        public async Task<IEnumerable<CustomerTypeDataValidationErrors>> ImportCustomerTypesDetails(List<ImportedCustomerTypeDetails> request)
+        {
+            return await _adminRepository.ImportCustomerTypesDetails(request);
+        }
+        #endregion Customer Type API Service
+
+
+        #region Leave Type API Service
+        public async Task<IEnumerable<LeaveTypeResponse>> GetLeaveTypesList(SearchLeaveTypeRequest request)
+        {
+            return await _adminRepository.GetLeaveTypesList(request);
+        }
+
+        public async Task<int> SaveLeaveType(LeaveTypeRequest leaveTypeRequest)
+        {
+            return await _adminRepository.SaveLeaveType(leaveTypeRequest);
+
+        }
+        public async Task<LeaveTypeResponse?> GetLeaveTypeDetailsById(long id)
+        {
+            return await _adminRepository.GetLeaveTypeDetailsById(id);
+        }
+        public async Task<IEnumerable<LeaveTypeDataValidationErrors>> ImportLeaveTypesDetails(List<ImportedLeaveTypeDetails> request)
+        {
+            return await _adminRepository.ImportLeaveTypesDetails(request);
+        }
+        #endregion Leave Type API Service
+
+        #region Master Data
+       
+        public async Task<IEnumerable<SelectListResponse>> GetCustomerTypesForSelectList(CommonSelectListRequestModel parameters)
+        {
+            return await _adminRepository.GetCustomerTypesForSelectList(parameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetCustomersForSelectList(CustomerSelectListRequestModel parameters)
+        {
+            return await _adminRepository.GetCustomersForSelectList(parameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetStatusMasterForSelectList(string statusCode)
+        {
+            return await _adminRepository.GetStatusMasterForSelectList(statusCode);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetReportingToEmployeeForSelectList(ReportingToEmpListParameters parameters)
+        {
+            return await _adminRepository.GetReportingToEmployeeForSelectList(parameters);
+        }
+
+        public async Task<IEnumerable<CustomerContactsListForFields>> GetCustomerContactsListForFields(CustomerContactsListRequest parameters)
+        {
+            return await _adminRepository.GetCustomerContactsListForFields(parameters);
+        }
+        #endregion
+
+        #region Blood Group Master
+        public async Task<int> SaveBloodGroupDetails(BloodGroupRequestModel parameters)
+        {
+            return await _adminRepository.SaveBloodGroupDetails(parameters);
+        }
+
+        public async Task<IEnumerable<BloodGroupResponseModel>> GetBloodGroupList(SearchBloodGroupRequestModel parameters)
+        {
+            return await _adminRepository.GetBloodGroupList(parameters);
+        }
+
+        public async Task<BloodGroupResponseModel?> GetBloodGroupDetails(long id)
+        {
+            return await _adminRepository.GetBloodGroupDetails(id);
+        }
+        #endregion
+
+        #region Collection Master
+        public async Task<int> SaveCollectionMasterDetails(SaveCollectionRequestModel parameters)
+        {
+            return await _adminRepository.SaveCollectionMasterDetails(parameters);
+        }
+
+        public async Task<IEnumerable<CollectionResponseModel>> GetCollectionMasterList(SearchCollectionRequestModel parameters)
+        {
+            return await _adminRepository.GetCollectionMasterList(parameters);
+        }
+
+        public async Task<CollectionResponseModel?> GetCollectionMasterDetails(int id)
+        {
+            return await _adminRepository.GetCollectionMasterDetails(id);
+        }
+        public async Task<IEnumerable<CollectionDataValidationErrors>> ImportCollection(List<ImportedCollection> request)
+        {
+            return await _adminRepository.ImportCollection(request);
+        }
+        #endregion
         #endregion
     }
 

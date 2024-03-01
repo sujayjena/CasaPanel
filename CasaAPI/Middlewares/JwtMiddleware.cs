@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using CasaAPI.Interfaces.Services;
 using CasaAPI.Helpers;
+using Interfaces.Services;
 
 namespace CasaAPI.Middlewares
 {

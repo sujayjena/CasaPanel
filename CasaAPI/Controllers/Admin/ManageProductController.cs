@@ -8,7 +8,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using static CasaAPI.Models.BrandModel;
 using static CasaAPI.Models.CategoryModel;
-using static CasaAPI.Models.CollectionModel;
+using static CasaAPI.Models.Collection_PanelModel;
 using static CasaAPI.Models.PunchModel;
 using static CasaAPI.Models.SurfaceModel;
 using static CasaAPI.Models.ThicknessModel;
@@ -576,11 +576,12 @@ namespace CasaAPI.Controllers.Admin
         #endregion
 
         #region Collection
+
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> SaveCollection(CollectionSaveParameters Request)
+        public async Task<ResponseModel> SaveCollection_Panel(Collection_PanelSaveParameters Request)
         {
-            int result = await _adminService.SaveCollection(Request);
+            int result = await _adminService.SaveCollection_Panel(Request);
             _response.IsSuccess = false;
 
             if (result == (int)SaveEnums.NoRecordExists)
@@ -605,17 +606,17 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> GetCollectionsList(CollectionSearchParameters request)
+        public async Task<ResponseModel> GetCollectionsList_Panel(Collection_PanelSearchParameters request)
         {
-            IEnumerable<CollectionDetailsResponse> lstCollections = await _adminService.GetCollectionsList(request);
+            IEnumerable<CollectionDetails_PanelResponse> lstCollections = await _adminService.GetCollectionsList_Panel(request);
             _response.Data = lstCollections.ToList();
             return _response;
         }
         [Route("[action]")]
         [HttpGet]
-        public async Task<ResponseModel> GetCollectionsDetails(long id)
+        public async Task<ResponseModel> GetCollectionsDetails_Panel(long id)
         {
-            CollectionDetailsResponse? collection;
+            CollectionDetails_PanelResponse? collection;
             if (id <= 0)
             {
                 _response.IsSuccess = false;
@@ -623,7 +624,7 @@ namespace CasaAPI.Controllers.Admin
             }
             else
             {
-                collection = await _adminService.GetCollectionDetailsById(id);
+                collection = await _adminService.GetCollectionDetailsById_Panel(id);
                 _response.Data = collection;
             }
             return _response;
@@ -631,17 +632,17 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> ImportCollectionsData([FromQuery] ImportRequest request)
+        public async Task<ResponseModel> ImportCollectionsData_Panel([FromQuery] ImportRequest request)
         {
             _response.IsSuccess = false;
             ExcelWorksheets currentSheet;
             ExcelWorksheet workSheet;
-            List<CollectionImportSaveParameters> lstCollectionImportDetails = new List<CollectionImportSaveParameters>();
-            List<CollectionFailToImportValidationErrors>? lstCollectionsFailedToImport = new List<CollectionFailToImportValidationErrors>();
+            List<Collection_PanelImportSaveParameters> lstCollectionImportDetails = new List<Collection_PanelImportSaveParameters>();
+            List<Collection_PanelFailToImportValidationErrors>? lstCollectionsFailedToImport = new List<Collection_PanelFailToImportValidationErrors>();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             int noOfCol, noOfRow;
             ResponseModel? fileDataValidationRes;
-            CollectionImportSaveParameters tempCollectionImport;
+            Collection_PanelImportSaveParameters tempCollectionImport;
 
             if (request.FileUpload == null || request.FileUpload.Length == 0)
             {
@@ -668,7 +669,7 @@ namespace CasaAPI.Controllers.Admin
 
                 for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
                 {
-                    tempCollectionImport = new CollectionImportSaveParameters()
+                    tempCollectionImport = new Collection_PanelImportSaveParameters()
                     {
                         CollectionName = workSheet.Cells[rowIterator, 1].Value?.ToString(),
                         IsActive = workSheet.Cells[rowIterator, 2].Value?.ToString()
@@ -681,7 +682,7 @@ namespace CasaAPI.Controllers.Admin
                     }
                     else
                     {
-                        lstCollectionsFailedToImport.Add(new CollectionFailToImportValidationErrors()
+                        lstCollectionsFailedToImport.Add(new Collection_PanelFailToImportValidationErrors()
                         {
                             CollectionName = tempCollectionImport.CollectionName,
                             IsActive = tempCollectionImport.IsActive,
@@ -697,7 +698,7 @@ namespace CasaAPI.Controllers.Admin
                 return _response;
             }
 
-            lstCollectionsFailedToImport.AddRange(await _adminService.ImportCollectionsDetails(lstCollectionImportDetails));
+            lstCollectionsFailedToImport.AddRange(await _adminService.ImportCollectionsDetails_Panel(lstCollectionImportDetails));
 
             _response.IsSuccess = true;
             _response.Message = "Collections list imported successfully";
@@ -706,14 +707,14 @@ namespace CasaAPI.Controllers.Admin
             if (lstCollectionsFailedToImport != null && lstCollectionsFailedToImport.ToList().Count > 0)
             {
                 _response.Message = "Uploaded file contains invalid records, please check downloaded file for more details";
-                _response.Data = GenerateInvalidCollectionDataFile(lstCollectionsFailedToImport);
+                _response.Data = GenerateInvalidCollectionDataFile_Panel(lstCollectionsFailedToImport);
 
             }
             #endregion
 
             return _response;
         }
-        private byte[] GenerateInvalidCollectionDataFile(IEnumerable<CollectionFailToImportValidationErrors> lstCollectionsFailedToImport)
+        private byte[] GenerateInvalidCollectionDataFile_Panel(IEnumerable<Collection_PanelFailToImportValidationErrors> lstCollectionsFailedToImport)
         {
             byte[] result;
             int recordIndex;
@@ -738,7 +739,7 @@ namespace CasaAPI.Controllers.Admin
 
                     recordIndex = 2;
 
-                    foreach (CollectionFailToImportValidationErrors record in lstCollectionsFailedToImport)
+                    foreach (Collection_PanelFailToImportValidationErrors record in lstCollectionsFailedToImport)
                     {
                         WorkSheet1.Cells[recordIndex, 1].Value = record.CollectionName;
                         WorkSheet1.Cells[recordIndex, 2].Value = record.IsActive;
@@ -761,7 +762,7 @@ namespace CasaAPI.Controllers.Admin
         }
         [Route("[action]")]
         [HttpGet]
-        public async Task<ResponseModel> DownloadCollectionTemplate()
+        public async Task<ResponseModel> DownloadCollectionTemplate_Panel()
         {
             byte[]? fileContent = await Task.Run(() => _fileManager.GetFormatFileFromPath(FormatFilesName.CollectionImportFormatFileName));
             if (fileContent == null || fileContent.Length == 0)
@@ -777,15 +778,15 @@ namespace CasaAPI.Controllers.Admin
         }
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> ExportCollectionListToExcel(CollectionSearchParameters request)
+        public async Task<ResponseModel> ExportCollectionListToExcel_Panel(Collection_PanelSearchParameters request)
         {
-            IEnumerable<CollectionDetailsResponse> collectionDetailsResponses;
+            IEnumerable<CollectionDetails_PanelResponse> collectionDetails_PanelResponses;
 
             request.IsExport = true;
-            collectionDetailsResponses = await _adminService.GetCollectionsList(request);
-            if (collectionDetailsResponses != null && collectionDetailsResponses.ToList().Count > 0)
+            collectionDetails_PanelResponses = await _adminService.GetCollectionsList_Panel(request);
+            if (collectionDetails_PanelResponses != null && collectionDetails_PanelResponses.ToList().Count > 0)
             {
-                _response.Data = GenerateExcelCollectionDataFile(collectionDetailsResponses);
+                _response.Data = GenerateExcelCollectionDataFile_Panel(collectionDetails_PanelResponses);
             }
             else
             {
@@ -794,7 +795,7 @@ namespace CasaAPI.Controllers.Admin
             }
             return _response;
         }
-        private byte[] GenerateExcelCollectionDataFile(IEnumerable<CollectionDetailsResponse> lstCollectionsToImport)
+        private byte[] GenerateExcelCollectionDataFile_Panel(IEnumerable<CollectionDetails_PanelResponse> lstCollectionsToImport)
         {
             byte[] result;
             int recordIndex;
@@ -819,7 +820,7 @@ namespace CasaAPI.Controllers.Admin
 
                     recordIndex = 2;
 
-                    foreach (CollectionDetailsResponse record in lstCollectionsToImport)
+                    foreach (CollectionDetails_PanelResponse record in lstCollectionsToImport)
                     {
                         excelWorksheet.Cells[recordIndex, 1].Value = record.CollectionName;
                         excelWorksheet.Cells[recordIndex, 2].Value = record.IsActive;
@@ -2416,273 +2417,6 @@ namespace CasaAPI.Controllers.Admin
             }
             return result;
         }
-        #endregion
-
-        #region Blood
-        [Route("[action]")]
-        [HttpPost]
-        public async Task<ResponseModel> SaveBlood(BloodSaveParameters Request)
-        {
-            int result = await _adminService.SaveBlood(Request);
-            _response.IsSuccess = false;
-
-            if (result == (int)SaveEnums.NoRecordExists)
-            {
-                _response.Message = "No record exists";
-            }
-            else if (result == (int)SaveEnums.NameExists)
-            {
-                _response.Message = "Blood Group is already exists";
-            }
-            else if (result == (int)SaveEnums.NoResult)
-            {
-                _response.Message = "Something went wrong, please try again";
-            }
-            else
-            {
-                _response.IsSuccess = true;
-                _response.Message = "Blood Group details saved sucessfully";
-            }
-            return _response;
-        }
-        [Route("[action]")]
-        [HttpPost]
-        public async Task<ResponseModel> GetBloodList(BloodSearchParameters request)
-        {
-            IEnumerable<BloodDetailsResponse> lstBloods = await _adminService.GetBloodsList(request);
-            _response.Data = lstBloods.ToList();
-            return _response;
-        }
-        [Route("[action]")]
-        [HttpGet]
-        public async Task<ResponseModel> GetBloodDetails(long id)
-        {
-            BloodDetailsResponse? Blood;
-            if (id <= 0)
-            {
-                _response.IsSuccess = false;
-                _response.Message = ValidationConstants.Id_Required_Msg;
-            }
-            else
-            {
-                Blood = await _adminService.GetBloodDetailsById(id);
-                _response.Data = Blood;
-            }
-            return _response;
-        }
-        [Route("[action]")]
-        [HttpPost]
-        public async Task<ResponseModel> ImportBloodsData([FromQuery] ImportRequest request)
-        {
-            _response.IsSuccess = false;
-            ExcelWorksheets currentSheet;
-            ExcelWorksheet workSheet;
-            List<BloodImportSaveParameters> lstBloodImportDetails = new List<BloodImportSaveParameters>();
-            List<BloodFailToImportValidationErrors>? lstBloodsFailedToImport = new List<BloodFailToImportValidationErrors>();
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            int noOfCol, noOfRow;
-            ResponseModel? fileDataValidationRes;
-            BloodImportSaveParameters tempBloodImport;
-
-            if (request.FileUpload == null || request.FileUpload.Length == 0)
-            {
-                _response.Message = "Please upload an excel file to import Blood data";
-                return _response;
-            }
-
-            using (MemoryStream stream = new MemoryStream())
-            {
-                request.FileUpload.CopyTo(stream);
-                using ExcelPackage package = new ExcelPackage(stream);
-                currentSheet = package.Workbook.Worksheets;
-                workSheet = currentSheet.First();
-                noOfCol = workSheet.Dimension.End.Column;
-                noOfRow = workSheet.Dimension.End.Row;
-
-                if (!string.Equals(workSheet.Cells[1, 1].Value.ToString(), "BloodGroup", StringComparison.OrdinalIgnoreCase) ||
-                   !string.Equals(workSheet.Cells[1, 2].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
-                {
-                    _response.IsSuccess = false;
-                    _response.Message = "Please upload a valid excel file. Please Download Format file for reference";
-                    return _response;
-                }
-
-                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
-                {
-                    tempBloodImport = new BloodImportSaveParameters()
-                    {
-                        BloodGroup = workSheet.Cells[rowIterator, 1].Value?.ToString(),
-                        IsActive = workSheet.Cells[rowIterator, 2].Value?.ToString()
-                    };
-
-                    fileDataValidationRes = ModelStateHelper.GetValidationErrorsList(model: tempBloodImport);
-
-                    if (fileDataValidationRes.IsSuccess)
-                    {
-                        lstBloodImportDetails.Add(tempBloodImport);
-                    }
-                    else
-                    {
-                        lstBloodsFailedToImport.Add(new BloodFailToImportValidationErrors()
-                        {
-                            BloodGroup = tempBloodImport.BloodGroup,
-                            IsActive = tempBloodImport.IsActive,
-                            ValidationMessage = fileDataValidationRes.Message
-                        });
-                    }
-                }
-            }
-
-            if (lstBloodImportDetails.Count == 0)
-            {
-                _response.Message = "File does not contains any record(s)";
-                return _response;
-            }
-
-            lstBloodsFailedToImport.AddRange(await _adminService.ImportBloodsDetails(lstBloodImportDetails));
-
-            _response.IsSuccess = true;
-            _response.Message = "Bloods list imported successfully";
-
-            #region Generate Excel file for Invalid Data
-
-            if (lstBloodsFailedToImport != null && lstBloodsFailedToImport.ToList().Count > 0)
-            {
-                _response.Message = "Uploaded file contains invalid records, please check downloaded file for more details";
-                _response.Data = GenerateInvalidBloodDataFile(lstBloodsFailedToImport);
-
-            }
-            #endregion
-
-            return _response;
-        }
-        private byte[] GenerateInvalidBloodDataFile(IEnumerable<BloodFailToImportValidationErrors> lstBloodsFailedToImport)
-        {
-            byte[] result;
-            int recordIndex;
-            ExcelWorksheet WorkSheet1;
-
-            using (MemoryStream msInvalidDataFile = new MemoryStream())
-            {
-                using (ExcelPackage excelInvalidData = new ExcelPackage())
-                {
-                    WorkSheet1 = excelInvalidData.Workbook.Worksheets.Add("Invalid_Blood_Records");
-                    WorkSheet1.TabColor = System.Drawing.Color.Black;
-                    WorkSheet1.DefaultRowHeight = 12;
-
-                    //Header of table
-                    WorkSheet1.Row(1).Height = 20;
-                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    WorkSheet1.Row(1).Style.Font.Bold = true;
-
-                    WorkSheet1.Cells[1, 1].Value = "BloodGroup";
-                    WorkSheet1.Cells[1, 2].Value = "IsActive";
-                    WorkSheet1.Cells[1, 3].Value = "ValidationMessage";
-
-                    recordIndex = 2;
-
-                    foreach (BloodFailToImportValidationErrors record in lstBloodsFailedToImport)
-                    {
-                        WorkSheet1.Cells[recordIndex, 1].Value = record.BloodGroup;
-                        WorkSheet1.Cells[recordIndex, 2].Value = record.IsActive;
-                        WorkSheet1.Cells[recordIndex, 3].Value = record.ValidationMessage;
-
-                        recordIndex += 1;
-                    }
-
-                    WorkSheet1.Column(1).AutoFit();
-                    WorkSheet1.Column(2).AutoFit();
-                    WorkSheet1.Column(3).AutoFit();
-
-                    excelInvalidData.SaveAs(msInvalidDataFile);
-                    msInvalidDataFile.Position = 0;
-                    result = msInvalidDataFile.ToArray();
-                }
-            }
-
-            return result;
-        }
-
-        [Route("[action]")]
-        [HttpGet]
-        public async Task<ResponseModel> DownloadBloodTemplate()
-        {
-            byte[]? fileContent = await Task.Run(() => _fileManager.GetFormatFileFromPath(FormatFilesName.BloodImportFormatFileName));
-            if (fileContent == null || fileContent.Length == 0)
-            {
-                _response.Message = ErrorConstants.FileNotExistsToDownload;
-                _response.IsSuccess = false;
-            }
-            else
-            {
-                _response.Data = fileContent;
-            }
-            return _response;
-        }
-
-        [Route("[action]")]
-        [HttpPost]
-        public async Task<ResponseModel> ExportBloodListToExcel(BloodSearchParameters request)
-        {
-            IEnumerable<BloodDetailsResponse> BloodDetailsResponses;
-
-            request.IsExport = true;
-            BloodDetailsResponses = await _adminService.GetBloodsList(request);
-            if (BloodDetailsResponses != null && BloodDetailsResponses.ToList().Count > 0)
-            {
-                _response.Data = GenerateExcelBloodDataFile(BloodDetailsResponses);
-            }
-            else
-            {
-                _response.Message = "Record Not Exists";
-                _response.IsSuccess = false;
-            }
-
-            return _response;
-        }
-        private byte[] GenerateExcelBloodDataFile(IEnumerable<BloodDetailsResponse> lstBloodsToImport)
-        {
-            byte[] result;
-            int recordIndex;
-            ExcelWorksheet excelWorksheet;
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
-            using (MemoryStream msDataFile = new MemoryStream())
-            {
-                using (ExcelPackage excelData = new ExcelPackage(new FileInfo($"Blood_List_{DateTime.Now.ToString("yyyyMMddHHmm")}")))
-                {
-                    excelWorksheet = excelData.Workbook.Worksheets.Add("Blood");
-                    excelWorksheet.TabColor = System.Drawing.Color.Black;
-                    excelWorksheet.DefaultRowHeight = 12;
-
-                    //Header of table
-                    excelWorksheet.Row(1).Height = 20;
-                    excelWorksheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    excelWorksheet.Row(1).Style.Font.Bold = true;
-
-                    excelWorksheet.Cells[1, 1].Value = "Blood Group";
-                    excelWorksheet.Cells[1, 2].Value = "Is Active?";
-
-                    recordIndex = 2;
-
-                    foreach (BloodDetailsResponse record in lstBloodsToImport)
-                    {
-                        excelWorksheet.Cells[recordIndex, 1].Value = record.BloodGroup;
-                        excelWorksheet.Cells[recordIndex, 2].Value = record.IsActive;
-                        recordIndex += 1;
-                    }
-
-                    excelWorksheet.Column(1).AutoFit();
-                    excelWorksheet.Column(2).AutoFit();
-
-                    excelData.SaveAs(msDataFile);
-                    msDataFile.Position = 0;
-                    result = msDataFile.ToArray();
-                }
-            }
-            return result;
-        }
-
         #endregion
 
         #region TileType

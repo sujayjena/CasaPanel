@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CasaAPI.Models
 {
-    public class CollectionModel
+    public class Collection_PanelModel
     {
-        public class CollectionSaveParameters
+        public class Collection_PanelSaveParameters
         {
             public int CollectionId { get; set; }
             //[Required(ErrorMessage = ValidationConstants.CollectionName_Required_Msg)]
@@ -14,13 +14,13 @@ namespace CasaAPI.Models
             public string CollectionName { get; set; }
             public bool IsActive { get; set; }
         }
-        public class CollectionDetailsResponse : LogParameters
+        public class CollectionDetails_PanelResponse : LogParameters
         {
             public int CollectionId { get; set; }
             public string CollectionName { get; set; }
 
         }
-        public class CollectionSearchParameters
+        public class Collection_PanelSearchParameters
         {
             public PaginationParameters pagination { get; set; }
             public string ValueForSearch { get; set; } = null;
@@ -28,7 +28,7 @@ namespace CasaAPI.Models
             public bool? IsExport { get; set; }
              
         }
-        public class CollectionImportSaveParameters
+        public class Collection_PanelImportSaveParameters
         {
             //[Required(ErrorMessage = ValidationConstants.CollectionName_Required_Msg)]
             //[RegularExpression(ValidationConstants.CollectionName_RegExp, ErrorMessage = ValidationConstants.CollectionName_RegExp_Msg)]
@@ -38,7 +38,7 @@ namespace CasaAPI.Models
             //[RegularExpression(ValidationConstants.IsActiveYesNoRegExp, ErrorMessage = ValidationConstants.IsActiveYesNoRegExp_Msg)]
             public string IsActive { get; set; }
         }
-        public class CollectionFailToImportValidationErrors
+        public class Collection_PanelFailToImportValidationErrors
         {
             public string CollectionName { get; set; }
             public string IsActive { get; set; }

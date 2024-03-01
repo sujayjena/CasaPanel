@@ -21,6 +21,7 @@ var services = builder.Services;
 {
     services.AddControllers();
     services.AddHttpContextAccessor();
+    services.AddSignalR();
 
     services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
     
@@ -97,6 +98,10 @@ var services = builder.Services;
     services.AddScoped<IOrderRepository, OrderRepository>();
     services.AddScoped<ICuttingPlanService, CuttingPlanService>();
     services.AddScoped<ICuttingPlanRepository, CuttingPlanRepository>();
+    services.AddScoped<INotificationService, NotificationService>();
+    services.AddScoped<INotificationRepository, NotificationRepository>();
+    services.AddScoped<IBroadCastService, BroadCastService>();
+    services.AddScoped<IBroadCastRepository, BroadCastRepository>();
     #endregion
 }
 
@@ -132,6 +137,7 @@ var app = builder.Build();
     app.UseAuthorization();
 
     app.MapControllers();
+    app.MapHub<MessageHubClient>("/notification");
 }
 
 app.Run();

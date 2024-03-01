@@ -1,17 +1,45 @@
 ﻿using CasaAPI.Models.Constants;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CasaAPI.Models
 {
-    public class LoginByEmailRequestModel
+    public class LoginByMobileNoRequestModel
     {
-        //[Required(ErrorMessage = ValidationConstants.EmailIdRequied_Msg)]
-        //[RegularExpression(ValidationConstants.EmailRegExp, ErrorMessage = ValidationConstants.EmailRegExp_Msg)]
-        //[MaxLength(100, ErrorMessage = ValidationConstants.Email_MaxLength_Msg)]
-        public string Username { get; set; }
+        [Required(ErrorMessage = ValidationConstants.MobileNumberRequied_Msg)]
+        [RegularExpression(ValidationConstants.MobileNumberRegExp, ErrorMessage = ValidationConstants.MobileNumberRegExp_Msg)]
+        [MaxLength(ValidationConstants.MobileNumber_MaxLength, ErrorMessage = ValidationConstants.MobileNumber_MaxLength_Msg)]
+        public string MobileNo { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+
+        [JsonIgnore]
+        public string? MobileUniqueId { get; set; }
+
+        [DefaultValue("W")]
+        public string IsWebOrMobileUser { get; set; }
+
+        public bool Remember { get; set; }
+    }
+
+    public class MobileAppLoginRequestModel
+    {
+        [Required(ErrorMessage = ValidationConstants.MobileNumberRequied_Msg)]
+        [RegularExpression(ValidationConstants.MobileNumberRegExp, ErrorMessage = ValidationConstants.MobileNumberRegExp_Msg)]
+        [MaxLength(ValidationConstants.MobileNumber_MaxLength, ErrorMessage = ValidationConstants.MobileNumber_MaxLength_Msg)]
+        public string MobileNo { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
+        public string Password { get; set; }
+
+        [Required(ErrorMessage = "Mobile Unique Id is required")]
+        [MaxLength(ValidationConstants.MobileUniqueId_MaxLength, ErrorMessage = ValidationConstants.MobileUniqueId_MaxLength_Msg)]
+        public string MobileUniqueId { get; set; }
+
+        [DefaultValue("M")]
+        public string IsWebOrMobileUser { get; set; }
         public bool Remember { get; set; }
     }
 

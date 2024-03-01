@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using static CasaAPI.Models.BloodModel;
 using static CasaAPI.Models.BrandModel;
 using static CasaAPI.Models.CategoryModel;
-using static CasaAPI.Models.CollectionModel;
+using static CasaAPI.Models.Collection_PanelModel;
 using static CasaAPI.Models.ContactTypeModel;
 using static CasaAPI.Models.GendorModel;
 using static CasaAPI.Models.PunchModel;
@@ -109,17 +109,17 @@ namespace CasaAPI.Repositories
         }
         #endregion
 
-        #region Collection
-        public async Task<int> SaveCollection(CollectionSaveParameters parameters)
+        #region Collection Panel
+        public async Task<int> SaveCollection_Panel(Collection_PanelSaveParameters parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@CollectionId", parameters.CollectionId);
             queryParameters.Add("@CollectionName", parameters.CollectionName.SanitizeValue().ToUpper());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
-            return await SaveByStoredProcedure<int>("SaveCollectionDetails", queryParameters);
+            return await SaveByStoredProcedure<int>("SaveCollectionDetails_Panel", queryParameters);
         }
-        public async Task<IEnumerable<CollectionDetailsResponse>> GetCollectionsList(CollectionSearchParameters parameters)
+        public async Task<IEnumerable<CollectionDetails_PanelResponse>> GetCollectionsList_Panel(Collection_PanelSearchParameters parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@PageNo", parameters.pagination.PageNo);
@@ -129,22 +129,22 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
 
-            return await ListByStoredProcedure<CollectionDetailsResponse>("GetCollectionsList", queryParameters);
+            return await ListByStoredProcedure<CollectionDetails_PanelResponse>("GetCollectionsList_Panel", queryParameters);
         }
-        public async Task<CollectionDetailsResponse?> GetCollectionDetailsById(long id)
+        public async Task<CollectionDetails_PanelResponse?> GetCollectionDetailsById_Panel(long id)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", id);
 
-            return (await ListByStoredProcedure<CollectionDetailsResponse>("GetCollectionDetailsById", queryParameters)).FirstOrDefault();
+            return (await ListByStoredProcedure<CollectionDetails_PanelResponse>("GetCollectionDetailsById_Panel", queryParameters)).FirstOrDefault();
         }
-        public async Task<IEnumerable<CollectionFailToImportValidationErrors>> ImportCollectionsDetails(List<CollectionImportSaveParameters> parameters)
+        public async Task<IEnumerable<Collection_PanelFailToImportValidationErrors>> ImportCollectionsDetails_Panel(List<Collection_PanelImportSaveParameters> parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             string xmlCollectionData = ConvertListToXml(parameters);
             queryParameters.Add("@XmlCollectionData", xmlCollectionData);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
-            return await ListByStoredProcedure<CollectionFailToImportValidationErrors>("SaveImportCollectionDetails", queryParameters);
+            return await ListByStoredProcedure<Collection_PanelFailToImportValidationErrors>("SaveImportCollectionDetails_Panel", queryParameters);
         }
         #endregion
 
@@ -563,49 +563,6 @@ namespace CasaAPI.Repositories
         }
         #endregion
 
-        #region Blood Group
-        public async Task<int> SaveBlood(BloodSaveParameters parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@BloodId", parameters.BloodId);
-            queryParameters.Add("@BloodGroup", parameters.BloodGroup.SanitizeValue());
-            queryParameters.Add("@IsActive", parameters.IsActive);
-            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
-            return await SaveByStoredProcedure<int>("SaveBloodDetails", queryParameters);
-        }
-        public async Task<IEnumerable<BloodDetailsResponse>> GetBloodsList(BloodSearchParameters parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
-            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
-            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
-            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
-            queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
-            queryParameters.Add("@IsActive", parameters.IsActive);
-
-            return await ListByStoredProcedure<BloodDetailsResponse>("GetBloodsList", queryParameters);
-        }
-        public async Task<BloodDetailsResponse?> GetBloodDetailsById(long id)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@Id", id);
-
-            return (await ListByStoredProcedure<BloodDetailsResponse>("GetBloodDetailsById", queryParameters)).FirstOrDefault();
-        }
-        public async Task<IEnumerable<BloodFailToImportValidationErrors>> ImportBloodsDetails(List<BloodImportSaveParameters> parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            string xmlBrandData = ConvertListToXml(parameters);
-            queryParameters.Add("@XmlBloodData", xmlBrandData);
-            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
-            return await ListByStoredProcedure<BloodFailToImportValidationErrors>("SaveImportBloodDetails", queryParameters);
-        }
-        public async Task<IEnumerable<SelectListResponse>> GetBloodForSelectList(CommonSelectListRequestModel parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@IsActive", parameters.IsActive);
-            return await ListByStoredProcedure<SelectListResponse>("GetBloodMasterForSelectList", queryParameters);
-        }
         public async Task<IEnumerable<SelectListResponse>> GetSubVendorForSelectList(CommonSelectListRequestModel parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
@@ -624,7 +581,6 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@IsActive", parameters.IsActive);
             return await ListByStoredProcedure<SelectListResponse>("GetReferralForSelectList", queryParameters);
         }
-        #endregion
 
         #region TitleType
         public async Task<int> SaveTileType(TileTypeSaveParameters parameters)
@@ -780,188 +736,6 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
             return await ListByStoredProcedure<GendorFailToImportValidationErrors>("SaveImportGenderDetails", queryParameters);
         }
-        #endregion
-
-        #region Role
-        public async Task<int> SaveRole(RoleSaveParameters parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@RoleId", parameters.RoleId);
-            queryParameters.Add("@RoleName", parameters.RoleName.SanitizeValue().ToUpper());
-            queryParameters.Add("@IsActive", parameters.IsActive);
-            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
-            return await SaveByStoredProcedure<int>("SaveRoleDetails", queryParameters);
-        }
-
-        public async Task<IEnumerable<RoleDetailsResponse>> GetRoleList(RoleSearchParameters parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
-            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
-            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
-            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
-            queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
-            queryParameters.Add("@IsActive", parameters.IsActive);
-            queryParameters.Add("@IsExport", parameters.IsExport);
-
-            return await ListByStoredProcedure<RoleDetailsResponse>("GetRoleList", queryParameters);
-        }
-
-        public async Task<RoleDetailsResponse?> GetRoleDetailsById(long id)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@Id", id);
-
-            return (await ListByStoredProcedure<RoleDetailsResponse>("GetRoleDetailsById", queryParameters)).FirstOrDefault();
-        }
-        public async Task<IEnumerable<RoleFailToImportValidationErrors>> ImportRoleDetails(List<RoleImportSaveParameters> parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            string xmlRoleData = ConvertListToXml(parameters);
-            queryParameters.Add("@XmlRoleData", xmlRoleData);
-            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
-            return await ListByStoredProcedure<RoleFailToImportValidationErrors>("SaveImportRoleDetails", queryParameters);
-        }
-
-        #endregion
-
-        #region ReportingHierarchy
-
-        public async Task<IEnumerable<SelectListResponse>> GetRoleHierarchyDetailsByRoleId(long roleId)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@RoleId", roleId);
-            return (await ListByStoredProcedure<SelectListResponse>("GetRoleHierarchyDetailsByRoleId", queryParameters));
-        }
-        public async Task<int> SaveReportingHierarchy(ReportingHierarchySaveParameters parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@Id", parameters.Id);
-            queryParameters.Add("@RoleId", parameters.RoleId);
-            queryParameters.Add("@ReportingRoleId", parameters.ReportingRoleId);
-            queryParameters.Add("@IsActive", parameters.IsActive);
-            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
-            return await SaveByStoredProcedure<int>("SaveReportingHierarchyDetails", queryParameters);
-        }
-
-
-        public async Task<IEnumerable<ReportingHierarchyDetailsResponse>> GetReportingHierarchyList(ReportingHierarchySearchParameters parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
-            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
-            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
-            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
-            queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
-            queryParameters.Add("@IsActive", parameters.IsActive);
-            queryParameters.Add("@IsExport", parameters.IsExport);
-
-            return await ListByStoredProcedure<ReportingHierarchyDetailsResponse>("GetReportingHierarchyList", queryParameters);
-        }
-
-        public async Task<ReportingHierarchyDetailsResponse?> GetReportingHierarchyDetailsById(long id)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@Id", id);
-
-            return (await ListByStoredProcedure<ReportingHierarchyDetailsResponse>("GetReportingHierarchyDetailsById", queryParameters)).FirstOrDefault();
-        }
-        public async Task<IEnumerable<ReportingHierarchyFailToImportValidationErrors>> ImportReportingHierarchyDetails(List<ReportingHierarchyImportSaveParameters> parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            string xmlReportingHierarchyData = ConvertListToXml(parameters);
-            queryParameters.Add("@XmlReportingHierarchyData", xmlReportingHierarchyData);
-            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
-            return await ListByStoredProcedure<ReportingHierarchyFailToImportValidationErrors>("SaveImportReportingHierarchyDetails", queryParameters);
-        }
-
-
-        #endregion
-
-        #region Employee
-        public async Task<int> SaveEmployee(EmployeeSaveParameters parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@Id", parameters.Id);
-            queryParameters.Add("@EmployeeName", parameters?.EmployeeName?.SanitizeValue().ToUpper());
-            queryParameters.Add("@EmployeeCode", parameters?.EmployeeCode?.ToUpper());
-            queryParameters.Add("@MobileNumber", parameters.MobileNumber);
-            queryParameters.Add("@Email", parameters?.Email);
-            queryParameters.Add("@Department", parameters?.Department);
-            queryParameters.Add("@Role", parameters?.Role);
-            queryParameters.Add("@ReportingTo", parameters?.ReportingTo);
-            queryParameters.Add("@DateOfBirth", parameters?.DateOfBirth);
-            queryParameters.Add("@DateOfJoining", parameters?.DateOfJoining);
-            queryParameters.Add("@EmergencycontactNo", parameters?.EmergencycontactNo);
-            queryParameters.Add("@BloodGroup", parameters?.BloodGroup);
-            queryParameters.Add("@Gender", parameters?.Gender);
-            //queryParameters.Add("@MaterialStatus", parameters.MaterialStatus);
-            queryParameters.Add("@CompanyNaumber", parameters?.CompanyNaumber);
-            queryParameters.Add("@PermanentAddress", parameters?.PermanentAddress?.SanitizeValue());
-            queryParameters.Add("@PermanentState", parameters?.PermanentState);
-            queryParameters.Add("@PermanentRegion", parameters?.PermanentRegion);
-            queryParameters.Add("@PermanentDistrict", parameters?.PermanentDistrict);
-            queryParameters.Add("@PermanentCity", parameters?.PermanentCity);
-            queryParameters.Add("@PermanentArea", parameters?.PermanentArea);
-            queryParameters.Add("@PermanentPinCode", parameters?.PermanentPinCode);
-            queryParameters.Add("@IsTemporaryAddressIsSame", parameters?.IsTemporaryAddressIsSame);
-            queryParameters.Add("@TemporaryAddress", parameters?.TemporaryAddress?.SanitizeValue());
-            queryParameters.Add("@TemporaryState", parameters?.TemporaryState);
-            queryParameters.Add("@TemporaryRegion", parameters?.TemporaryRegion);
-            queryParameters.Add("@TemporaryDistrict", parameters?.TemporaryDistrict);
-            queryParameters.Add("@TemporaryCity", parameters?.TemporaryCity);
-            queryParameters.Add("@TemporaryArea", parameters?.TemporaryArea);
-            queryParameters.Add("@TemporaryPinCode", parameters?.TemporaryPinCode);
-            queryParameters.Add("@EmergencyName", parameters?.EmergencyName?.SanitizeValue().ToUpper());
-            queryParameters.Add("@EmergencyNumber", parameters?.EmergencyNumber);
-            queryParameters.Add("@EmergencyRelation", parameters?.EmergencyRelation);
-            queryParameters.Add("@EmployeePostCompanyName", parameters?.EmployeePostCompanyName?.SanitizeValue().ToUpper());
-            queryParameters.Add("@TotalNumberOfExp", parameters?.TotalNumberOfExp);
-            queryParameters.Add("@AddharNumber", parameters?.AddharNumber);
-            queryParameters.Add("@UploadAddharCard", parameters?.UploadAddharCardURL);
-            queryParameters.Add("@PANNumber", parameters?.PANNumber);
-            queryParameters.Add("@OtherProof", parameters?.OtherProof);
-            queryParameters.Add("@PhotoUpload", parameters?.PhotoUploadURL);
-            queryParameters.Add("@Remark", parameters?.Remark);
-            queryParameters.Add("@IsWebUser", parameters?.IsWebUser);
-            queryParameters.Add("@Password", EncryptDecryptHelper.EncryptString(parameters.Password));
-            queryParameters.Add("@IsMobileUser", parameters?.IsMobileUser);
-            queryParameters.Add("@ImageUpload", parameters?.ImageUploadURL);
-            queryParameters.Add("@IsActive", parameters?.IsActive);
-            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
-            return await SaveByStoredProcedure<int>("SaveEmployeeDetails", queryParameters);
-        }
-
-        public async Task<IEnumerable<EmployeeDetailsResponse>> GetEmployeeList(EmployeeSearchParameters parameters)
-        {
-            EmployeeDetailsResponse List = new EmployeeDetailsResponse();
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
-            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
-            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
-            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
-            queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
-            queryParameters.Add("@IsActive", parameters.IsActive);
-            queryParameters.Add("@IsExport", parameters.IsExport);
-
-            return await ListByStoredProcedure<EmployeeDetailsResponse>("GetEmployeeList", queryParameters);
-        }
-
-        public async Task<EmployeeDetailsResponse?> GetEmployeeDetailsById(long id)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@Id", id);
-
-            return (await ListByStoredProcedure<EmployeeDetailsResponse>("GetEmployeeDetailsById", queryParameters)).FirstOrDefault();
-        }
-        public async Task<IEnumerable<EmployeeDetailsResponse>> GetEmployeeListByRoleId(long roleId)
-        {
-            EmployeeDetailsResponse List = new EmployeeDetailsResponse();
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@RoleId", roleId);
-            return await ListByStoredProcedure<EmployeeDetailsResponse>("GetEmployeeListByRoleId", queryParameters);
-        }
-
         #endregion
 
         #region Referral
@@ -1194,6 +968,398 @@ namespace CasaAPI.Repositories
 
             return await ListByStoredProcedure<EmployeePermissionDetailsResponse>("GetEmployeePermissionList", queryParameters);
         }
+        #endregion
+
+        #region sales
+
+        public async Task<IEnumerable<Users>> GetUsersList()
+        {
+            return await ListByStoredProcedure<Users>("");
+        }
+
+        #region Product API Repository
+        public async Task<IEnumerable<ProductResponse>> GetProductsList(SearchProductRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@ProductName", parameters.ProductName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+
+            var result = await ListByStoredProcedure<ProductResponse>("GetProducts", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+        public async Task<int> SaveProduct(ProductRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@ProductId", parameters.ProductId);
+            queryParameters.Add("@ProductName", parameters.ProductName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveProductDetails", queryParameters);
+        }
+        public async Task<ProductResponse?> GetProductDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+
+            return (await ListByStoredProcedure<ProductResponse>("GetProductDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<ProductDataValidationErrors>> ImportProductsDetails(List<ImportedProductDetails> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlProductData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlProductData", xmlProductData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<ProductDataValidationErrors>("SaveImportProductDetails", queryParameters);
+        }
+        #endregion Product API Repository
+
+        #region Design Type API Repository
+        public async Task<IEnumerable<DesignTypeResponse>> GetDesignTypesList(SearchDesignTypeRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@DesignTypeName", parameters.DesignTypeName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+
+            var result = await ListByStoredProcedure<DesignTypeResponse>("GetDesignTypes", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+        public async Task<int> SaveDesignType(DesignTypeRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@DesignTypeId", parameters.DesignTypeId);
+            queryParameters.Add("@DesignTypeName", parameters.DesignTypeName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveDesignTypeDetails", queryParameters);
+        }
+
+        public async Task<DesignTypeResponse?> GetDesignTypeDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+
+            return (await ListByStoredProcedure<DesignTypeResponse>("GetDesignTypeDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<DesignTypeDataValidationErrors>> ImportDesignTypesDetails(List<ImportedDesignTypeDetails> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlDesignTypeData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlDesignTypeData", xmlDesignTypeData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<DesignTypeDataValidationErrors>("SaveImportDesignTypeDetails", queryParameters);
+        }
+        #endregion Design Type API Repository
+
+        #region Series API Repository
+        public async Task<IEnumerable<SeriesResponse>> GetSeriesList(SearchSeriesRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@SeriesName", parameters.SeriesName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+
+            var result = await ListByStoredProcedure<SeriesResponse>("GetSeriess", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+        public async Task<int> SaveSeries(SeriesRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@SeriesId", parameters.SeriesId);
+            queryParameters.Add("@SeriesName", parameters.SeriesName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveSeriesDetails", queryParameters);
+        }
+
+        public async Task<SeriesResponse?> GetSeriesDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+            return (await ListByStoredProcedure<SeriesResponse>("GetSeriesDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<SeriesDataValidationErrors>> ImportSeriesDetails(List<ImportedSeriesDetails> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlSeriesData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlSeriesData", xmlSeriesData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<SeriesDataValidationErrors>("SaveImportSeriesDetails", queryParameters);
+        }
+        #endregion Series API Repository
+
+        #region Base Design API Repository
+        public async Task<IEnumerable<BaseDesignResponse>> GetBaseDesignsList(SearchBaseDesignRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@BaseDesignName", parameters.BaseDesignName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+
+            var result = await ListByStoredProcedure<BaseDesignResponse>("GetBaseDesigns", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+        public async Task<int> SaveBaseDesign(BaseDesignRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@BaseDesignId", parameters.BaseDesignId);
+            queryParameters.Add("@BaseDesignName", parameters.BaseDesignName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveBaseDesignDetails", queryParameters);
+        }
+        public async Task<BaseDesignResponse?> GetBaseDesignDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+            return (await ListByStoredProcedure<BaseDesignResponse>("GetBaseDesignDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<BaseDesignDataValidationErrors>> ImportBaseDesignsDetails(List<ImportedBaseDesignDetails> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlBaseDesignData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlBaseDesignData", xmlBaseDesignData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<BaseDesignDataValidationErrors>("SaveImportBaseDesignDetails", queryParameters);
+        }
+        #endregion Base Design API Repository
+
+        #region Customer Type API Repository
+        public async Task<IEnumerable<CustomerTypeResponse>> GetCustomerTypesList(SearchCustomerTypeRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@CustomerTypeName", parameters.CustomerTypeName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+
+            var result = await ListByStoredProcedure<CustomerTypeResponse>("GetCustomerTypes", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+        public async Task<int> SaveCustomerType(CustomerTypeRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@CustomerTypeId", parameters.CustomerTypeId);
+            queryParameters.Add("@CustomerTypeName", parameters.CustomerTypeName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveCustomerTypeDetails", queryParameters);
+        }
+        public async Task<CustomerTypeResponse?> GetCustomerTypeDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+            return (await ListByStoredProcedure<CustomerTypeResponse>("GetCustomerTypeDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<CustomerTypeDataValidationErrors>> ImportCustomerTypesDetails(List<ImportedCustomerTypeDetails> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlCustomerTypeData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlCustomerTypeData", xmlCustomerTypeData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<CustomerTypeDataValidationErrors>("SaveImportCustomerTypeDetails", queryParameters);
+        }
+        #endregion Customer Type API Repository
+
+        #region Leave Type API Repository
+        public async Task<IEnumerable<LeaveTypeResponse>> GetLeaveTypesList(SearchLeaveTypeRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@LeaveTypeName", parameters.LeaveTypeName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+
+            var result = await ListByStoredProcedure<LeaveTypeResponse>("GetLeaveTypes", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+        public async Task<int> SaveLeaveType(LeaveTypeRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@LeaveTypeId", parameters.LeaveTypeId);
+            queryParameters.Add("@LeaveTypeName", parameters.LeaveTypeName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveLeaveTypeDetails", queryParameters);
+        }
+        public async Task<LeaveTypeResponse?> GetLeaveTypeDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+            return (await ListByStoredProcedure<LeaveTypeResponse>("GetLeaveTypeDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<LeaveTypeDataValidationErrors>> ImportLeaveTypesDetails(List<ImportedLeaveTypeDetails> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlLeaveTypeData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlLeaveTypeData", xmlLeaveTypeData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<LeaveTypeDataValidationErrors>("SaveImportLeaveTypeDetails", queryParameters);
+        }
+        #endregion Leave Type API Repository
+
+        #region Master Data
+        public async Task<IEnumerable<SelectListResponse>> GetCustomerTypesForSelectList(CommonSelectListRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@IsActive", parameters.IsActive);
+
+            return await ListByStoredProcedure<SelectListResponse>("GetCustomerTypesForSelectList", queryParameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetCustomersForSelectList(CustomerSelectListRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@CustomerTypeId", parameters.CustomerTypeId.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+
+            return await ListByStoredProcedure<SelectListResponse>("GetCustomersForSelectList", queryParameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetStatusMasterForSelectList(string StatusCode)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@StatusCode", StatusCode);
+
+            return await ListByStoredProcedure<SelectListResponse>("GetStatusMasterList", queryParameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetReportingToEmployeeForSelectList(ReportingToEmpListParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@RoleId", parameters.RoleId);
+            queryParameters.Add("@RegionId", parameters.RegionId.SanitizeValue());
+
+            return await ListByStoredProcedure<SelectListResponse>("GetReportingToEmployeeForSelectList", queryParameters);
+        }
+
+        public async Task<IEnumerable<CustomerContactsListForFields>> GetCustomerContactsListForFields(CustomerContactsListRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@CustomerId", parameters.CustomerId);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+
+            return await ListByStoredProcedure<CustomerContactsListForFields>("GetCustomerContactsList", queryParameters);
+        }
+        #endregion
+
+        #region Blood Group Master
+        public async Task<int> SaveBloodGroupDetails(BloodGroupRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@BloodGroupId", parameters.BloodGroupId);
+            queryParameters.Add("@BloodGroup", parameters.BloodGroupName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveBloodGroupDetails", queryParameters);
+        }
+
+        public async Task<IEnumerable<BloodGroupResponseModel>> GetBloodGroupList(SearchBloodGroupRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            //queryParameters.Add("@Total", parameters.pagination.Total);
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@BloodGroup", parameters.BloodGroup.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+
+            var result = await ListByStoredProcedure<BloodGroupResponseModel>("GetBloodGroupMasterList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<BloodGroupResponseModel?> GetBloodGroupDetails(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@BloodGroupId", id);
+            return (await ListByStoredProcedure<BloodGroupResponseModel?>("GetBloodGroupDetailsById", queryParameters)).FirstOrDefault();
+        }
+        #endregion
+
+        #region Collection Master
+        public async Task<int> SaveCollectionMasterDetails(SaveCollectionRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@CollectionId", parameters.CollectionId);
+            queryParameters.Add("@CollectionName", parameters.CollectionName.SanitizeValue());
+            queryParameters.Add("@CollectionNameId", parameters.CollectionNameId);
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveCollectionDetails", queryParameters);
+        }
+
+        public async Task<IEnumerable<CollectionResponseModel>> GetCollectionMasterList(SearchCollectionRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@CollectionName", parameters.CollectionName.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+
+            var result = await ListByStoredProcedure<CollectionResponseModel>("GetCollectionsList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+
+        public async Task<CollectionResponseModel?> GetCollectionMasterDetails(int id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@CollectionId", id);
+            return (await ListByStoredProcedure<CollectionResponseModel?>("GetCollectionDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<CollectionDataValidationErrors>> ImportCollection(List<ImportedCollection> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlCategoryData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlCategoryData", xmlCategoryData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<CollectionDataValidationErrors>("SaveImportCollection", queryParameters);
+        }
+        #endregion
+
         #endregion
     }
 }

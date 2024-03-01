@@ -2,7 +2,7 @@
 using static CasaAPI.Models.BloodModel;
 using static CasaAPI.Models.BrandModel;
 using static CasaAPI.Models.CategoryModel;
-using static CasaAPI.Models.CollectionModel;
+using static CasaAPI.Models.Collection_PanelModel;
 using static CasaAPI.Models.ContactTypeModel;
 using static CasaAPI.Models.GendorModel;
 using static CasaAPI.Models.PunchModel;
@@ -33,11 +33,11 @@ namespace CasaAPI.Interfaces.Services
 
         #endregion
 
-        #region Collection
-        Task<int> SaveCollection(CollectionSaveParameters request);
-        Task<IEnumerable<CollectionDetailsResponse>> GetCollectionsList(CollectionSearchParameters request);
-        Task<CollectionDetailsResponse?> GetCollectionDetailsById(long id);
-        Task<IEnumerable<CollectionFailToImportValidationErrors>> ImportCollectionsDetails(List<CollectionImportSaveParameters> request);
+        #region Collection Panel
+        Task<int> SaveCollection_Panel(Collection_PanelSaveParameters request);
+        Task<IEnumerable<CollectionDetails_PanelResponse>> GetCollectionsList_Panel(Collection_PanelSearchParameters request);
+        Task<CollectionDetails_PanelResponse?> GetCollectionDetailsById_Panel(long id);
+        Task<IEnumerable<Collection_PanelFailToImportValidationErrors>> ImportCollectionsDetails_Panel(List<Collection_PanelImportSaveParameters> request);
 
         #endregion
 
@@ -116,17 +116,9 @@ namespace CasaAPI.Interfaces.Services
         Task<IEnumerable<ManageBoxSizeValidationErrors>> ImportManageBoxSize(List<ImportManageBoxSize> parameters);
         #endregion
 
-        #region Blood
-        Task<int> SaveBlood(BloodSaveParameters request);
-        Task<IEnumerable<BloodDetailsResponse>> GetBloodsList(BloodSearchParameters request);
-        Task<BloodDetailsResponse?> GetBloodDetailsById(long id);
-        Task<IEnumerable<BloodFailToImportValidationErrors>> ImportBloodsDetails(List<BloodImportSaveParameters> request);
-
-        Task<IEnumerable<SelectListResponse>> GetBloodForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetSubVendorForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetContactTypeForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetReferralForSelectList(CommonSelectListRequestModel parameters);
-        #endregion
 
         #region TileType
         Task<int> SaveTileType(TileTypeSaveParameters request);
@@ -161,28 +153,6 @@ namespace CasaAPI.Interfaces.Services
 
         #endregion
 
-        #region Role
-        Task<int> SaveRole(RoleSaveParameters request);
-        Task<IEnumerable<RoleDetailsResponse>> GetRoleList(RoleSearchParameters request);
-        Task<RoleDetailsResponse?> GetRoleDetailsById(long id);
-        Task<IEnumerable<RoleFailToImportValidationErrors>> ImportRoleDetails(List<RoleImportSaveParameters> request);
-        #endregion
-
-        #region ReportingHierarchy
-        Task<IEnumerable<SelectListResponse>> GetRoleHierarchyDetailsByRoleId(long roleId);
-        Task<int> SaveReportingHierarchy(ReportingHierarchySaveParameters request);
-        Task<IEnumerable<ReportingHierarchyDetailsResponse>> GetReportingHierarchyList(ReportingHierarchySearchParameters request);
-        Task<ReportingHierarchyDetailsResponse?> GetReportingHierarchyDetailsById(long id);
-        Task<IEnumerable<ReportingHierarchyFailToImportValidationErrors>> ImportReportingHierarchyDetails(List<ReportingHierarchyImportSaveParameters> request);
-        #endregion
-
-        #region Employee
-        Task<int> SaveEmployee(EmployeeSaveParameters request);
-        Task<IEnumerable<EmployeeDetailsResponse>> GetEmployeeList(EmployeeSearchParameters request);
-        Task<EmployeeDetailsResponse?> GetEmployeeDetailsById(long id);
-        Task<IEnumerable<EmployeeDetailsResponse>> GetEmployeeListByRoleId(long roleId);
-        #endregion
-
         #region Cutting Size
         Task<int> SaveCuttingSize(CuttingSizeSaveParameters request);
         Task<IEnumerable<CuttingSizeDetailsResponse>> GetCuttingSizesList(CuttingSizeSearchParameters request);
@@ -211,6 +181,80 @@ namespace CasaAPI.Interfaces.Services
 
         Task<IEnumerable<EmployeePermissionDetailsResponse>> GetEmployeePermissionDetailsByEmployeeId(long employeeId);
         Task<IEnumerable<EmployeePermissionDetailsResponse>> GetEmployeePermissionList(EmployeePermissionSearchParameters request);
+        #endregion
+
+        #region sales
+        Task<IEnumerable<Users>> GetUsersList();
+
+        #region Product API Service Interface
+        Task<IEnumerable<ProductResponse>> GetProductsList(SearchProductRequest request);
+        Task<int> SaveProduct(ProductRequest productRequest);
+        Task<ProductResponse?> GetProductDetailsById(long id);
+        Task<IEnumerable<ProductDataValidationErrors>> ImportProductsDetails(List<ImportedProductDetails> request);
+
+        #endregion Product API Service Interface
+
+        #region Design Type API Service Interface
+        Task<IEnumerable<DesignTypeResponse>> GetDesignTypesList(SearchDesignTypeRequest request);
+
+        Task<int> SaveDesignType(DesignTypeRequest designTypeRequest);
+        Task<DesignTypeResponse?> GetDesignTypeDetailsById(long id);
+        Task<IEnumerable<DesignTypeDataValidationErrors>> ImportDesignTypesDetails(List<ImportedDesignTypeDetails> request);
+
+        #endregion Design Type API Service Interface
+
+        #region Series API Service Interface
+        Task<IEnumerable<SeriesResponse>> GetSeriesList(SearchSeriesRequest request);
+        Task<int> SaveSeries(SeriesRequest seriesRequest);
+        Task<SeriesResponse?> GetSeriesDetailsById(long id);
+        Task<IEnumerable<SeriesDataValidationErrors>> ImportSeriesDetails(List<ImportedSeriesDetails> request);
+
+        #endregion Design Type API Service Interface
+
+        #region Base Design API Service Interface
+        Task<IEnumerable<BaseDesignResponse>> GetBaseDesignsList(SearchBaseDesignRequest request);
+        Task<int> SaveBaseDesign(BaseDesignRequest seriesRequest);
+        Task<BaseDesignResponse?> GetBaseDesignDetailsById(long id);
+        Task<IEnumerable<BaseDesignDataValidationErrors>> ImportBaseDesignsDetails(List<ImportedBaseDesignDetails> request);
+
+        #endregion Base Design API Service Interface
+
+        #region Customer Type API Service Interface
+        Task<IEnumerable<CustomerTypeResponse>> GetCustomerTypesList(SearchCustomerTypeRequest request);
+        Task<int> SaveCustomerType(CustomerTypeRequest customerTypeRequest);
+        Task<CustomerTypeResponse?> GetCustomerTypeDetailsById(long id);
+        Task<IEnumerable<CustomerTypeDataValidationErrors>> ImportCustomerTypesDetails(List<ImportedCustomerTypeDetails> request);
+
+        #endregion Customer Type API Service Interface
+
+        #region Leave Type API Service Interface
+        Task<IEnumerable<LeaveTypeResponse>> GetLeaveTypesList(SearchLeaveTypeRequest request);
+        Task<int> SaveLeaveType(LeaveTypeRequest leaveTypeRequest);
+        Task<LeaveTypeResponse?> GetLeaveTypeDetailsById(long id);
+        Task<IEnumerable<LeaveTypeDataValidationErrors>> ImportLeaveTypesDetails(List<ImportedLeaveTypeDetails> request);
+
+        #endregion Leave Type API Service Interface
+
+        #region Master Data
+        Task<IEnumerable<SelectListResponse>> GetCustomerTypesForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetCustomersForSelectList(CustomerSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetStatusMasterForSelectList(string statusCode);
+        Task<IEnumerable<SelectListResponse>> GetReportingToEmployeeForSelectList(ReportingToEmpListParameters parameters);
+        Task<IEnumerable<CustomerContactsListForFields>> GetCustomerContactsListForFields(CustomerContactsListRequest parameters);
+        #endregion
+
+        #region Blood Group Master
+        Task<int> SaveBloodGroupDetails(BloodGroupRequestModel parameters);
+        Task<IEnumerable<BloodGroupResponseModel>> GetBloodGroupList(SearchBloodGroupRequestModel parameters);
+        Task<BloodGroupResponseModel?> GetBloodGroupDetails(long id);
+        #endregion
+
+        #region Collection Master
+        Task<int> SaveCollectionMasterDetails(SaveCollectionRequestModel parameters);
+        Task<IEnumerable<CollectionResponseModel>> GetCollectionMasterList(SearchCollectionRequestModel parameters);
+        Task<CollectionResponseModel?> GetCollectionMasterDetails(int id);
+        Task<IEnumerable<CollectionDataValidationErrors>> ImportCollection(List<ImportedCollection> parameters);
+        #endregion
         #endregion
     }
 }

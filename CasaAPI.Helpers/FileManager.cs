@@ -11,6 +11,37 @@ namespace CasaAPI.Helpers
         byte[]? GetFormatFileFromPath(string fileName);
         string UploadProductDesignFile(IFormFile file);
         byte[]? GetProductDesignFiles(string fileName);
+        string? GetProfilePictureFile(string fileName);
+
+
+        string UploadEmpDocuments(IFormFile file);
+        byte[]? GetEmpDocuments(string fileName);
+        string? GetEmpDocumentsFile(string fileName);
+
+
+        string UploadCustomerDocuments(IFormFile file);
+        byte[]? GetCustomerDocuments(string fileName);
+        string? GetCustomerDocumentsFile(string fileName);
+
+
+        string UploadVisitDocuments(IFormFile file);
+        byte[]? GetVisitDocuments(string fileName);
+        string? GetVisitDocumentsFile(string fileName);
+
+        string UploadDesignFiles(IFormFile file);
+        byte[]? GetDesignFiles(string fileName);
+        string? GetDesignDcoumentFile(string fileName);
+
+        string UploadCatalogDocuments(IFormFile file);
+        byte[]? GetCatalogDocuments(string fileName);
+        string? GetCatalogDocumentsFile(string fileName);
+
+        string UploadCatalogRelatedDocuments(IFormFile file);
+        byte[]? GetCatalogRelatedDocuments(string fileName);
+
+        string UploadProjectDocuments(IFormFile file);
+        byte[]? GetProjectDocuments(string fileName);
+        string? GetProjectDocumentsFile(string fileName);
     }
 
     public class FileManager : IFileManager
@@ -57,6 +88,32 @@ namespace CasaAPI.Helpers
             return fileName;
         }
 
+        public string UploadEmpDocuments(IFormFile file)
+        {
+            string folderPath = $"{_environment.ContentRootPath}\\Uploads\\Documents\\";
+            string fileName = SaveFileToPath(folderPath, file);
+            return fileName;
+        }
+
+        public string? GetEmpDocumentsFile(string fileName)
+        {
+            string fileWithFullPath = "\\Uploads\\Documents\\" + fileName;
+            return fileWithFullPath;
+        }
+
+        public byte[]? GetEmpDocuments(string fileName)
+        {
+            byte[]? result = null;
+            string fileWithFullPath = $"{_environment.ContentRootPath}\\Uploads\\Documents\\{fileName}";
+
+            if (File.Exists(fileWithFullPath))
+            {
+                result = File.ReadAllBytes(fileWithFullPath);
+            }
+
+            return result;
+        }
+
         public byte[]? GetProfilePicture(string imageFileName)
         {
             byte[]? result = null;
@@ -98,6 +155,162 @@ namespace CasaAPI.Helpers
             }
 
             return result;
+        }
+
+        public string? GetProfilePictureFile(string fileName)
+        {
+            string fileWithFullPath = "\\Uploads\\ProfilePicture\\" + fileName;
+            return fileWithFullPath;
+        }
+
+
+        public string UploadCustomerDocuments(IFormFile file)
+        {
+            string folderPath = $"{_environment.ContentRootPath}\\Uploads\\Customers\\";
+            string fileName = SaveFileToPath(folderPath, file);
+            return fileName;
+        }
+
+        public byte[]? GetCustomerDocuments(string fileName)
+        {
+            byte[]? result = null;
+            string fileWithFullPath = $"{_environment.ContentRootPath}\\Uploads\\Customers\\{fileName}";
+
+            if (File.Exists(fileWithFullPath))
+            {
+                result = File.ReadAllBytes(fileWithFullPath);
+            }
+
+            return result;
+        }
+
+        public string? GetCustomerDocumentsFile(string fileName)
+        {
+            string fileWithFullPath = "\\Uploads\\Customers\\" + fileName;
+            return fileWithFullPath;
+        }
+
+
+        public string UploadVisitDocuments(IFormFile file)
+        {
+            string folderPath = $"{_environment.ContentRootPath}\\Uploads\\VisitPhotos\\";
+            string fileName = SaveFileToPath(folderPath, file);
+            return fileName;
+        }
+
+        public byte[]? GetVisitDocuments(string fileName)
+        {
+            byte[]? result = null;
+            string fileWithFullPath = $"{_environment.ContentRootPath}\\Uploads\\VisitPhotos\\{fileName}";
+
+            if (File.Exists(fileWithFullPath))
+            {
+                result = File.ReadAllBytes(fileWithFullPath);
+            }
+
+            return result;
+        }
+        public string? GetVisitDocumentsFile(string fileName)
+        {
+            string fileWithFullPath = "\\Uploads\\VisitPhotos\\" + fileName;
+            return fileWithFullPath;
+        }
+
+        public string UploadDesignFiles(IFormFile file)
+        {
+            string folderPath = $"{_environment.ContentRootPath}\\Uploads\\DesignFiles\\";
+            string fileName = SaveFileToPath(folderPath, file);
+            return fileName;
+        }
+
+        public byte[]? GetDesignFiles(string fileName)
+        {
+            byte[]? result = null;
+            string fileWithFullPath = $"{_environment.ContentRootPath}\\Uploads\\DesignFiles\\{fileName}";
+
+            if (File.Exists(fileWithFullPath))
+            {
+                result = File.ReadAllBytes(fileWithFullPath);
+            }
+
+            return result;
+        }
+
+        public string? GetDesignDcoumentFile(string fileName)
+        {
+            string fileWithFullPath = "\\Uploads\\DesignFiles\\" + fileName;
+            return fileWithFullPath;
+        }
+
+        public string UploadCatalogDocuments(IFormFile file)
+        {
+            string folderPath = $"{_environment.ContentRootPath}\\Uploads\\Catalog\\";
+            string fileName = SaveFileToPath(folderPath, file);
+            return fileName;
+        }
+
+        public byte[]? GetCatalogDocuments(string fileName)
+        {
+            byte[]? result = null;
+            string fileWithFullPath = $"{_environment.ContentRootPath}\\Uploads\\Catalog\\{fileName}";
+
+            if (File.Exists(fileWithFullPath))
+            {
+                result = File.ReadAllBytes(fileWithFullPath);
+            }
+
+            return result;
+        }
+
+        public string? GetCatalogDocumentsFile(string fileName)
+        {
+            string fileWithFullPath = "\\Uploads\\Catalog\\" + fileName;
+            return fileWithFullPath;
+        }
+
+        public string UploadCatalogRelatedDocuments(IFormFile file)
+        {
+            string folderPath = $"{_environment.ContentRootPath}\\Uploads\\CatalogRelated\\";
+            string fileName = SaveFileToPath(folderPath, file);
+            return fileName;
+        }
+
+        public byte[]? GetCatalogRelatedDocuments(string fileName)
+        {
+            byte[]? result = null;
+            string fileWithFullPath = $"{_environment.ContentRootPath}\\Uploads\\CatalogRelated\\{fileName}";
+
+            if (File.Exists(fileWithFullPath))
+            {
+                result = File.ReadAllBytes(fileWithFullPath);
+            }
+
+            return result;
+        }
+
+        public string UploadProjectDocuments(IFormFile file)
+        {
+            string folderPath = $"{_environment.ContentRootPath}\\Uploads\\Project\\";
+            string fileName = SaveFileToPath(folderPath, file);
+            return fileName;
+        }
+
+        public byte[]? GetProjectDocuments(string fileName)
+        {
+            byte[]? result = null;
+            string fileWithFullPath = $"{_environment.ContentRootPath}\\Uploads\\Project\\{fileName}";
+
+            if (File.Exists(fileWithFullPath))
+            {
+                result = File.ReadAllBytes(fileWithFullPath);
+            }
+
+            return result;
+        }
+        public string? GetProjectDocumentsFile(string fileName)
+        {
+            string fileWithFullPath = "\\Uploads\\Project\\" + fileName;
+            return fileWithFullPath;
         }
 
         /*

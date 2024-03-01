@@ -73,6 +73,7 @@
         public const string PhoneNumberRegExp_Msg = "Phone Number value is invalid";
         public const int PhoneNumber_MaxLength = 10;
         public const string PhoneNumber_MaxLength_Msg = "More than 10 characters are not allowed for Phone Number";
+        public const string LandlineNumber_MaxLength_Msg = "More than 10 characters are not allowed for Landline Number";
 
         public const string GSTNumberRequired_Msg = @"GST Number is required";
         public const string GSTNumberRegExp = @"^[0-9a-zA-Z]+$";
@@ -387,5 +388,57 @@
         public const int TDSNatur_MaxLength = 100;
         public const string TDSNatur_MaxLength_Msg = "More than 100 characters are not allowed for  TDS Natur";
 
+        #region sales constant
+
+        public const string RefPartyNameRequired_Msg = @"Ref. Party Name is required";
+        public const string RefPartyNameRegExp_Msg = "Ref. Party Name value is invalid";
+        public const int RefPartyName_MaxLength = 100;
+        public const string RefPartyName_MaxLength_Msg = "More than 100 characters are not allowed for Ref. Party Name";
+
+        public const int ContactName_MaxLength = 50;
+        public const string ContactName_MaxLength_Msg = "More than 50 characters are not allowed for Contact Name";
+
+        public const string LandlineNumberRegExp_Msg = "Landline Number value is invalid";
+
+
+        public const string LeaveId_Required_Msg = @"Leave ID is required";
+        public const string LeaveStatus_Required_Msg = @"Leave Status is required";
+        public const int LeaveReason_MaxLength = 100;
+        public const string LeaveReason_MaxLength_Msg = "More than 100 characters are not allowed for Leave Reason";
+
+        public const string ImageOrPdfFileRegExp = @"^[a-zA-Z0-9\s_\\.:)(-]+(.png|.jpg|.jpeg|.pdf)$";
+        public const string ImageOrPdfFileRegExp_Msg = "File name is not valid or file extension is other than png or jpg or jpeg or pdf";
+
+        public const string CustomerNameRequired_Msg = @"Customer Name is required";
+
+        public const string VisitAddress_Required_Msg = @"Visit Address value is required";
+        public const string VisitAddress_MaxLength_Msg = "More than 100 characters are not allowed for Visit Address";
+
+        public const string CollectionNameId_Required_Msg = "Collection Name Id value is required";
+        public const string CollectionNameId_RegExp_Msg = "Collection Name Id value is invalid";
+        public const string CollectionNameId_MaxLength_Msg = "More than 100 characters are not allowed for Collection Name Id";
+
+        public const int MobileUniqueId_MaxLength = 250;
+        public const string MobileUniqueId_MaxLength_Msg = "More than 250 characters are not allowed for Mobile Unique Id";
+
+        public const string Latitude_Required_Msg = "Latitude value is required";
+        public const int Latitude_MaxLength = 15;
+        public const string Latitude_MaxLength_Msg = "More than 15 characters are not allowed for Latitude";
+
+        public const string Longitude_Required_Msg = "Longitude value is required";
+        public const int Longitude_MaxLength = 15;
+        public const string Longitude_MaxLength_Msg = "More than 15 characters are not allowed for Longitude";
+
+        public const string LaunchDateRequied_Msg = @"Launch Date is required";
+        public const string CollectionNameRequied_Msg = @"Collection Name is required";
+
+        public const string CatelogRequied_Msg = @"Catelog is required";
+        public const string CategoryRequied_Msg = @"Category is required";
+        public const string DesignRequied_Msg = @"Design Name is required";
+        public const string SizeRequied_Msg = @"Size is required";
+        public const string SeriesRequied_Msg = @"Series is required";
+        public const string ProjectNameRequied_Msg = @"Project Name is required";
+
+        #endregion
     }
 }
