@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "/COCK3h6N3YY9IBQ3gLxK1vXuIuM48+QAML/kHC1lUMBDKi/ei0f+IeMwODn76FN1pOaKFqqViKKN6sdKvwR1A==",
+  "dgSpecHash": "++UKpCImcVHoEvsIW2u+MW+hCsdFCCYMvlGAl69CVGaiDcyCqFuh0H1dhQBkZBiEW83WTogb7NE/hv8ZZy+I4Q==",
   "success": true,
-  "projectFilePath": "F:\\Projects\\Sujay-Git\\Casa_Panel\\CasaAPI.Models\\CasaAPI.Models.csproj",
+  "projectFilePath": "G:\\Project\\Casa_Panel_API\\CasaAPI.Models\\CasaAPI.Models.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\sujay\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
-    "C:\\Users\\sujay\\.nuget\\packages\\microsoft.extensions.primitives\\2.2.0\\microsoft.extensions.primitives.2.2.0.nupkg.sha512",
-    "C:\\Users\\sujay\\.nuget\\packages\\system.memory\\4.5.1\\system.memory.4.5.1.nupkg.sha512",
-    "C:\\Users\\sujay\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.1\\system.runtime.compilerservices.unsafe.4.5.1.nupkg.sha512"
+    "C:\\Users\\NAZBULLAH\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
+    "C:\\Users\\NAZBULLAH\\.nuget\\packages\\microsoft.extensions.primitives\\2.2.0\\microsoft.extensions.primitives.2.2.0.nupkg.sha512",
+    "C:\\Users\\NAZBULLAH\\.nuget\\packages\\system.memory\\4.5.1\\system.memory.4.5.1.nupkg.sha512",
+    "C:\\Users\\NAZBULLAH\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.1\\system.runtime.compilerservices.unsafe.4.5.1.nupkg.sha512"
   ],
   "logs": []
 }

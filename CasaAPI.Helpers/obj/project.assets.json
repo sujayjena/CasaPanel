@@ -8228,20 +8228,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\sujay\\.nuget\\packages\\": {}
+    "C:\\Users\\NAZBULLAH\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Projects\\Sujay-Git\\Casa_Panel\\CasaAPI.Helpers\\CasaAPI.Helpers.csproj",
+      "projectUniqueName": "G:\\Project\\Casa_Panel_API\\CasaAPI.Helpers\\CasaAPI.Helpers.csproj",
       "projectName": "CasaAPI.Helpers",
-      "projectPath": "F:\\Projects\\Sujay-Git\\Casa_Panel\\CasaAPI.Helpers\\CasaAPI.Helpers.csproj",
-      "packagesPath": "C:\\Users\\sujay\\.nuget\\packages\\",
-      "outputPath": "F:\\Projects\\Sujay-Git\\Casa_Panel\\CasaAPI.Helpers\\obj\\",
+      "projectPath": "G:\\Project\\Casa_Panel_API\\CasaAPI.Helpers\\CasaAPI.Helpers.csproj",
+      "packagesPath": "C:\\Users\\NAZBULLAH\\.nuget\\packages\\",
+      "outputPath": "G:\\Project\\Casa_Panel_API\\CasaAPI.Helpers\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
-        "C:\\Users\\sujay\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\NAZBULLAH\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -8254,8 +8259,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "F:\\Projects\\Sujay-Git\\Casa_Panel\\CasaAPI.Models\\CasaAPI.Models.csproj": {
-              "projectPath": "F:\\Projects\\Sujay-Git\\Casa_Panel\\CasaAPI.Models\\CasaAPI.Models.csproj"
+            "G:\\Project\\Casa_Panel_API\\CasaAPI.Models\\CasaAPI.Models.csproj": {
+              "projectPath": "G:\\Project\\Casa_Panel_API\\CasaAPI.Models\\CasaAPI.Models.csproj"
             }
           }
         }
@@ -8299,7 +8304,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
       }
     }
   }
