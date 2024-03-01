@@ -22,3 +22,15 @@ G:\Project\Casa_Panel_API\CasaAPI.Models\obj\Debug\net7.0\CasaAPI.Models.dll
 G:\Project\Casa_Panel_API\CasaAPI.Models\obj\Debug\net7.0\refint\CasaAPI.Models.dll
 G:\Project\Casa_Panel_API\CasaAPI.Models\obj\Debug\net7.0\CasaAPI.Models.pdb
 G:\Project\Casa_Panel_API\CasaAPI.Models\obj\Debug\net7.0\ref\CasaAPI.Models.dll
+F:\Projects\Sujay-Git\Casa_Panel\CasaAPI.Models\bin\Debug\net7.0\CasaAPI.Models.deps.json
+F:\Projects\Sujay-Git\Casa_Panel\CasaAPI.Models\bin\Debug\net7.0\CasaAPI.Models.dll
+F:\Projects\Sujay-Git\Casa_Panel\CasaAPI.Models\bin\Debug\net7.0\CasaAPI.Models.pdb
+F:\Projects\Sujay-Git\Casa_Panel\CasaAPI.Models\obj\Debug\net7.0\CasaAPI.Models.csproj.AssemblyReference.cache
+F:\Projects\Sujay-Git\Casa_Panel\CasaAPI.Models\obj\Debug\net7.0\CasaAPI.Models.GeneratedMSBuildEditorConfig.editorconfig
+F:\Projects\Sujay-Git\Casa_Panel\CasaAPI.Models\obj\Debug\net7.0\CasaAPI.Models.AssemblyInfoInputs.cache
+F:\Projects\Sujay-Git\Casa_Panel\CasaAPI.Models\obj\Debug\net7.0\CasaAPI.Models.AssemblyInfo.cs
+F:\Projects\Sujay-Git\Casa_Panel\CasaAPI.Models\obj\Debug\net7.0\CasaAPI.Models.csproj.CoreCompileInputs.cache
+F:\Projects\Sujay-Git\Casa_Panel\CasaAPI.Models\obj\Debug\net7.0\CasaAPI.Models.dll
+F:\Projects\Sujay-Git\Casa_Panel\CasaAPI.Models\obj\Debug\net7.0\refint\CasaAPI.Models.dll
+F:\Projects\Sujay-Git\Casa_Panel\CasaAPI.Models\obj\Debug\net7.0\CasaAPI.Models.pdb
+F:\Projects\Sujay-Git\Casa_Panel\CasaAPI.Models\obj\Debug\net7.0\ref\CasaAPI.Models.dll

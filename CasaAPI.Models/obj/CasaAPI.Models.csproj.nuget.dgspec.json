@@ -1,25 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "G:\\Project\\Casa_Panel_API\\CasaAPI.Models\\CasaAPI.Models.csproj": {}
+    "F:\\Projects\\Sujay-Git\\Casa_Panel\\CasaAPI.Models\\CasaAPI.Models.csproj": {}
   },
   "projects": {
-    "G:\\Project\\Casa_Panel_API\\CasaAPI.Models\\CasaAPI.Models.csproj": {
+    "F:\\Projects\\Sujay-Git\\Casa_Panel\\CasaAPI.Models\\CasaAPI.Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\Project\\Casa_Panel_API\\CasaAPI.Models\\CasaAPI.Models.csproj",
+        "projectUniqueName": "F:\\Projects\\Sujay-Git\\Casa_Panel\\CasaAPI.Models\\CasaAPI.Models.csproj",
         "projectName": "CasaAPI.Models",
-        "projectPath": "G:\\Project\\Casa_Panel_API\\CasaAPI.Models\\CasaAPI.Models.csproj",
-        "packagesPath": "C:\\Users\\NAZBULLAH\\.nuget\\packages\\",
-        "outputPath": "G:\\Project\\Casa_Panel_API\\CasaAPI.Models\\obj\\",
+        "projectPath": "F:\\Projects\\Sujay-Git\\Casa_Panel\\CasaAPI.Models\\CasaAPI.Models.csproj",
+        "packagesPath": "C:\\Users\\sujay\\.nuget\\packages\\",
+        "outputPath": "F:\\Projects\\Sujay-Git\\Casa_Panel\\CasaAPI.Models\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\NAZBULLAH\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\sujay\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -65,7 +61,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }

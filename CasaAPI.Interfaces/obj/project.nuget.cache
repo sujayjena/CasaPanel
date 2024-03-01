@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "E44an0HzvTRTKsQ+2uA4YcqCUFlC4RXB11BizxsN8l1vk6u17vWTBB8qO4MiiIpqkQn37cU6w3mGvKj10Dm+0g==",
+  "dgSpecHash": "waTqpPQOxQui+4cEt7NdI0GRZAG+yJBnkF0VBeeM6cHv15KaQzqtm0Sq9kKkTbLnQIs2Sqf2LNL/TAK2ZTR3Xg==",
   "success": true,
-  "projectFilePath": "G:\\Project\\Casa_Panel_API\\CasaAPI.Interfaces\\CasaAPI.Interfaces.csproj",
+  "projectFilePath": "F:\\Projects\\Sujay-Git\\Casa_Panel\\CasaAPI.Interfaces\\CasaAPI.Interfaces.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\NAZBULLAH\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
-    "C:\\Users\\NAZBULLAH\\.nuget\\packages\\microsoft.extensions.configuration\\7.0.0\\microsoft.extensions.configuration.7.0.0.nupkg.sha512",
-    "C:\\Users\\NAZBULLAH\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\7.0.0\\microsoft.extensions.configuration.abstractions.7.0.0.nupkg.sha512",
-    "C:\\Users\\NAZBULLAH\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512"
+    "C:\\Users\\sujay\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
+    "C:\\Users\\sujay\\.nuget\\packages\\microsoft.extensions.configuration\\7.0.0\\microsoft.extensions.configuration.7.0.0.nupkg.sha512",
+    "C:\\Users\\sujay\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\7.0.0\\microsoft.extensions.configuration.abstractions.7.0.0.nupkg.sha512",
+    "C:\\Users\\sujay\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512"
   ],
   "logs": []
 }
