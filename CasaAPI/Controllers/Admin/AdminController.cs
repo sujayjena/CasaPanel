@@ -261,6 +261,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> GetDesignTypeDetails(long id)
         {
             DesignTypeResponse? product;
@@ -281,6 +282,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> ImportDesignTypesData([FromQuery] ImportRequest request)
         {
             _response.IsSuccess = false;
@@ -348,6 +350,7 @@ namespace CasaAPI.Controllers.Admin
             return _response;
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         private byte[] GenerateInvalidDesignTypeDataFile(IEnumerable<DesignTypeDataValidationErrors> lstDesignTypesFailedToImport)
         {
             byte[] result;
@@ -401,6 +404,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> GetSeriesList(SearchSeriesRequest request)
         {
             IEnumerable<SeriesResponse> lstSeries = await _adminService.GetSeriesList(request);
@@ -411,6 +415,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> SaveSeries(SeriesRequest seriesRequest)
         {
             int result = await _adminService.SaveSeries(seriesRequest);
@@ -438,6 +443,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> GetSeriesDetails(long id)
         {
             SeriesResponse? series;
@@ -458,6 +464,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> ImportSeriesData([FromQuery] ImportRequest request)
         {
             _response.IsSuccess = false;
@@ -525,6 +532,7 @@ namespace CasaAPI.Controllers.Admin
             return _response;
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         private byte[] GenerateInvalidSeriesDataFile(IEnumerable<SeriesDataValidationErrors> lstSeriesFailedToImport)
         {
             byte[] result;
@@ -574,6 +582,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> ExportSeriesData()
         {
             _response.IsSuccess = false;
@@ -647,6 +656,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> GetBaseDesignsList(SearchBaseDesignRequest request)
         {
             IEnumerable<BaseDesignResponse> lstbaseDesigns = await _adminService.GetBaseDesignsList(request);
@@ -657,6 +667,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> SaveBaseDesign(BaseDesignRequest baseDesignRequest)
         {
             int result = await _adminService.SaveBaseDesign(baseDesignRequest);
@@ -684,6 +695,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> GetBaseDesignDetails(long id)
         {
             BaseDesignResponse? baseDesign;
@@ -701,8 +713,10 @@ namespace CasaAPI.Controllers.Admin
 
             return _response;
         }
+
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> ImportBaseDesignsData([FromQuery] ImportRequest request)
         {
             _response.IsSuccess = false;
@@ -770,6 +784,7 @@ namespace CasaAPI.Controllers.Admin
             return _response;
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         private byte[] GenerateInvalidBaseDesignDataFile(IEnumerable<BaseDesignDataValidationErrors> lstBaseDesignsFailedToImport)
         {
             byte[] result;
@@ -819,6 +834,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> ExportBaseDesignData()
         {
             _response.IsSuccess = false;
@@ -892,6 +908,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> GetCustomerTypesList(SearchCustomerTypeRequest request)
         {
             IEnumerable<CustomerTypeResponse> lstcustomTypes = await _adminService.GetCustomerTypesList(request);
@@ -902,6 +919,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> SaveCustomerType(CustomerTypeRequest customerTypeRequest)
         {
             int result = await _adminService.SaveCustomerType(customerTypeRequest);
@@ -929,6 +947,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> GetCustomerTypeDetails(long id)
         {
             CustomerTypeResponse? custType;
@@ -949,6 +968,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> ImportCustomerTypesData([FromQuery] ImportRequest request)
         {
             _response.IsSuccess = false;
@@ -1016,6 +1036,7 @@ namespace CasaAPI.Controllers.Admin
             return _response;
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         private byte[] GenerateInvalidCustomerTypeDataFile(IEnumerable<CustomerTypeDataValidationErrors> lstCustomerTypesFailedToImport)
         {
             byte[] result;
@@ -1065,6 +1086,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> ExportCustomerTypeData()
         {
             _response.IsSuccess = false;
@@ -1138,6 +1160,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> GetLeaveTypesList(SearchLeaveTypeRequest request)
         {
             IEnumerable<LeaveTypeResponse> lstleaveTypes = await _adminService.GetLeaveTypesList(request);
@@ -1148,6 +1171,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> SaveLeaveType(LeaveTypeRequest leaveTypeRequest)
         {
             int result = await _adminService.SaveLeaveType(leaveTypeRequest);
@@ -1175,6 +1199,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> GetLeaveTypeDetails(long id)
         {
             LeaveTypeResponse? leaveType;
@@ -1195,6 +1220,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> ImportLeaveTypesData([FromQuery] ImportRequest request)
         {
             _response.IsSuccess = false;
@@ -1262,6 +1288,7 @@ namespace CasaAPI.Controllers.Admin
             return _response;
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         private byte[] GenerateInvalidLeaveTypeDataFile(IEnumerable<LeaveTypeDataValidationErrors> lstLeaveTypesFailedToImport)
         {
             byte[] result;
@@ -1311,6 +1338,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> ExportLeaveTypeData()
         {
             _response.IsSuccess = false;
@@ -1384,6 +1412,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> SaveBloodGroupDetails(BloodGroupRequestModel parameters)
         {
             int result = await _adminService.SaveBloodGroupDetails(parameters);
@@ -1412,6 +1441,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> GetBloodGroupList(SearchBloodGroupRequestModel parameters)
         {
             IEnumerable<BloodGroupResponseModel> lstBloodGroups = await _adminService.GetBloodGroupList(parameters);
@@ -1422,6 +1452,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> GetBloodGroupDetails(int id)
         {
             BloodGroupResponseModel? bloodGroup;
@@ -1442,6 +1473,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ResponseModel> ExportBloodGroupData()
         {
             _response.IsSuccess = false;
