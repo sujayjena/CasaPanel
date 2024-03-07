@@ -3,7 +3,6 @@ using CasaAPI.Helpers;
 using CasaAPI.Models;
 using CasaAPI.Interfaces.Repositories;
 using Microsoft.Extensions.Configuration;
-using Models;
 
 namespace CasaAPI.Repositories
 {

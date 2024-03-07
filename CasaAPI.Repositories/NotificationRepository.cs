@@ -1,16 +1,15 @@
-﻿using CasaAPI.Helpers;
-using CasaAPI.Models;
-using CasaAPI.Repositories;
-using Dapper;
-using Interfaces.Repositories;
+﻿using Dapper;
+using CasaAPI.Helpers;
+using CasaAPI.Interfaces.Repositories;
 using Microsoft.Extensions.Configuration;
+using CasaAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositories
+namespace CasaAPI.Repositories
 {
     public class NotificationRepository : BaseRepository, INotificationRepository
     {

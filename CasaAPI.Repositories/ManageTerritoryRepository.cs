@@ -1,12 +1,10 @@
 ﻿using CasaAPI.Helpers;
 using CasaAPI.Models;
-using CasaAPI.Repositories;
 using Dapper;
-using Interfaces.Repositories;
+using CasaAPI.Interfaces.Repositories;
 using Microsoft.Extensions.Configuration;
-using Models;
 
-namespace Repositories
+namespace CasaAPI.Repositories
 {
     public class ManageTerritoryRepository : BaseRepository,IManageTerritoryRepository
     {

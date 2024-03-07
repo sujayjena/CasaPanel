@@ -1,0 +1,8 @@
+2024-03-05 13:49:10
+Error Message:
+Unable to resolve service for type 'CasaAPI.Interfaces.Services.ICustomerService' while attempting to activate 'CasaAPI.Controllers.CustomerController'.
+Full Exception Details:
+{"Error":"Unable to resolve service for type \u0027CasaAPI.Interfaces.Services.ICustomerService\u0027 while attempting to activate \u0027CasaAPI.Controllers.CustomerController\u0027.","Type":"InvalidOperationException"}
+
+*************************************************************************
+

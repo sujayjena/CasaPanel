@@ -39,6 +39,7 @@ namespace CasaAPI.Controllers.Admin
             _response = new ResponseModel();
             _response.IsSuccess = true;
         }
+
         #region Size
         [Route("[action]")]
         [HttpPost]
@@ -3489,6 +3490,7 @@ namespace CasaAPI.Controllers.Admin
         }
 
         #endregion
+
         #region CuttingSize
         [Route("[action]")]
         [HttpPost]

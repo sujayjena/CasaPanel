@@ -1,7 +1,6 @@
 ﻿using CasaAPI.Models;
-using Models;
 
-namespace Interfaces.Repositories
+namespace CasaAPI.Interfaces.Repositories
 {
     public interface IManageTerritoryRepository
     {

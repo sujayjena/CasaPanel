@@ -3,7 +3,7 @@ using CasaAPI.Models.Constants;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Models
+namespace CasaAPI.Models
 {
     public class AreaRequest
     {

@@ -1,14 +1,8 @@
 ﻿using CasaAPI.Models;
-using Interfaces.Repositories;
-using Interfaces.Services;
-using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CasaAPI.Interfaces.Repositories;
+using CasaAPI.Interfaces.Services;
 
-namespace Services
+namespace CasaAPI.Services
 {
     public class ManageTerritoryService : IManageTerritoryService
     {

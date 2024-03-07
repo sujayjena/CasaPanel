@@ -4,7 +4,6 @@ using CasaAPI.Models.Constants;
 using CasaAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using CasaAPI.CustomAttributes;
-using Interfaces.Services;
 
 namespace CasaAPI.Controllers
 {

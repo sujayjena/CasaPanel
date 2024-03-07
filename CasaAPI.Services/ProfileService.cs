@@ -2,7 +2,6 @@
 using CasaAPI.Interfaces.Services;
 using CasaAPI.Interfaces.Repositories;
 using CasaAPI.Helpers;
-using Models;
 
 namespace CasaAPI.Services
 {

@@ -1,7 +1,6 @@
 ﻿using CasaAPI.Models;
-using Models;
 
-namespace Interfaces.Services
+namespace CasaAPI.Interfaces.Services
 {
     public interface IJwtUtilsService
     {

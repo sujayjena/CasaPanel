@@ -1,0 +1,8 @@
+2024-03-06 14:51:53
+Error Message:
+Unable to resolve service for type 'CasaAPI.Interfaces.Services.ILeaveService' while attempting to activate 'CasaAPI.Controllers.ManageLeaveController'.
+Full Exception Details:
+{"Error":"Unable to resolve service for type \u0027CasaAPI.Interfaces.Services.ILeaveService\u0027 while attempting to activate \u0027CasaAPI.Controllers.ManageLeaveController\u0027.","Type":"InvalidOperationException"}
+
+*************************************************************************
+

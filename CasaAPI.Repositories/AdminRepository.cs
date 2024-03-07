@@ -17,7 +17,6 @@ using static CasaAPI.Models.TileTypeModel;
 using static CasaAPI.Models.TypeModel;
 using static CasaAPI.Models.WeekCloseModel;
 using static CasaAPI.Models.CuttingSizeModel;
-using Models;
 using Newtonsoft.Json.Linq;
 
 namespace CasaAPI.Repositories

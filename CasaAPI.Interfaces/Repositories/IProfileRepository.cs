@@ -1,5 +1,4 @@
 ﻿using CasaAPI.Models;
-using Models;
 
 namespace CasaAPI.Interfaces.Repositories
 {

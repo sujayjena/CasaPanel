@@ -1,13 +1,11 @@
 ﻿using CasaAPI.Helpers;
+using CasaAPI.Interfaces.Services;
 using CasaAPI.Models;
 using CasaAPI.Models.Constants;
 using CasaAPI.Models.Enums;
-using Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
-using Services;
 
 namespace CasaAPI.Controllers
 {

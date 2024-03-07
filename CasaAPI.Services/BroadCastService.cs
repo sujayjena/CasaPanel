@@ -1,7 +1,7 @@
 ﻿using CasaAPI.Helpers;
 using CasaAPI.Models;
-using Interfaces.Repositories;
-using Interfaces.Services;
+using CasaAPI.Interfaces.Repositories;
+using CasaAPI.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services
+namespace CasaAPI.Services
 {
     public class BroadCastService : IBroadCastService
     {

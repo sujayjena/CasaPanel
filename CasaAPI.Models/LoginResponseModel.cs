@@ -1,5 +1,4 @@
-﻿using Models;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace CasaAPI.Models
 {

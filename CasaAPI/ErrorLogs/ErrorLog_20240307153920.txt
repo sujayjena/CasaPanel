@@ -1,0 +1,8 @@
+2024-03-07 15:39:20
+Error Message:
+Unable to resolve service for type 'CasaAPI.Interfaces.Services.IVisitService' while attempting to activate 'CasaAPI.Controllers.VisitController'.
+Full Exception Details:
+{"Error":"Unable to resolve service for type \u0027CasaAPI.Interfaces.Services.IVisitService\u0027 while attempting to activate \u0027CasaAPI.Controllers.VisitController\u0027.","Type":"InvalidOperationException"}
+
+*************************************************************************
+

@@ -9,10 +9,6 @@ using CasaAPI.Models;
 using CasaAPI.Services;
 using CasaAPI.Interfaces.Repositories;
 using CasaAPI.Repositories;
-using Interfaces.Services;
-using Interfaces.Repositories;
-using Repositories;
-using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -102,6 +98,14 @@ var services = builder.Services;
     services.AddScoped<INotificationRepository, NotificationRepository>();
     services.AddScoped<IBroadCastService, BroadCastService>();
     services.AddScoped<IBroadCastRepository, BroadCastRepository>();
+    services.AddScoped<ICustomerService, CustomerService>();
+    services.AddScoped<ICustomerRepository, CustomerRepository>();
+    services.AddScoped<IManageDesignService, ManageDesignService>();
+    services.AddScoped<IManageDesignRepository, ManageDesignRepository>();
+    services.AddScoped<ILeaveService, LeaveService>();
+    services.AddScoped<ILeaveRepository, LeaveRepository>();
+    services.AddScoped<IVisitService, VisitService>();
+    services.AddScoped<IVisitRepository, VisitRepository>();
     #endregion
 }
 

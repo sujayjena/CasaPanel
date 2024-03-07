@@ -1,0 +1,8 @@
+2024-03-06 14:29:06
+Error Message:
+Unable to resolve service for type 'CasaAPI.Interfaces.Services.IManageDesignService' while attempting to activate 'CasaAPI.Controllers.ManageDesignController'.
+Full Exception Details:
+{"Error":"Unable to resolve service for type \u0027CasaAPI.Interfaces.Services.IManageDesignService\u0027 while attempting to activate \u0027CasaAPI.Controllers.ManageDesignController\u0027.","Type":"InvalidOperationException"}
+
+*************************************************************************
+

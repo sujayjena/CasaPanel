@@ -1,12 +1,11 @@
 ﻿using CasaAPI.Models;
-using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Interfaces.Repositories
+namespace CasaAPI.Interfaces.Repositories
 {
     public interface IBroadCastRepository
     {

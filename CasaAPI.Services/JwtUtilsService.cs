@@ -1,15 +1,13 @@
 ﻿using CasaAPI.Helpers;
 using CasaAPI.Interfaces.Services;
 using CasaAPI.Models;
-using Interfaces.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Services
+namespace CasaAPI.Services
 {
     public class JwtUtilsService : IJwtUtilsService
     {

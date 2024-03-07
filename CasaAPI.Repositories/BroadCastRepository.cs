@@ -2,10 +2,10 @@
 using CasaAPI.Models;
 using CasaAPI.Repositories;
 using Dapper;
-using Interfaces.Repositories;
+using CasaAPI.Interfaces.Repositories;
 using Microsoft.Extensions.Configuration;
 
-namespace Repositories
+namespace CasaAPI.Repositories
 {
     public class BroadCastRepository : BaseRepository, IBroadCastRepository
     {

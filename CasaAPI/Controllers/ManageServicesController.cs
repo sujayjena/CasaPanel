@@ -6,7 +6,6 @@ using CasaAPI.Models.Enums;
 using CasaAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 
 namespace CasaAPI.Controllers
 {
