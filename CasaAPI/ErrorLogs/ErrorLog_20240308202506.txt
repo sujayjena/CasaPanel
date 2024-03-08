@@ -1,0 +1,8 @@
+2024-03-08 20:25:06
+Error Message:
+Procedure or function 'SaveCuttingPlanDetails' expects parameter '@CollectionId', which was not supplied.
+Full Exception Details:
+{"Error":"Procedure or function \u0027SaveCuttingPlanDetails\u0027 expects parameter \u0027@CollectionId\u0027, which was not supplied.","Type":"SqlException"}
+
+*************************************************************************
+

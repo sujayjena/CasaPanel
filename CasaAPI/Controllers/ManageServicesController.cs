@@ -30,6 +30,7 @@ namespace CasaAPI.Controllers
         {
             IEnumerable<CuttingPlanResponse> lstCuttingPlan = await _cuttingPlanService.GetCuttingPlanList(request);
             _response.Data = lstCuttingPlan.ToList();
+            _response.Total = request.pagination.Total;
             return _response;
         }
 
@@ -88,6 +89,7 @@ namespace CasaAPI.Controllers
         {
             IEnumerable<QuoteTilesCuttingResponse> lstQuoteTilesCutting = await _cuttingPlanService.GetQuoteTilesCuttingList(request);
             _response.Data = lstQuoteTilesCutting.ToList();
+            _response.Total = request.pagination.Total;
             return _response;
         }
 

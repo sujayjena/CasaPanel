@@ -1,0 +1,8 @@
+2024-03-08 21:35:30
+Error Message:
+Procedure or function 'SaveQuoteTilesCuttingDetails' expects parameter '@IsDeleted', which was not supplied.
+Full Exception Details:
+{"Error":"Procedure or function \u0027SaveQuoteTilesCuttingDetails\u0027 expects parameter \u0027@IsDeleted\u0027, which was not supplied.","Type":"SqlException"}
+
+*************************************************************************
+

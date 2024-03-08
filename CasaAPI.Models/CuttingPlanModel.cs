@@ -12,24 +12,24 @@ namespace CasaAPI.Models
     public class CuttingPlanSaveParameters
     {
         public long Id { get; set; }
-       public string PlanId { get; set; }
+        public string PlanId { get; set; }
         public DateTime? CatDate { get; set; }
-        public long? Collection { get; set; }
-        public long? Design { get; set; }
-        public long? Types { get; set; }
-        public long? Finish { get; set; }
-        public long? Thickness { get; set; }
-    public decimal? FullPieceqty { get; set; }
-    public string FullSize { get; set; }
-public decimal? CutPieceqty { get; set; }
-    public string CutSize { get; set; }
-public decimal? TotalBox { get; set; }
-public string TotalPcsPerbox { get; set; }
-      public decimal? Pieces { get; set; }
-      public decimal? TotalPieces { get; set; }
-     public string Cuttingsize { get; set; }
-     public string CuttingPicesFrom1Tile { get; set; }
-    public decimal? WastageCutPieces  { get; set; }
+        public long? CollectionId { get; set; }
+        public long? DesignId { get; set; }
+        public long? TypeId { get; set; }
+        public long? FinishId { get; set; }
+        public long? ThicknessId { get; set; }
+        public decimal? FullPieceqty { get; set; }
+        public string FullSize { get; set; }
+        public decimal? CutPieceqty { get; set; }
+        public string CutSize { get; set; }
+        public decimal? TotalBox { get; set; }
+        public string TotalPcsPerbox { get; set; }
+        public decimal? Pieces { get; set; }
+        public decimal? TotalPieces { get; set; }
+        public string Cuttingsize { get; set; }
+        public string CuttingPicesFrom1Tile { get; set; }
+        public decimal? WastageCutPieces  { get; set; }
         public bool IsActive { get; set; }
 
     }
@@ -50,11 +50,11 @@ public string TotalPcsPerbox { get; set; }
         public long Id { get; set; }
         public string PlanId { get; set; }
         public DateTime CatDate { get; set; }
-        public long Collection { get; set; }
-        public long Design { get; set; }
-        public long Type { get; set; }
-        public long Finish { get; set; }
-        public long Thickness { get; set; }
+        public long CollectionId { get; set; }
+        public long DesignId { get; set; }
+        public long TypeId { get; set; }
+        public long FinishId { get; set; }
+        public long ThicknessId { get; set; }
 
         public string CollectionName { get; set; }
         public string DesignName { get; set; }
@@ -76,20 +76,21 @@ public string TotalPcsPerbox { get; set; }
         public bool IsActive { get; set; }
     }
     #endregion
+
     #region QuoteTilesCutting
 
     public class QuoteTilesCuttingSaveParameters
     {
         public long Id { get; set; }
-        public long? VendorType { get; set; }
-        public long? CuttingVendor { get; set; }
+        public long? VendorTypeId { get; set; }
+        public long? CuttingVendorId { get; set; }
         public decimal? CuttingRatePerPiece { get; set; }
         public long? TotalCuttingQty { get; set; }
         public decimal? SubAmount { get; set; }
         public decimal? FreightChargesCompany { get; set; }
         public decimal? FreightCharges { get; set; }
         public decimal? TotalAmount { get; set; }
-        public long? Reference { get; set; }
+        public long? ReferenceId { get; set; }
         public string? DivideByInch { get; set; }
         public string CuttingCompany { get; set; }
         public string Remark { get; set; }
@@ -109,15 +110,18 @@ public string TotalPcsPerbox { get; set; }
     public class QuoteTilesCuttingResponse : CreationDetails
     {
         public long Id { get; set; }
-        public long VendorType { get; set; }
-        public long CuttingVendor { get; set; }
+        public long VendorTypeId { get; set; }
+        public string VendorType { get; set; }
+        public long CuttingVendorId { get; set; }
+        public string VendorName { get; set; }
         public decimal CuttingRatePerPiece { get; set; }
         public long TotalCuttingQty { get; set; }
         public decimal SubAmount { get; set; }
         public decimal FreightChargesCompany { get; set; }
         public decimal FreightCharges { get; set; }
         public decimal TotalAmount { get; set; }
-        public long Reference { get; set; }
+        public long ReferenceId { get; set; }
+        public string ReferenceName { get; set; }
         public string DivideByInch { get; set; }
         public string CuttingCompany { get; set; }
         public string Remark { get; set; }

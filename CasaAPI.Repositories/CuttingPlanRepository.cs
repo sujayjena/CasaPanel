@@ -30,23 +30,23 @@ namespace CasaAPI.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
             queryParameters.Add("@PlanId", parameters.PlanId);
-      queryParameters.Add("@CatDate", parameters?.CatDate);
-      queryParameters.Add("@Collection", parameters?.Collection);
-      queryParameters.Add("@Design",parameters?.Design);
-      queryParameters.Add("@Type",parameters?.Types);
-      queryParameters.Add("@Finish",parameters?.Finish);
-      queryParameters.Add("@Thickness",parameters?.Thickness);
-      queryParameters.Add("@FullPieceqty",parameters?.FullPieceqty);
-      queryParameters.Add("@FullSize",parameters?.FullSize);
-      queryParameters.Add("@CutPieceqty",parameters?.CutPieceqty);
-      queryParameters.Add("@CutSize",parameters?.CutSize);
-      queryParameters.Add("@TotalBox",parameters?.TotalBox);
-      queryParameters.Add("@TotalPcsPerbox",parameters?.TotalPcsPerbox);
-      queryParameters.Add("@Pieces",parameters?.Pieces);
-      queryParameters.Add("@TotalPieces",parameters?.TotalPieces);
-      queryParameters.Add("@Cuttingsize",parameters?.Cuttingsize);
-      queryParameters.Add("@CuttingPicesFrom1Tile",parameters?.CuttingPicesFrom1Tile);
-      queryParameters.Add("@WastageCutPieces",parameters?.WastageCutPieces);
+            queryParameters.Add("@CatDate", parameters?.CatDate);
+            queryParameters.Add("@CollectionId", parameters?.CollectionId);
+            queryParameters.Add("@DesignId", parameters?.DesignId);
+            queryParameters.Add("@TypeId", parameters?.TypeId);
+            queryParameters.Add("@FinishId", parameters?.FinishId);
+            queryParameters.Add("@ThicknessId", parameters?.ThicknessId);
+            queryParameters.Add("@FullPieceqty",parameters?.FullPieceqty);
+            queryParameters.Add("@FullSize",parameters?.FullSize);
+            queryParameters.Add("@CutPieceqty",parameters?.CutPieceqty);
+            queryParameters.Add("@CutSize",parameters?.CutSize);
+            queryParameters.Add("@TotalBox",parameters?.TotalBox);
+            queryParameters.Add("@TotalPcsPerbox",parameters?.TotalPcsPerbox);
+            queryParameters.Add("@Pieces",parameters?.Pieces);
+            queryParameters.Add("@TotalPieces",parameters?.TotalPieces);
+            queryParameters.Add("@Cuttingsize",parameters?.Cuttingsize);
+            queryParameters.Add("@CuttingPicesFrom1Tile",parameters?.CuttingPicesFrom1Tile);
+            queryParameters.Add("@WastageCutPieces",parameters?.WastageCutPieces);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
             return await SaveByStoredProcedure<int>("SaveCuttingPlanDetails", queryParameters);
@@ -56,12 +56,17 @@ namespace CasaAPI.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@PageNo", parameters.pagination.PageNo);
             queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
             queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
             queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
             queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
 
-            return await ListByStoredProcedure<CuttingPlanResponse>("GetCuttingPlanList", queryParameters);
+            var result = await ListByStoredProcedure<CuttingPlanResponse>("GetCuttingPlanList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
         }
         public async Task<CuttingPlanResponse?> GetCuttingPlanDetailsById(long id)
         {
@@ -77,18 +82,18 @@ namespace CasaAPI.Repositories
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
-            queryParameters.Add("@VendorType", parameters.VendorType);
-queryParameters.Add("@CuttingVendor", parameters.CuttingVendor);
-queryParameters.Add("@CuttingRatePerPiece", parameters.CuttingRatePerPiece);
-queryParameters.Add("@TotalCuttingQty", parameters.TotalCuttingQty);
-queryParameters.Add("@SubAmount", parameters.SubAmount);
-queryParameters.Add("@FreightChargesCompany", parameters.FreightChargesCompany);
-queryParameters.Add("@FreightCharges", parameters.FreightCharges);
-queryParameters.Add("@TotalAmount", parameters.TotalAmount);
-queryParameters.Add("@Reference", parameters.Reference);
-queryParameters.Add("@DivideByInch", parameters.DivideByInch);
-queryParameters.Add("@CuttingCompany", parameters.CuttingCompany);
-queryParameters.Add("@Remark", parameters.Remark);
+            queryParameters.Add("@VendorTypeId", parameters.VendorTypeId);
+            queryParameters.Add("@CuttingVendorId", parameters.CuttingVendorId);
+            queryParameters.Add("@CuttingRatePerPiece", parameters.CuttingRatePerPiece);
+            queryParameters.Add("@TotalCuttingQty", parameters.TotalCuttingQty);
+            queryParameters.Add("@SubAmount", parameters.SubAmount);
+            queryParameters.Add("@FreightChargesCompany", parameters.FreightChargesCompany);
+            queryParameters.Add("@FreightCharges", parameters.FreightCharges);
+            queryParameters.Add("@TotalAmount", parameters.TotalAmount);
+            queryParameters.Add("@ReferenceId", parameters.ReferenceId);
+            queryParameters.Add("@DivideByInch", parameters.DivideByInch);
+            queryParameters.Add("@CuttingCompany", parameters.CuttingCompany);
+            queryParameters.Add("@Remark", parameters.Remark);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
             return await SaveByStoredProcedure<int>("SaveQuoteTilesCuttingDetails", queryParameters);
@@ -98,12 +103,17 @@ queryParameters.Add("@Remark", parameters.Remark);
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@PageNo", parameters.pagination.PageNo);
             queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
             queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
             queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
             queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
 
-            return await ListByStoredProcedure<QuoteTilesCuttingResponse>("GetQuoteTilesCuttingList", queryParameters);
+            var result = await ListByStoredProcedure<QuoteTilesCuttingResponse>("GetQuoteTilesCuttingList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
         }
         public async Task<QuoteTilesCuttingResponse?> GetQuoteTilesCuttingDetailsById(long id)
         {

@@ -1,0 +1,8 @@
+2024-03-08 20:35:27
+Error Message:
+Procedure or function 'GetCuttingPlanList' expects parameter '@Total', which was not supplied.
+Full Exception Details:
+{"Error":"Procedure or function \u0027GetCuttingPlanList\u0027 expects parameter \u0027@Total\u0027, which was not supplied.","Type":"SqlException"}
+
+*************************************************************************
+
