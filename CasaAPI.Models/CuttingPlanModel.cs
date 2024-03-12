@@ -135,16 +135,16 @@ namespace CasaAPI.Models
     {
         public long Id { get; set; }
 
-        public long? TypeOfPanel { get; set; }
+        public long? TypeOfPanelId { get; set; }
         public string MDFThickness { get; set; }
         public string MDFSize { get; set; }
-        public decimal? HSNCode { get; set; }
+        public string HSNCode { get; set; }
         public long? CuttingPlanId { get; set; }
-        public long? Cpllection { get; set; }
-        public long? Design { get; set; }
-        public long? Types { get; set; }
-        public long? Finish { get; set; }
-        public long? Thickness { get; set; }
+        public long? CollectionId { get; set; }
+        public long? DesignId { get; set; }
+        public long? TypeId { get; set; }
+        public long? FinishId { get; set; }
+        public long? ThicknessId { get; set; }
         public decimal? Fullpieceqty { get; set; }
         public string Size { get; set; }
         public string CutPieceQty { get; set; }
@@ -169,24 +169,32 @@ namespace CasaAPI.Models
     {
 
         public long Id { get; set; }
-        public long TypeOfPanel { get; set; }
+        public long TypeOfPanelId { get; set; }
+        public string PanelTypeName { get; set; }
+
         public string MDFThickness { get; set; }
         public string MDFSize { get; set; }
-        public decimal HSNCode { get; set; }
+        public string HSNCode { get; set; }
         public long CuttingPlanId { get; set; }
-        public long Cpllection { get; set; }
-        public long Design { get; set; }
-        public long Type { get; set; }
-        public long Finish { get; set; }
-        public long Thickness { get; set; }
+
+        public long CollectionId { get; set; }
+        public string CollectionName { get; set; }
+
+        public long DesignId { get; set; }
+        public string DesignName { get; set; }
+
+        public long TypeId { get; set; }
+        public string TypeName { get; set; }
+
+        public long FinishId { get; set; }
+        public string FinishName { get; set; }
+
+        public long ThicknessId { get; set; }
+        public string ThicknessName { get; set; }
+
         public decimal Fullpieceqty { get; set; }
         public string Size { get; set; }
-        public string CpllectionNmae { get; set; }
-        public string DesignNmae { get; set; }
-        public string TypeNmae { get; set; }
-        public string FinishNmae { get; set; }
-        public string ThicknessNmae { get; set; }
-        public string SizeNmae { get; set; }
+        
         public string CutPieceQty { get; set; }
         public string CutSize { get; set; }
         public string ImageUpload { get; set; }
@@ -198,13 +206,13 @@ namespace CasaAPI.Models
     public class QuotePanelDesignSaveParameters
     {
         public long Id { get; set; }
-        public string QuotePPId { get; set; }
-        public long? VendorType { get; set; }
-        public long? VendorCompany { get; set; }
-        public string RatePerPanel { get; set; }
-        public string RatePerSqFt { get; set; }
-        public string Totalquantity { get; set; }
-        public string FrieghtTransportCharges { get; set; }
+        public long? PanelPlanningId { get; set; }
+        public long? VendorTypeId { get; set; }
+        public long? ManageVenderId { get; set; }
+        public decimal RatePerPanel { get; set; }
+        public decimal RatePerSqFt { get; set; }
+        public decimal Totalquantity { get; set; }
+        public decimal FrieghtTransportCharges { get; set; }
         public bool? Packing { get; set; }
         public string Remark { get; set; }
         public string PanelMositure { get; set; }
@@ -226,13 +234,15 @@ namespace CasaAPI.Models
     {
 
         public long Id { get; set; }
-        public string QuotePPId { get; set; }
-        public long VendorType { get; set; }
-        public long VendorCompany { get; set; }
-        public string RatePerPanel { get; set; }
-        public string RatePerSqFt { get; set; }
-        public string Totalquantity { get; set; }
-        public string FrieghtTransportCharges { get; set; }
+        public long PanelPlanningId { get; set; }
+        public long VendorTypeId { get; set; }
+        public string VendorType { get; set; }
+        public long ManageVenderId { get; set; }
+        public string VendorName { get; set; }
+        public decimal RatePerPanel { get; set; }
+        public decimal RatePerSqFt { get; set; }
+        public decimal Totalquantity { get; set; }
+        public decimal FrieghtTransportCharges { get; set; }
         public bool Packing { get; set; }
         public string Remark { get; set; }
         public string PanelMositure { get; set; }

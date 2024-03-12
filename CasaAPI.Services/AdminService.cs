@@ -10,6 +10,7 @@ using static CasaAPI.Models.Collection_PanelModel;
 using static CasaAPI.Models.ContactTypeModel;
 using static CasaAPI.Models.CuttingSizeModel;
 using static CasaAPI.Models.GendorModel;
+using static CasaAPI.Models.PanelTypeModel;
 using static CasaAPI.Models.PunchModel;
 using static CasaAPI.Models.SurfaceModel;
 using static CasaAPI.Models.ThicknessModel;
@@ -122,6 +123,25 @@ namespace CasaAPI.Services
         public async Task<IEnumerable<TypeFailToImportValidationErrors>> ImportTypesDetails(List<TypeImportSaveParameters> request)
         {
             return await _adminRepository.ImportTypesDetails(request);
+        }
+        #endregion
+
+        #region Panel Type
+        public async Task<int> SavePanelType(PanelTypeSaveParameters request)
+        {
+            return await _adminRepository.SavePanelType(request);
+        }
+        public async Task<IEnumerable<PanelTypeDetailsResponse>> GetPanelTypesList(PanelTypeSearchParameters request)
+        {
+            return await _adminRepository.GetPanelTypesList(request);
+        }
+        public async Task<PanelTypeDetailsResponse?> GetPanelTypeDetailsById(long id)
+        {
+            return await _adminRepository.GetPanelTypeDetailsById(id);
+        }
+        public async Task<IEnumerable<PanelTypeFailToImportValidationErrors>> ImportPanelTypesDetails(List<PanelTypeImportSaveParameters> request)
+        {
+            return await _adminRepository.ImportPanelTypesDetails(request);
         }
         #endregion
 

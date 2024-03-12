@@ -1,0 +1,8 @@
+2024-03-11 14:20:50
+Error Message:
+Could not find stored procedure 'SaveImportPanelTypeDetails'.
+Full Exception Details:
+{"Error":"Could not find stored procedure \u0027SaveImportPanelTypeDetails\u0027.","Type":"SqlException"}
+
+*************************************************************************
+

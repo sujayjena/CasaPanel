@@ -220,6 +220,12 @@
         public const int TypeName_MaxLength = 100;
         public const string TypeName_MaxLength_Msg = "More than 100 characters are not allowed for Type Name";
 
+        public const string PanelTypeNameRequied_Msg = @"Panel Type Name is required";
+        public const string PanelTypeNameRegExp = @"^[a-zA-Z0-9-\s]+$";
+        public const string PanelTypeNameRegExp_Msg = "Please enter a valid value for Panel Type Name";
+        public const int PanelTypeName_MaxLength = 100;
+        public const string PanelTypeName_MaxLength_Msg = "More than 100 characters are not allowed for Panel Type Name";
+
         public const string PunchNameRequied_Msg = @"Punch Name is required";
         public const string PunchNameRegExp = @"^[a-zA-Z0-9-\s]+$";
         public const string PunchNameRegExp_Msg = "Please enter a valid value for Punch Name";

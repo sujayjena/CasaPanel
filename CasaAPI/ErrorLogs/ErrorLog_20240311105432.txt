@@ -1,0 +1,9 @@
+2024-03-11 10:54:32
+Error Message:
+Cannot insert the value NULL into column 'Id', table 'db_a749f3_casapanel.dbo.PanelPlanning'; column does not allow nulls. INSERT fails.
+The statement has been terminated.
+Full Exception Details:
+{"Error":"Cannot insert the value NULL into column \u0027Id\u0027, table \u0027db_a749f3_casapanel.dbo.PanelPlanning\u0027; column does not allow nulls. INSERT fails.\r\nThe statement has been terminated.","Type":"SqlException"}
+
+*************************************************************************
+

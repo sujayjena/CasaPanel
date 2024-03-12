@@ -42,6 +42,9 @@ namespace CasaAPI.Helpers
         string UploadProjectDocuments(IFormFile file);
         byte[]? GetProjectDocuments(string fileName);
         string? GetProjectDocumentsFile(string fileName);
+
+        string UploadPanelPlanningImage(IFormFile file);
+        string? GetPanelPlanningFile(string fileName);
     }
 
     public class FileManager : IFileManager
@@ -310,6 +313,18 @@ namespace CasaAPI.Helpers
         public string? GetProjectDocumentsFile(string fileName)
         {
             string fileWithFullPath = "\\Uploads\\Project\\" + fileName;
+            return fileWithFullPath;
+        }
+
+        public string UploadPanelPlanningImage(IFormFile file)
+        {
+            string folderPath = $"{_environment.ContentRootPath}\\Uploads\\PanelPlanning\\";
+            string fileName = SaveFileToPath(folderPath, file);
+            return fileName;
+        }
+        public string? GetPanelPlanningFile(string fileName)
+        {
+            string fileWithFullPath = "\\Uploads\\PanelPlanning\\" + fileName;
             return fileWithFullPath;
         }
 

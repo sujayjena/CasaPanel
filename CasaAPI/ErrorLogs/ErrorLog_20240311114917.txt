@@ -1,0 +1,8 @@
+2024-03-11 11:49:17
+Error Message:
+Error parsing column 4 (HSNCode=asd - String)
+Full Exception Details:
+{"Error":"Error parsing column 4 (HSNCode=asd - String)","Type":"DataException","InnerException":{"Error":"The input string \u0027asd\u0027 was not in a correct format.","Type":"FormatException"}}
+
+*************************************************************************
+

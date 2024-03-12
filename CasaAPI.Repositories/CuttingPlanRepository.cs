@@ -129,16 +129,16 @@ namespace CasaAPI.Repositories
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
-            queryParameters.Add("@PlanId", parameters.TypeOfPanel);
+            queryParameters.Add("@TypeOfPanelId", parameters.TypeOfPanelId);
             queryParameters.Add("@MDFThickness", parameters?.MDFThickness);
             queryParameters.Add("@MDFSize", parameters?.MDFSize);
             queryParameters.Add("@HSNCode", parameters?.HSNCode);
             queryParameters.Add("@CuttingPlanId", parameters?.CuttingPlanId);
-            queryParameters.Add("@Finish", parameters?.Finish);
-            queryParameters.Add("@Thickness", parameters?.Thickness);
-            queryParameters.Add("@Cpllection", parameters?.Cpllection);
-            queryParameters.Add("@Design", parameters?.Design);
-            queryParameters.Add("@Type", parameters?.Types);
+            queryParameters.Add("@FinishId", parameters?.FinishId);
+            queryParameters.Add("@ThicknessId", parameters?.ThicknessId);
+            queryParameters.Add("@CollectionId", parameters?.CollectionId);
+            queryParameters.Add("@DesignId", parameters?.DesignId);
+            queryParameters.Add("@TypeId", parameters?.TypeId);
             queryParameters.Add("@Fullpieceqty", parameters?.Fullpieceqty);
             queryParameters.Add("@Size", parameters?.Size);
             queryParameters.Add("@CutPieceQty", parameters?.CutPieceQty);
@@ -153,12 +153,17 @@ namespace CasaAPI.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@PageNo", parameters.pagination.PageNo);
             queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
             queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
             queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
             queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
 
-            return await ListByStoredProcedure<PanelPlanningResponse>("GetPanelPlanningList", queryParameters);
+            var result = await ListByStoredProcedure<PanelPlanningResponse>("GetPanelPlanningList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
         }
         public async Task<PanelPlanningResponse?> GetPanelPlanningDetailsById(long id)
         {
@@ -174,16 +179,16 @@ namespace CasaAPI.Repositories
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@Id", parameters.Id);
-            queryParameters.Add("@PlanId", parameters.QuotePPId);
-            queryParameters.Add("@CatDate", parameters?.RatePerPanel);
-            queryParameters.Add("@Collection", parameters?.Totalquantity);
-            queryParameters.Add("@Design", parameters?.FrieghtTransportCharges);
-            queryParameters.Add("@Type", parameters?.PanelMositure);
-            queryParameters.Add("@Finish", parameters?.VendorType);
-            queryParameters.Add("@Thickness", parameters?.VendorCompany);
-            queryParameters.Add("@FullPieceqty", parameters?.Remark);
-            queryParameters.Add("@FullSize", parameters?.Packing);
-            queryParameters.Add("@CutPieceqty", parameters?.RatePerSqFt);
+            queryParameters.Add("@PanelPlanningId", parameters.PanelPlanningId);
+            queryParameters.Add("@VendorTypeId", parameters?.VendorTypeId);
+            queryParameters.Add("@ManageVenderId", parameters?.ManageVenderId);
+            queryParameters.Add("@RatePerPanel", parameters?.RatePerPanel);
+            queryParameters.Add("@RatePerSqFt", parameters?.RatePerSqFt);
+            queryParameters.Add("@Totalquantity", parameters?.Totalquantity);
+            queryParameters.Add("@FrieghtTransportCharges", parameters?.FrieghtTransportCharges);
+            queryParameters.Add("@Packing", parameters?.Packing);
+            queryParameters.Add("@Remark", parameters?.Remark);
+            queryParameters.Add("@PanelMositure", parameters?.PanelMositure);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
             return await SaveByStoredProcedure<int>("SaveQuotePanelDesignDetails", queryParameters);
@@ -193,12 +198,17 @@ namespace CasaAPI.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@PageNo", parameters.pagination.PageNo);
             queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
             queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
             queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
             queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
 
-            return await ListByStoredProcedure<QuotePanelDesignResponse>("GetQuotePanelDesignList", queryParameters);
+            var result = await ListByStoredProcedure<QuotePanelDesignResponse>("GetQuotePanelDesignList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
         }
         public async Task<QuotePanelDesignResponse?> GetQuotePanelDesignDetailsById(long id)
         {

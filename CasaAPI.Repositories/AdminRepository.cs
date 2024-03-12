@@ -15,6 +15,7 @@ using static CasaAPI.Models.ThicknessModel;
 using static CasaAPI.Models.TileSizeModel;
 using static CasaAPI.Models.TileTypeModel;
 using static CasaAPI.Models.TypeModel;
+using static CasaAPI.Models.PanelTypeModel;
 using static CasaAPI.Models.WeekCloseModel;
 using static CasaAPI.Models.CuttingSizeModel;
 using Newtonsoft.Json.Linq;
@@ -222,6 +223,45 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@XmlTypeData", xmlTypeData);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
             return await ListByStoredProcedure<TypeFailToImportValidationErrors>("SaveImportTypeDetails", queryParameters);
+        }
+        #endregion
+
+        #region Panel Type
+        public async Task<int> SavePanelType(PanelTypeSaveParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PanelTypeId", parameters.PanelTypeId);
+            queryParameters.Add("@PanelTypeName", parameters.PanelTypeName.SanitizeValue().ToUpper());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SavePanelTypeDetails", queryParameters);
+        }
+        public async Task<IEnumerable<PanelTypeDetailsResponse>> GetPanelTypesList(PanelTypeSearchParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+
+            return await ListByStoredProcedure<PanelTypeDetailsResponse>("GetPanelTypesList", queryParameters);
+        }
+        public async Task<PanelTypeDetailsResponse?> GetPanelTypeDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+
+            return (await ListByStoredProcedure<PanelTypeDetailsResponse>("GetPanelTypeDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<PanelTypeFailToImportValidationErrors>> ImportPanelTypesDetails(List<PanelTypeImportSaveParameters> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlPanelTypeData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlPanelTypeData", xmlPanelTypeData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<PanelTypeFailToImportValidationErrors>("SaveImportPanelTypeDetails", queryParameters);
         }
         #endregion
 

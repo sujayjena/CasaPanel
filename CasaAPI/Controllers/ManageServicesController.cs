@@ -148,6 +148,7 @@ namespace CasaAPI.Controllers
         {
             IEnumerable<PanelPlanningResponse> lstPanelPlanning = await _cuttingPlanService.GetPanelPlanningList(request);
             _response.Data = lstPanelPlanning.ToList();
+            _response.Total = request.pagination.Total;
             return _response;
         }
 
@@ -157,7 +158,7 @@ namespace CasaAPI.Controllers
         {
             if (panelPlanningRequest.ImageUploadFile?.Length > 0)
             {
-                panelPlanningRequest.ImageUpload = _fileManager.UploadProfilePicture(panelPlanningRequest.ImageUploadFile);
+                panelPlanningRequest.ImageUpload = _fileManager.UploadPanelPlanningImage(panelPlanningRequest.ImageUploadFile);
             }
             int result = await _cuttingPlanService.SavePanelPlanning(panelPlanningRequest);
             _response.IsSuccess = false;
@@ -210,6 +211,7 @@ namespace CasaAPI.Controllers
         {
             IEnumerable<QuotePanelDesignResponse> lstQuotePanelDesign = await _cuttingPlanService.GetQuotePanelDesignList(request);
             _response.Data = lstQuotePanelDesign.ToList();
+            _response.Total = request.pagination.Total;
             return _response;
         }
 

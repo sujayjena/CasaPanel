@@ -135,15 +135,7 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@MobileNumber", parameters.MobileNumber.SanitizeValue());
             queryParameters.Add("@RoleId", parameters.RoleId);
             queryParameters.Add("@ReportingTo", parameters.ReportingTo);
-            queryParameters.Add("@Address", parameters.Address.SanitizeValue());
-            queryParameters.Add("@StateId", parameters.StateId);
-            queryParameters.Add("@RegionId", parameters.RegionId);
-            queryParameters.Add("@DistrictId", parameters.DistrictId);
-            queryParameters.Add("@AreaId", parameters.AreaId);
-            queryParameters.Add("@Pincode", parameters.Pincode.SanitizeValue());
-            //queryParameters.Add("@DateOfBirth", parameters.DateOfBirth.SanitizeValue());
             queryParameters.Add("@DateOfBirth", parameters.DateOfBirth);
-            //queryParameters.Add("@DateOfJoining", parameters.DateOfJoining.SanitizeValue());
             queryParameters.Add("@DateOfJoining", parameters.DateOfJoining);
             queryParameters.Add("@EmergencyContactNumber", parameters.EmergencyContactNumber.SanitizeValue());
             queryParameters.Add("@BloodGroupId", parameters.BloodGroupId.SanitizeValue());
@@ -167,6 +159,38 @@ namespace CasaAPI.Repositories
             }
 
             queryParameters.Add("@MobileUniqueId", parameters.MobileUniqueId.SanitizeValue());
+
+            queryParameters.Add("@Department", parameters.Department);
+            queryParameters.Add("@MaterialStatus", parameters.MaterialStatus);
+            queryParameters.Add("@GenderId", parameters.GenderId);
+            queryParameters.Add("@CompanyNumber", parameters.CompanyNumber);
+            queryParameters.Add("@PermanentAddress", parameters.PermanentAddress);
+            queryParameters.Add("@PermanentStateId", parameters.PermanentStateId);
+            queryParameters.Add("@PermanentRegionId", parameters.PermanentRegionId);
+            queryParameters.Add("@PermanentDistrictId", parameters.PermanentDistrictId);
+            queryParameters.Add("@PermanentCityId", parameters.PermanentCityId);
+            queryParameters.Add("@PermanentAreaId", parameters.PermanentAreaId);
+            queryParameters.Add("@PermanentPinCode", parameters.PermanentPinCode);
+            queryParameters.Add("@IsTemporaryAddressIsSame", parameters.IsTemporaryAddressIsSame);
+            queryParameters.Add("@TemporaryAddress", parameters.TemporaryAddress);
+            queryParameters.Add("@TemporaryStateId", parameters.TemporaryStateId);
+            queryParameters.Add("@TemporaryRegionId", parameters.TemporaryRegionId);
+            queryParameters.Add("@TemporaryDistrictId", parameters.TemporaryDistrictId);
+            queryParameters.Add("@TemporaryCityId", parameters.TemporaryCityId);
+            queryParameters.Add("@TemporaryAreaId", parameters.TemporaryAreaId);
+            queryParameters.Add("@TemporaryPinCode", parameters.TemporaryPinCode);
+            queryParameters.Add("@EmergencyName", parameters.EmergencyName);
+            queryParameters.Add("@EmergencyNumber", parameters.EmergencyNumber);
+            queryParameters.Add("@EmergencyRelation", parameters.EmergencyRelation);
+            queryParameters.Add("@EmployeePostCompanyName", parameters.EmployeePostCompanyName);
+            queryParameters.Add("@TotalNumberOfExp", parameters.TotalNumberOfExp);
+            queryParameters.Add("@AddharNumber", parameters.AddharNumber);
+            queryParameters.Add("@PANNumber", parameters.PANNumber);
+            queryParameters.Add("@OtherProof", parameters.OtherProof);
+            queryParameters.Add("@Remark", parameters.Remark);
+            queryParameters.Add("@OtherProofFileName", parameters.OtherProofFileName.SanitizeValue());
+            queryParameters.Add("@UploadOtherProof", parameters.UploadOtherProof.SanitizeValue());
+
             return await SaveByStoredProcedure<int>("SaveEmployeeDetails", queryParameters);
         }
 

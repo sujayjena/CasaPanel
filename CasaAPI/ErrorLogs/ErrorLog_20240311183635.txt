@@ -1,0 +1,9 @@
+2024-03-11 18:36:35
+Error Message:
+Must declare the scalar variable "@SearchValue".
+Must declare the scalar variable "@SearchValue".
+Full Exception Details:
+{"Error":"Must declare the scalar variable \u0022@SearchValue\u0022.\r\nMust declare the scalar variable \u0022@SearchValue\u0022.","Type":"SqlException"}
+
+*************************************************************************
+

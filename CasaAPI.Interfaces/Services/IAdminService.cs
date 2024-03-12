@@ -13,6 +13,7 @@ using static CasaAPI.Models.TileTypeModel;
 using static CasaAPI.Models.TypeModel;
 using static CasaAPI.Models.WeekCloseModel;
 using static CasaAPI.Models.CuttingSizeModel;
+using static CasaAPI.Models.PanelTypeModel;
 
 namespace CasaAPI.Interfaces.Services
 {
@@ -54,6 +55,14 @@ namespace CasaAPI.Interfaces.Services
         Task<IEnumerable<TypeDetailsResponse>> GetTypesList(TypeSearchParameters request);
         Task<TypeDetailsResponse?> GetTypeDetailsById(long id);
         Task<IEnumerable<TypeFailToImportValidationErrors>> ImportTypesDetails(List<TypeImportSaveParameters> request);
+
+        #endregion
+
+        #region Panel Type
+        Task<int> SavePanelType(PanelTypeSaveParameters request);
+        Task<IEnumerable<PanelTypeDetailsResponse>> GetPanelTypesList(PanelTypeSearchParameters request);
+        Task<PanelTypeDetailsResponse?> GetPanelTypeDetailsById(long id);
+        Task<IEnumerable<PanelTypeFailToImportValidationErrors>> ImportPanelTypesDetails(List<PanelTypeImportSaveParameters> request);
 
         #endregion
 

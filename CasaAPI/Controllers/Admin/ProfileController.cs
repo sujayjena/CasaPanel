@@ -561,6 +561,11 @@ namespace CasaAPI.Controllers.Admin
                 {
                     item.PanCardPictureUrl = host + _fileManager.GetEmpDocumentsFile(item.PanCardSavedFileName);
                 }
+
+                if (!string.IsNullOrWhiteSpace(item.UploadOtherProof))
+                {
+                    item.OtherProofPictureUrl = host + _fileManager.GetEmpDocumentsFile(item.UploadOtherProof);
+                }
             }
 
             _response.Data = lstEmployees.ToList();
@@ -579,7 +584,7 @@ namespace CasaAPI.Controllers.Admin
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> SaveEmployeeDetails(IFormFile? ProfilePicture, IFormFile? AdharCard, IFormFile? PanCard)  //[FromQuery] ProfilePictureRequest profilePicture)
+        public async Task<ResponseModel> SaveEmployeeDetails(IFormFile? ProfilePicture, IFormFile? AdharCard, IFormFile? PanCard, IFormFile? OtherProofAttach)  //[FromQuery] ProfilePictureRequest profilePicture)
         {
             string jsonParameters;
             int result;
@@ -624,6 +629,14 @@ namespace CasaAPI.Controllers.Admin
                 _response.Data = new[] { new { Field = "PanCard", ErrorMessage = ValidationConstants.ImageOrPdfFileRegExp_Msg } };
                 return _response;
             }
+
+            if (OtherProofAttach != null && !regex_imgPdf.IsMatch(OtherProofAttach.FileName))
+            {
+                _response.IsSuccess = false;
+                _response.Message = ErrorConstants.ValidationFailureError;
+                _response.Data = new[] { new { Field = "OtherProofAttach", ErrorMessage = ValidationConstants.ImageOrPdfFileRegExp_Msg } };
+                return _response;
+            }
             #endregion
 
             parameter = System.Text.Json.JsonSerializer.Deserialize<EmployeeRequest>(HttpContext.Request.Query["parameter"]!) ?? new EmployeeRequest();
@@ -652,11 +665,8 @@ namespace CasaAPI.Controllers.Admin
             if (parameter.IsToDeletePanCard != true)
                 parameter.PanCard = PanCard;
 
-            //checking address is null or empty then update N/A
-            if (string.IsNullOrEmpty(parameter.Address))
-            {
-                parameter.Address = "N/A";
-            }
+            if (parameter.IsToDeleteOtherProofAttach != true)
+                parameter.OtherProofAttach = OtherProofAttach;
 
             result = await _profileService.SaveEmployeeDetails(parameter);
 
@@ -719,6 +729,7 @@ namespace CasaAPI.Controllers.Admin
         [HttpGet]
         public async Task<ResponseModel> GetEmployeeDetails(long id)
         {
+            var host = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
             EmployeeResponse? employee;
 
             if (id <= 0)
@@ -729,6 +740,27 @@ namespace CasaAPI.Controllers.Admin
             else
             {
                 employee = await _profileService.GetEmployeeDetailsById(id);
+
+                if (employee != null && !string.IsNullOrEmpty(employee.ImageUpload))
+                {
+                    employee.ProfilePictureUrl = host + _fileManager.GetProfilePictureFile(employee.ImageUpload);
+                }
+
+                if (employee != null && !string.IsNullOrEmpty(employee.AdharCardSavedFileName))
+                {
+                    employee.AdharCardPictureUrl = host + _fileManager.GetEmpDocumentsFile(employee.AdharCardSavedFileName);
+                }
+
+                if (employee != null && !string.IsNullOrEmpty(employee.PanCardSavedFileName))
+                {
+                    employee.PanCardPictureUrl = host + _fileManager.GetEmpDocumentsFile(employee.PanCardSavedFileName);
+                }
+
+                if (employee != null && !string.IsNullOrEmpty(employee.UploadOtherProof))
+                {
+                    employee.OtherProofPictureUrl = host + _fileManager.GetEmpDocumentsFile(employee.UploadOtherProof);
+                }
+
                 _response.Data = employee;
             }
 

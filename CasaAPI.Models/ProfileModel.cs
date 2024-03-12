@@ -140,53 +140,63 @@ namespace CasaAPI.Models
         [MaxLength(ValidationConstants.MobileUniqueId_MaxLength, ErrorMessage = ValidationConstants.MobileUniqueId_MaxLength_Msg)]
         public string MobileUniqueId { get; set; }
 
-        public IFormFile ProfilePicture { get; set; }
+        public string Department { get; set; }
+        public int? MaterialStatus  { get; set; }
+        public int? GenderId { get; set; }
+        public string CompanyNumber { get; set; }
+        public string PermanentAddress { get; set; }
+        public int? PermanentStateId { get; set; }
+        public int? PermanentRegionId { get; set; }
+        public int? PermanentDistrictId { get; set; }
+        public int? PermanentCityId { get; set; }
+        public int? PermanentAreaId { get; set; }
+        public decimal? PermanentPinCode { get; set; }
+        public bool? IsTemporaryAddressIsSame { get; set; }
+        public string? TemporaryAddress { get; set; }
+        public int? TemporaryStateId { get; set; }
+        public int? TemporaryRegionId { get; set; }
+        public int? TemporaryDistrictId { get; set; }
+        public int? TemporaryCityId { get; set; }
+        public int? TemporaryAreaId { get; set; }
+        public decimal? TemporaryPinCode { get; set; }
+        public string EmergencyName { get; set; }
+        public decimal? EmergencyNumber { get; set; }
+        public string EmergencyRelation { get; set; }
+        public string EmployeePostCompanyName { get; set; }
+        public string TotalNumberOfExp { get; set; }
+        public string AddharNumber { get; set; }
+        public string PANNumber { get; set; }
+        public string OtherProof { get; set; }
+        public string Remark { get; set; }
 
+        public IFormFile ProfilePicture { get; set; }
         [JsonIgnore]
         public string FileOriginalName { get; set; }
-
         [JsonIgnore]
         public string ImageUpload { get; set; }
 
         public IFormFile AdharCard { get; set; }
-
         [JsonIgnore]
         public string AdharCardFileName { get; set; }
         [JsonIgnore]
         public string AdharCardSavedFileName { get; set; }
 
         public IFormFile PanCard { get; set; }
-
         [JsonIgnore]
         public string PanCardFileName { get; set; }
         [JsonIgnore]
         public string PanCardSavedFileName { get; set; }
 
+        public IFormFile OtherProofAttach { get; set; }
+        [JsonIgnore]
+        public string OtherProofFileName { get; set; }
+        [JsonIgnore]
+        public string UploadOtherProof { get; set; }
+
         public bool IsToDeleteProfilePic { get; set; }
         public bool IsToDeleteAdharCard { get; set; }
         public bool IsToDeletePanCard { get; set; }
-
-        //[Required(ErrorMessage = ValidationConstants.AddressRequied_Msg)]
-        [MaxLength(ValidationConstants.Address_MaxLength, ErrorMessage = ValidationConstants.Address_MaxLength_Msg)]
-        public string Address { get; set; }
-
-        //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.StateRequied_Dropdown_Msg)]
-        public long StateId { get; set; }
-
-        //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.ReportingToRequied_Dropdown_Msg)]
-        public long RegionId { get; set; }
-
-        //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.DistrictRequied_Dropdown_Msg)]
-        public long DistrictId { get; set; }
-
-        //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.AreaRequied_Dropdown_Msg)]
-        public long AreaId { get; set; }
-
-        //[Required(ErrorMessage = ValidationConstants.PincodeRequied_Msg)]
-        //[RegularExpression(ValidationConstants.PincodeExp, ErrorMessage = ValidationConstants.Pincode_Validation_Msg)]
-        //[MaxLength(ValidationConstants.Pincode_MaxLength, ErrorMessage = ValidationConstants.Pincode_MaxLength_Msg)]
-        //[MinLength(ValidationConstants.Pincode_MinLength, ErrorMessage = ValidationConstants.Pincode_MinLength_Msg)]
-        public string Pincode { get; set; }
+        public bool IsToDeleteOtherProofAttach { get; set; }
     }
 
     public class EmployeeResponse : CreationDetails
@@ -202,17 +212,6 @@ namespace CasaAPI.Models
         public long ReportingTo { get; set; }
         public string ReportingToName { get; set; }
         public string ManagerMobileNo { get; set; }
-        public long AddressId { get; set; }
-        public string Address { get; set; }
-        public long StateId { get; set; }
-        public string StateName { get; set; }
-        public long RegionId { get; set; }
-        public string RegionName { get; set; }
-        public long DistrictId { get; set; }
-        public string DistrictName { get; set; }
-        public long AreaId { get; set; }
-        public string AreaName { get; set; }
-        public string Pincode { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime DateOfJoining { get; set; }
         public string EmergencyContactNumber { get; set; }
@@ -224,6 +223,56 @@ namespace CasaAPI.Models
         public string MobileUniqueId { get; set; }
         //public IFormFile FileOriginalName { get; set; }
 
+        public string Department { get; set; }
+        public int? MaterialStatus { get; set; }
+        public int? GenderId { get; set; }
+        public string Gender { get; set; }
+        public string CompanyNumber { get; set; }
+        public string PermanentAddress { get; set; }
+        public int? PermanentStateId { get; set; }
+        public string PermanentStateName { get; set; }
+
+        public int? PermanentRegionId { get; set; }
+        public string PermanentRegionName { get; set; }
+
+        public int? PermanentDistrictId { get; set; }
+        public string PermanentDistrictName { get; set; }
+
+        public int? PermanentCityId { get; set; }
+        public string PermanentCityName { get; set; }
+
+        public int? PermanentAreaId { get; set; }
+        public string PermanentAreaName { get; set; }
+
+        public decimal? PermanentPinCode { get; set; }
+        public bool? IsTemporaryAddressIsSame { get; set; }
+        public string? TemporaryAddress { get; set; }
+        public int? TemporaryStateId { get; set; }
+        public string TemporaryStateName { get; set; }
+
+        public int? TemporaryRegionId { get; set; }
+        public string TemporaryRegionName { get; set; }
+
+        public int? TemporaryDistrictId { get; set; }
+        public string TemporaryDistrictName { get; set; }
+
+        public int? TemporaryCityId { get; set; }
+        public string TemporaryCityName { get; set; }
+
+        public int? TemporaryAreaId { get; set; }
+        public string TemporaryAreaName { get; set; }
+
+        public decimal? TemporaryPinCode { get; set; }
+        public string EmergencyName { get; set; }
+        public decimal? EmergencyNumber { get; set; }
+        public string EmergencyRelation { get; set; }
+        public string EmployeePostCompanyName { get; set; }
+        public string TotalNumberOfExp { get; set; }
+        public string AddharNumber { get; set; }
+        public string PANNumber { get; set; }
+        public string OtherProof { get; set; }
+        public string Remark { get; set; }
+
         [JsonIgnore]
         public string ImageUpload { get; set; }
         public string FileOriginalName { get; set; }
@@ -234,13 +283,18 @@ namespace CasaAPI.Models
         public string PanCardFileName { get; set; }
         public string PanCardSavedFileName { get; set; }
 
+        public string OtherProofFileName { get; set; }
+        public string UploadOtherProof { get; set; }
+
         public byte[] ProfilePicture { get; set; }
         public byte[] AdharCardPicture { get; set; }
         public byte[] PanCardPicture { get; set; }
+        public byte[] OtherProofPicture { get; set; }
 
         public string ProfilePictureUrl { get; set; }
         public string AdharCardPictureUrl { get; set; }
         public string PanCardPictureUrl { get; set; }
+        public string OtherProofPictureUrl { get; set; }
     }
     public class EmployeeReportingToResponse
     {

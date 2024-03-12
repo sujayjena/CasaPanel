@@ -6,6 +6,7 @@ using static CasaAPI.Models.Collection_PanelModel;
 using static CasaAPI.Models.ContactTypeModel;
 using static CasaAPI.Models.CuttingSizeModel;
 using static CasaAPI.Models.GendorModel;
+using static CasaAPI.Models.PanelTypeModel;
 using static CasaAPI.Models.PunchModel;
 using static CasaAPI.Models.SurfaceModel;
 using static CasaAPI.Models.ThicknessModel;
@@ -54,6 +55,14 @@ namespace CasaAPI.Interfaces.Repositories
         Task<IEnumerable<TypeDetailsResponse>> GetTypesList(TypeSearchParameters parameters);
         Task<TypeDetailsResponse?> GetTypeDetailsById(long id);
         Task<IEnumerable<TypeFailToImportValidationErrors>> ImportTypesDetails(List<TypeImportSaveParameters> parameters);
+
+        #endregion
+
+        #region Panel Type
+        Task<int> SavePanelType(PanelTypeSaveParameters parameters);
+        Task<IEnumerable<PanelTypeDetailsResponse>> GetPanelTypesList(PanelTypeSearchParameters parameters);
+        Task<PanelTypeDetailsResponse?> GetPanelTypeDetailsById(long id);
+        Task<IEnumerable<PanelTypeFailToImportValidationErrors>> ImportPanelTypesDetails(List<PanelTypeImportSaveParameters> parameters);
 
         #endregion
 

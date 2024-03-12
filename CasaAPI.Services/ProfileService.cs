@@ -87,6 +87,12 @@ namespace CasaAPI.Services
                 employeeRequest.PanCardSavedFileName = _fileManager.UploadEmpDocuments(employeeRequest.PanCard);
             }
 
+            if (employeeRequest.OtherProofAttach != null)
+            {
+                employeeRequest.OtherProofFileName = employeeRequest.OtherProofAttach.FileName;
+                employeeRequest.UploadOtherProof = _fileManager.UploadEmpDocuments(employeeRequest.OtherProofAttach);
+            }
+
             return await _profileRepository.SaveEmployeeDetails(employeeRequest);
         }
 
@@ -97,24 +103,7 @@ namespace CasaAPI.Services
 
         public async Task<EmployeeResponse?> GetEmployeeDetailsById(long id)
         {
-            EmployeeResponse? response = await _profileRepository.GetEmployeeDetailsById(id);
-
-            if (response != null && !string.IsNullOrEmpty(response.ImageUpload))
-            {
-                response.ProfilePicture = _fileManager.GetProfilePicture(response.ImageUpload);
-            }
-
-            if (response != null && !string.IsNullOrEmpty(response.AdharCardSavedFileName))
-            {
-                response.AdharCardPicture = _fileManager.GetEmpDocuments(response.AdharCardSavedFileName);
-            }
-
-            if (response != null && !string.IsNullOrEmpty(response.PanCardSavedFileName))
-            {
-                response.PanCardPicture = _fileManager.GetEmpDocuments(response.PanCardSavedFileName);
-            }
-
-            return response;
+            return await _profileRepository.GetEmployeeDetailsById(id);
         }
 
         public async Task<IEnumerable<EmployeeDataValidationErrors>> ImportEmployeesDetails(List<ImportedEmployeeDetails> request)

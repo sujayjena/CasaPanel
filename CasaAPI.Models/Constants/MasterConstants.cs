@@ -16,6 +16,7 @@
         public const string ThicknessImportFormatFileName = "ThicknessMasterImportFileFormat.xlsx";
         public const string TileSizeImportFormatFileName = "TileSizeMasterImportFileFormat.xlsx";
         public const string TypeImportFormatFileName = "TypeMasterImportFileFormat.xlsx";
+        public const string PanelTypeImportFormatFileName = "PanelTypeMasterImportFileFormat.xlsx";
         public const string ProductDesignImportFormatFileName = "ProductDesignImportFileFormat.xlsx";
         public const string ManageBoxSizeImportFormatFileName = "ManageBoxSizeImportFileFormat.xlsx";
         public const string StateImportFormatFileName = "StateMasterImportFileFormat.xlsx";

@@ -21,6 +21,7 @@ using static CasaAPI.Models.WeekCloseModel;
 using static CasaAPI.Models.GendorModel;
 using LicenseContext = OfficeOpenXml.LicenseContext;
 using static CasaAPI.Models.CuttingSizeModel;
+using static CasaAPI.Models.PanelTypeModel;
 
 namespace CasaAPI.Controllers.Admin
 {
@@ -1352,6 +1353,272 @@ namespace CasaAPI.Controllers.Admin
                     foreach (TypeDetailsResponse record in lstTypesToImport)
                     {
                         excelWorksheet.Cells[recordIndex, 1].Value = record.TypeName;
+                        excelWorksheet.Cells[recordIndex, 2].Value = record.IsActive;
+                        recordIndex += 1;
+                    }
+
+                    excelWorksheet.Column(1).AutoFit();
+                    excelWorksheet.Column(2).AutoFit();
+
+                    excelData.SaveAs(msDataFile);
+                    msDataFile.Position = 0;
+                    result = msDataFile.ToArray();
+                }
+            }
+            return result;
+        }
+        #endregion
+
+        #region PanelType
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SavePanelType(PanelTypeSaveParameters Request)
+        {
+            int result = await _adminService.SavePanelType(Request);
+            _response.IsSuccess = false;
+
+            if (result == (int)SaveEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveEnums.NameExists)
+            {
+                _response.Message = "Panel Type Name is already exists";
+            }
+            else if (result == (int)SaveEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.IsSuccess = true;
+                _response.Message = "Panel Type details saved sucessfully";
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetPanelTypeList(PanelTypeSearchParameters request)
+        {
+            IEnumerable<PanelTypeDetailsResponse> lstPanelType = await _adminService.GetPanelTypesList(request);
+            _response.Data = lstPanelType.ToList();
+            return _response;
+        }
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> GetPanelTypesDetails(long id)
+        {
+            PanelTypeDetailsResponse? type;
+            if (id <= 0)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstants.Id_Required_Msg;
+            }
+            else
+            {
+                type = await _adminService.GetPanelTypeDetailsById(id);
+                _response.Data = type;
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ImportPanelTypesData([FromQuery] ImportRequest request)
+        {
+            _response.IsSuccess = false;
+            ExcelWorksheets currentSheet;
+            ExcelWorksheet workSheet;
+            List<PanelTypeImportSaveParameters> lstPanelTypeImportDetails = new List<PanelTypeImportSaveParameters>();
+            List<PanelTypeFailToImportValidationErrors>? lstPanelTypesFailedToImport = new List<PanelTypeFailToImportValidationErrors>();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            int noOfCol, noOfRow;
+            ResponseModel? fileDataValidationRes;
+            PanelTypeImportSaveParameters tempPanelTypeImport;
+
+            if (request.FileUpload == null || request.FileUpload.Length == 0)
+            {
+                _response.Message = "Please upload an excel file to import Type data";
+                return _response;
+            }
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                request.FileUpload.CopyTo(stream);
+                using ExcelPackage package = new ExcelPackage(stream);
+                currentSheet = package.Workbook.Worksheets;
+                workSheet = currentSheet.First();
+                noOfCol = workSheet.Dimension.End.Column;
+                noOfRow = workSheet.Dimension.End.Row;
+
+                if (!string.Equals(workSheet.Cells[1, 1].Value.ToString(), "PanelTypeName", StringComparison.OrdinalIgnoreCase) ||
+                   !string.Equals(workSheet.Cells[1, 2].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Please upload a valid excel file. Please Download Format file for reference";
+                    return _response;
+                }
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    tempPanelTypeImport = new PanelTypeImportSaveParameters()
+                    {
+                        PanelTypeName = workSheet.Cells[rowIterator, 1].Value?.ToString(),
+                        IsActive = workSheet.Cells[rowIterator, 2].Value?.ToString()
+                    };
+
+                    fileDataValidationRes = ModelStateHelper.GetValidationErrorsList(model: tempPanelTypeImport);
+
+                    if (fileDataValidationRes.IsSuccess)
+                    {
+                        lstPanelTypeImportDetails.Add(tempPanelTypeImport);
+                    }
+                    else
+                    {
+                        lstPanelTypesFailedToImport.Add(new PanelTypeFailToImportValidationErrors()
+                        {
+                            PanelTypeName = tempPanelTypeImport.PanelTypeName,
+                            IsActive = tempPanelTypeImport.IsActive,
+                            ValidationMessage = fileDataValidationRes.Message
+                        });
+                    }
+                }
+            }
+
+            if (lstPanelTypeImportDetails.Count == 0)
+            {
+                _response.Message = "File does not contains any record(s)";
+                return _response;
+            }
+
+            lstPanelTypesFailedToImport.AddRange(await _adminService.ImportPanelTypesDetails(lstPanelTypeImportDetails));
+
+            _response.IsSuccess = true;
+            _response.Message = "Panel Types list imported successfully";
+
+            #region Generate Excel file for Invalid Data
+            if (lstPanelTypesFailedToImport != null && lstPanelTypesFailedToImport.ToList().Count > 0)
+            {
+                _response.Message = "Uploaded file contains invalid records, please check downloaded file for more details";
+                _response.Data = GenerateInvalidPanelTypeDataFile(lstPanelTypesFailedToImport);
+
+            }
+            #endregion
+
+            return _response;
+        }
+        private byte[] GenerateInvalidPanelTypeDataFile(IEnumerable<PanelTypeFailToImportValidationErrors> lstPanelTypesFailedToImport)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+
+            using (MemoryStream msInvalidDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelInvalidData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelInvalidData.Workbook.Worksheets.Add("Invalid_PanelType_Records");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "PanelType";
+                    WorkSheet1.Cells[1, 2].Value = "IsActive";
+                    WorkSheet1.Cells[1, 3].Value = "ValidationMessage";
+
+                    recordIndex = 2;
+
+                    foreach (PanelTypeFailToImportValidationErrors record in lstPanelTypesFailedToImport)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = record.PanelTypeName;
+                        WorkSheet1.Cells[recordIndex, 2].Value = record.IsActive;
+                        WorkSheet1.Cells[recordIndex, 3].Value = record.ValidationMessage;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Column(1).AutoFit();
+                    WorkSheet1.Column(2).AutoFit();
+                    WorkSheet1.Column(3).AutoFit();
+
+                    excelInvalidData.SaveAs(msInvalidDataFile);
+                    msInvalidDataFile.Position = 0;
+                    result = msInvalidDataFile.ToArray();
+                }
+            }
+
+            return result;
+        }
+       
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> DownloadPanelTypeTemplate()
+        {
+            byte[]? fileContent = await Task.Run(() => _fileManager.GetFormatFileFromPath(FormatFilesName.PanelTypeImportFormatFileName));
+            if (fileContent == null || fileContent.Length == 0)
+            {
+                _response.Message = ErrorConstants.FileNotExistsToDownload;
+                _response.IsSuccess = false;
+            }
+            else
+            {
+                _response.Data = fileContent;
+            }
+            return _response;
+        }
+       
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportPanelTypeListToExcel(PanelTypeSearchParameters request)
+        {
+            IEnumerable<PanelTypeDetailsResponse> paneltypeDetailsResponses;
+
+            request.IsExport = true;
+            paneltypeDetailsResponses = await _adminService.GetPanelTypesList(request);
+            if (paneltypeDetailsResponses != null && paneltypeDetailsResponses.ToList().Count > 0)
+            {
+                _response.Data = GenerateExcelPanelTypeDataFile(paneltypeDetailsResponses);
+            }
+            else
+            {
+                _response.Message = "Record Not Exists";
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+        private byte[] GenerateExcelPanelTypeDataFile(IEnumerable<PanelTypeDetailsResponse> lstPanelTypesToImport)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet excelWorksheet;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (MemoryStream msDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelData = new ExcelPackage(new FileInfo($"PanelType_List_{DateTime.Now.ToString("yyyyMMddHHmm")}")))
+                {
+                    excelWorksheet = excelData.Workbook.Worksheets.Add("Type");
+                    excelWorksheet.TabColor = System.Drawing.Color.Black;
+                    excelWorksheet.DefaultRowHeight = 12;
+
+                    //Header of table
+                    excelWorksheet.Row(1).Height = 20;
+                    excelWorksheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    excelWorksheet.Row(1).Style.Font.Bold = true;
+
+                    excelWorksheet.Cells[1, 1].Value = "Panel Type Name";
+                    excelWorksheet.Cells[1, 2].Value = "Is Active?";
+
+                    recordIndex = 2;
+
+                    foreach (PanelTypeDetailsResponse record in lstPanelTypesToImport)
+                    {
+                        excelWorksheet.Cells[recordIndex, 1].Value = record.PanelTypeName;
                         excelWorksheet.Cells[recordIndex, 2].Value = record.IsActive;
                         recordIndex += 1;
                     }
