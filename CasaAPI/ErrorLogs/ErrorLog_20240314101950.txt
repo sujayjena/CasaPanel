@@ -1,0 +1,8 @@
+2024-03-14 10:19:50
+Error Message:
+Could not find stored procedure 'GetCuttingPlanForSelectList'.
+Full Exception Details:
+{"Error":"Could not find stored procedure \u0027GetCuttingPlanForSelectList\u0027.","Type":"SqlException"}
+
+*************************************************************************
+

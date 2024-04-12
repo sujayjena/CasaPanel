@@ -1,0 +1,10 @@
+2024-04-06 00:31:05
+Error Message:
+Must declare the scalar variable "@SearchValue".
+Must declare the scalar variable "@SearchValue".
+Invalid usage of the option NEXT in the FETCH statement.
+Full Exception Details:
+{"Error":"Must declare the scalar variable \u0022@SearchValue\u0022.\r\nMust declare the scalar variable \u0022@SearchValue\u0022.\r\nInvalid usage of the option NEXT in the FETCH statement.","Type":"SqlException"}
+
+*************************************************************************
+

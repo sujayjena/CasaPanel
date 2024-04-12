@@ -254,26 +254,26 @@ namespace CasaAPI.Models
     public class BinderPlanningSaveParameters
     {
         public long Id { get; set; }       
-        public long? Collection { get; set; }
-        public long? FoId { get; set; }
-        public String NoOfpieces { get; set; }
-        public long? Thickness { get; set; }
-        public String BinderSize { get; set; }
-        public String SizeInch { get; set; }
-        public String SizeFoot { get; set; }
-        public String SizeCM { get; set; }
-        public String SizeMM { get; set; }
-        public long? Flap { get; set; }
-        public long? TitleGSM { get; set; }
-        public long? FlapGSM { get; set; }
-        public long? InnerGSM { get; set; }
-        public long? NoOfColorPrinting { get; set; }
-        public long? TitleProcess { get; set; }
+        public long? CollectionId { get; set; }
+        public long? FoldId { get; set; }
+        public string NoOfpieces { get; set; }
+        public long? ThicknessId { get; set; }
+        public string BinderSize { get; set; }
+        public string SizeInch { get; set; }
+        public string SizeFoot { get; set; }
+        public string SizeCM { get; set; }
+        public string SizeMM { get; set; }
+        public long? FlapId { get; set; }
+        public long? TitleGSMId { get; set; }
+        public long? FlapGSMId { get; set; }
+        public long? InnerGSMId { get; set; }
+        public long? NoOfColorPrintingId { get; set; }
+        public long? TitleProcessId { get; set; }
         public bool? MattLimitation { get; set; }
         public bool? Canvas { get; set; }
         public long? Qty { get; set; }
-        public long? delivery { get; set; }
-        public String Remark { get; set; }
+        public long? DeliveryId { get; set; }
+        public string Remark { get; set; }
         public bool IsActive { get; set; }
 
     }

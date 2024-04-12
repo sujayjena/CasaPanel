@@ -1,0 +1,8 @@
+2024-04-05 22:59:24
+Error Message:
+Could not find stored procedure 'GetFoldsList'.
+Full Exception Details:
+{"Error":"Could not find stored procedure \u0027GetFoldsList\u0027.","Type":"SqlException"}
+
+*************************************************************************
+

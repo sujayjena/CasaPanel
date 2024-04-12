@@ -228,7 +228,8 @@ namespace CasaAPI.Controllers.Admin
                     !string.Equals(workSheet.Cells[1, 12].Value.ToString(), "WeightPerBox", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 13].Value.ToString(), "BoxCoverageAreaSqFoot", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 14].Value.ToString(), "BoxCoverageAreaSqMeter", StringComparison.OrdinalIgnoreCase) ||
-                   !string.Equals(workSheet.Cells[1, 15].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
+                    !string.Equals(workSheet.Cells[1, 15].Value.ToString(), "FinishName", StringComparison.OrdinalIgnoreCase) ||
+                   !string.Equals(workSheet.Cells[1, 16].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
                 {
                     _response.IsSuccess = false;
                     _response.Message = "Please upload a valid excel file. Please Download Format file for reference";
@@ -254,7 +255,8 @@ namespace CasaAPI.Controllers.Admin
                         WeightPerBox = Convert.ToInt32(workSheet.Cells[rowIterator, 12].Value),
                         BoxCoverageAreaSqFoot = Convert.ToDecimal(workSheet.Cells[rowIterator, 13].Value?.ToString()),
                         BoxCoverageAreaSqMeter = Convert.ToDecimal(workSheet.Cells[rowIterator, 14].Value?.ToString()),
-                        IsActive = workSheet.Cells[rowIterator, 15].Value?.ToString()
+                        FinishName = workSheet.Cells[rowIterator, 15].Value?.ToString(),
+                        IsActive = workSheet.Cells[rowIterator, 16].Value?.ToString()
                     });
                 }
             }
@@ -315,8 +317,9 @@ namespace CasaAPI.Controllers.Admin
                     WorkSheet1.Cells[1, 12].Value = "WeightPerBox";
                     WorkSheet1.Cells[1, 13].Value = "BoxCoverageAreaSqFoot";
                     WorkSheet1.Cells[1, 14].Value = "BoxCoverageAreaSqMeter";
-                    WorkSheet1.Cells[1, 15].Value = "IsActive";
-                    WorkSheet1.Cells[1, 16].Value = "ValidationMessage";
+                    WorkSheet1.Cells[1, 15].Value = "FinishName";
+                    WorkSheet1.Cells[1, 16].Value = "IsActive";
+                    WorkSheet1.Cells[1, 17].Value = "ValidationMessage";
 
 
                     recordIndex = 2;
@@ -337,8 +340,9 @@ namespace CasaAPI.Controllers.Admin
                         WorkSheet1.Cells[recordIndex, 12].Value = record.WeightPerBox;
                         WorkSheet1.Cells[recordIndex, 13].Value = record.BoxCoverageAreaSqFoot;
                         WorkSheet1.Cells[recordIndex, 14].Value = record.BoxCoverageAreaSqMeter;
-                        WorkSheet1.Cells[recordIndex, 15].Value = record.IsActive;
-                        WorkSheet1.Cells[recordIndex, 16].Value = record.ValidationMessage;
+                        WorkSheet1.Cells[recordIndex, 15].Value = record.FinishName;
+                        WorkSheet1.Cells[recordIndex, 16].Value = record.IsActive;
+                        WorkSheet1.Cells[recordIndex, 17].Value = record.ValidationMessage;
 
                         recordIndex += 1;
                     }
@@ -359,6 +363,7 @@ namespace CasaAPI.Controllers.Admin
                     WorkSheet1.Column(14).AutoFit();
                     WorkSheet1.Column(15).AutoFit();
                     WorkSheet1.Column(16).AutoFit();
+                    WorkSheet1.Column(17).AutoFit();
 
                     excelInvalidData.SaveAs(msInvalidDataFile);
                     msInvalidDataFile.Position = 0;
@@ -441,7 +446,8 @@ namespace CasaAPI.Controllers.Admin
                     excelWorksheet.Cells[1, 12].Value = "Weight Per Box";
                     excelWorksheet.Cells[1, 13].Value = "Box Coverage Area SqFoot";
                     excelWorksheet.Cells[1, 14].Value = "Box Coverage Area SqMeter";
-                    excelWorksheet.Cells[1, 15].Value = "IsActive";
+                    excelWorksheet.Cells[1, 15].Value = "Finish Name";
+                    excelWorksheet.Cells[1, 16].Value = "IsActive";
 
                     recordIndex = 2;
 
@@ -461,7 +467,8 @@ namespace CasaAPI.Controllers.Admin
                         excelWorksheet.Cells[recordIndex, 12].Value = record.WeightPerBox;
                         excelWorksheet.Cells[recordIndex, 13].Value = record.BoxCoverageAreaSqFoot;
                         excelWorksheet.Cells[recordIndex, 14].Value = record.BoxCoverageAreaSqMeter;
-                        excelWorksheet.Cells[recordIndex, 15].Value = record.IsActive;
+                        excelWorksheet.Cells[recordIndex, 15].Value = record.FinishName;
+                        excelWorksheet.Cells[recordIndex, 16].Value = record.IsActive;
                         recordIndex += 1;
                     }
 
@@ -480,6 +487,7 @@ namespace CasaAPI.Controllers.Admin
                     excelWorksheet.Column(13).AutoFit();
                     excelWorksheet.Column(14).AutoFit();
                     excelWorksheet.Column(15).AutoFit();
+                    excelWorksheet.Column(16).AutoFit();
 
                     excelData.SaveAs(msDataFile);
                     msDataFile.Position = 0;

@@ -5,6 +5,9 @@ using static CasaAPI.Models.CategoryModel;
 using static CasaAPI.Models.Collection_PanelModel;
 using static CasaAPI.Models.ContactTypeModel;
 using static CasaAPI.Models.CuttingSizeModel;
+using static CasaAPI.Models.FlapGSMModel;
+using static CasaAPI.Models.FlapModel;
+using static CasaAPI.Models.FoldModel;
 using static CasaAPI.Models.GendorModel;
 using static CasaAPI.Models.PanelTypeModel;
 using static CasaAPI.Models.PunchModel;
@@ -12,6 +15,7 @@ using static CasaAPI.Models.SurfaceModel;
 using static CasaAPI.Models.ThicknessModel;
 using static CasaAPI.Models.TileSizeModel;
 using static CasaAPI.Models.TileTypeModel;
+using static CasaAPI.Models.TitleGSMModel;
 using static CasaAPI.Models.TypeModel;
 using static CasaAPI.Models.WeekCloseModel;
 
@@ -101,6 +105,7 @@ namespace CasaAPI.Interfaces.Repositories
         #region Master Data
         Task<IEnumerable<SelectListResponse>> GetSizeForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetBrandForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetCollection_PanelForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetCollectionForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetCategoryForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetTypeForSelectList(CommonSelectListRequestModel parameters);
@@ -108,6 +113,11 @@ namespace CasaAPI.Interfaces.Repositories
         Task<IEnumerable<SelectListResponse>> GetSurfaceForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetThicknessForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetTileForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetCuttingPlanForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetProductDesignForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetTileSizeForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetDriverNameForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetFinishNameForSelectList(CommonSelectListRequestModel parameters);
         #endregion
 
         #region Manage Product Design
@@ -259,6 +269,38 @@ namespace CasaAPI.Interfaces.Repositories
         Task<CollectionResponseModel?> GetCollectionMasterDetails(int id);
         Task<IEnumerable<CollectionDataValidationErrors>> ImportCollection(List<ImportedCollection> parameters);
         #endregion
+
+        #endregion
+
+        #region Fold
+        Task<int> SaveFold(FoldSaveParameters parameters);
+        Task<IEnumerable<FoldDetailsResponse>> GetFoldList(FoldSearchParameters parameters);
+        Task<FoldDetailsResponse?> GetFoldDetailsById(long id);
+        Task<IEnumerable<FoldFailToImportValidationErrors>> ImportFoldsDetails(List<FoldImportSaveParameters> parameters);
+
+        #endregion
+
+        #region Flap
+        Task<int> SaveFlap(FlapSaveParameters parameters);
+        Task<IEnumerable<FlapDetailsResponse>> GetFlapList(FlapSearchParameters parameters);
+        Task<FlapDetailsResponse?> GetFlapDetailsById(long id);
+        Task<IEnumerable<FlapFailToImportValidationErrors>> ImportFlapsDetails(List<FlapImportSaveParameters> parameters);
+
+        #endregion
+
+        #region Title GSM
+        Task<int> SaveTitleGSM(TitleGSMSaveParameters parameters);
+        Task<IEnumerable<TitleGSMDetailsResponse>> GetTitleGSMList(TitleGSMSearchParameters parameters);
+        Task<TitleGSMDetailsResponse?> GetTitleGSMDetailsById(long id);
+        Task<IEnumerable<TitleGSMFailToImportValidationErrors>> ImportTitleGSMsDetails(List<TitleGSMImportSaveParameters> parameters);
+
+        #endregion
+
+        #region Flap GSM
+        Task<int> SaveFlapGSM(FlapGSMSaveParameters parameters);
+        Task<IEnumerable<FlapGSMDetailsResponse>> GetFlapGSMList(FlapGSMSearchParameters parameters);
+        Task<FlapGSMDetailsResponse?> GetFlapGSMDetailsById(long id);
+        Task<IEnumerable<FlapGSMFailToImportValidationErrors>> ImportFlapGSMsDetails(List<FlapGSMImportSaveParameters> parameters);
 
         #endregion
     }

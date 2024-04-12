@@ -73,6 +73,7 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@ContactEmailId", parameters?.ContactEmailId);
             queryParameters.Add("@BankAcNo", parameters?.BankAcNo);
             queryParameters.Add("@NameOfBank", parameters?.NameOfBank);
+            queryParameters.Add("@BankAddress", parameters?.BankAddress);
             queryParameters.Add("@BankBranchName", parameters?.BankBranchName);
             queryParameters.Add("@IFSCCode", parameters?.IFSCCode);
             queryParameters.Add("@MICRCode", parameters?.MICRCode);

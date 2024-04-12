@@ -1,0 +1,16 @@
+2024-03-14 15:23:54
+Error Message:
+The multi-part identifier "SM.SizeName" could not be bound.
+The multi-part identifier "BM.BrandName" could not be bound.
+The multi-part identifier "CM.CollectionName" could not be bound.
+The multi-part identifier "CEM.CategoryName" could not be bound.
+The multi-part identifier "TM.TypeName" could not be bound.
+The multi-part identifier "PM.PunchName" could not be bound.
+The multi-part identifier "SRM.SurfaceName" could not be bound.
+The multi-part identifier "THM.ThicknessName" could not be bound.
+The multi-part identifier "TIM.TileSizeName" could not be bound.
+Full Exception Details:
+{"Error":"The multi-part identifier \u0022SM.SizeName\u0022 could not be bound.\r\nThe multi-part identifier \u0022BM.BrandName\u0022 could not be bound.\r\nThe multi-part identifier \u0022CM.CollectionName\u0022 could not be bound.\r\nThe multi-part identifier \u0022CEM.CategoryName\u0022 could not be bound.\r\nThe multi-part identifier \u0022TM.TypeName\u0022 could not be bound.\r\nThe multi-part identifier \u0022PM.PunchName\u0022 could not be bound.\r\nThe multi-part identifier \u0022SRM.SurfaceName\u0022 could not be bound.\r\nThe multi-part identifier \u0022THM.ThicknessName\u0022 could not be bound.\r\nThe multi-part identifier \u0022TIM.TileSizeName\u0022 could not be bound.","Type":"SqlException"}
+
+*************************************************************************
+

@@ -1,0 +1,8 @@
+2024-03-14 14:47:13
+Error Message:
+The query has been canceled because the estimated cost of this query (6530) exceeds the configured threshold of 3000. Contact the system administrator.
+Full Exception Details:
+{"Error":"The query has been canceled because the estimated cost of this query (6530) exceeds the configured threshold of 3000. Contact the system administrator.","Type":"SqlException"}
+
+*************************************************************************
+

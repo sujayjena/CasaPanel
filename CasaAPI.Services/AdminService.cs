@@ -9,6 +9,9 @@ using static CasaAPI.Models.CategoryModel;
 using static CasaAPI.Models.Collection_PanelModel;
 using static CasaAPI.Models.ContactTypeModel;
 using static CasaAPI.Models.CuttingSizeModel;
+using static CasaAPI.Models.FlapGSMModel;
+using static CasaAPI.Models.FlapModel;
+using static CasaAPI.Models.FoldModel;
 using static CasaAPI.Models.GendorModel;
 using static CasaAPI.Models.PanelTypeModel;
 using static CasaAPI.Models.PunchModel;
@@ -16,6 +19,7 @@ using static CasaAPI.Models.SurfaceModel;
 using static CasaAPI.Models.ThicknessModel;
 using static CasaAPI.Models.TileSizeModel;
 using static CasaAPI.Models.TileTypeModel;
+using static CasaAPI.Models.TitleGSMModel;
 using static CasaAPI.Models.TypeModel;
 using static CasaAPI.Models.WeekCloseModel;
 
@@ -232,6 +236,11 @@ namespace CasaAPI.Services
             return await _adminRepository.GetBrandForSelectList(parameters);
         }
 
+        public async Task<IEnumerable<SelectListResponse>> GetCollection_PanelForSelectList(CommonSelectListRequestModel parameters)
+        {
+            return await _adminRepository.GetCollection_PanelForSelectList(parameters);
+        }
+
         public async Task<IEnumerable<SelectListResponse>> GetCollectionForSelectList(CommonSelectListRequestModel parameters)
         {
             return await _adminRepository.GetCollectionForSelectList(parameters);
@@ -265,6 +274,44 @@ namespace CasaAPI.Services
         {
             return await _adminRepository.GetTileForSelectList(parameters);
         }
+        public async Task<IEnumerable<SelectListResponse>> GetSubVendorForSelectList(CommonSelectListRequestModel parameters)
+        {
+            return await _adminRepository.GetSubVendorForSelectList(parameters);
+        }
+        public async Task<IEnumerable<SelectListResponse>> GetContactTypeForSelectList(CommonSelectListRequestModel parameters)
+        {
+            return await _adminRepository.GetContactTypeForSelectList(parameters);
+        }
+        public async Task<IEnumerable<SelectListResponse>> GetReferralForSelectList(CommonSelectListRequestModel parameters)
+        {
+            return await _adminRepository.GetReferralForSelectList(parameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetCuttingPlanForSelectList(CommonSelectListRequestModel parameters)
+        {
+            return await _adminRepository.GetCuttingPlanForSelectList(parameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetProductDesignForSelectList(CommonSelectListRequestModel parameters)
+        {
+            return await _adminRepository.GetProductDesignForSelectList(parameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetTileSizeForSelectList(CommonSelectListRequestModel parameters)
+        {
+            return await _adminRepository.GetTileSizeForSelectList(parameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetDriverNameForSelectList(CommonSelectListRequestModel parameters)
+        {
+            return await _adminRepository.GetDriverNameForSelectList(parameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetFinishNameForSelectList(CommonSelectListRequestModel parameters)
+        {
+            return await _adminRepository.GetFinishNameForSelectList(parameters);
+        }
+
         #endregion
 
         #region Manage Product Design
@@ -333,19 +380,6 @@ namespace CasaAPI.Services
             return await _adminRepository.ImportManageBoxSize(parameters);
         }
         #endregion
-
-        public async Task<IEnumerable<SelectListResponse>> GetSubVendorForSelectList(CommonSelectListRequestModel parameters)
-        {
-            return await _adminRepository.GetSubVendorForSelectList(parameters);
-        }
-        public async Task<IEnumerable<SelectListResponse>> GetContactTypeForSelectList(CommonSelectListRequestModel parameters)
-        {
-            return await _adminRepository.GetContactTypeForSelectList(parameters);
-        }
-        public async Task<IEnumerable<SelectListResponse>> GetReferralForSelectList(CommonSelectListRequestModel parameters)
-        {
-            return await _adminRepository.GetReferralForSelectList(parameters);
-        }
 
         #region TileType
         public async Task<int> SaveTileType(TileTypeSaveParameters request)
@@ -520,7 +554,6 @@ namespace CasaAPI.Services
         }
 
         #endregion
-
 
         #region sales
         public async Task<IEnumerable<Users>> GetUsersList()
@@ -723,6 +756,81 @@ namespace CasaAPI.Services
         }
         #endregion
         #endregion
-    }
 
+        #region Fold
+        public async Task<int> SaveFold(FoldSaveParameters request)
+        {
+            return await _adminRepository.SaveFold(request);
+        }
+        public async Task<IEnumerable<FoldDetailsResponse>> GetFoldList(FoldSearchParameters request)
+        {
+            return await _adminRepository.GetFoldList(request);
+        }
+        public async Task<FoldDetailsResponse?> GetFoldDetailsById(long id)
+        {
+            return await _adminRepository.GetFoldDetailsById(id);
+        }
+        public async Task<IEnumerable<FoldFailToImportValidationErrors>> ImportFoldsDetails(List<FoldImportSaveParameters> request)
+        {
+            return await _adminRepository.ImportFoldsDetails(request);
+        }
+        #endregion
+
+        #region Flap
+        public async Task<int> SaveFlap(FlapSaveParameters request)
+        {
+            return await _adminRepository.SaveFlap(request);
+        }
+        public async Task<IEnumerable<FlapDetailsResponse>> GetFlapList(FlapSearchParameters request)
+        {
+            return await _adminRepository.GetFlapList(request);
+        }
+        public async Task<FlapDetailsResponse?> GetFlapDetailsById(long id)
+        {
+            return await _adminRepository.GetFlapDetailsById(id);
+        }
+        public async Task<IEnumerable<FlapFailToImportValidationErrors>> ImportFlapsDetails(List<FlapImportSaveParameters> request)
+        {
+            return await _adminRepository.ImportFlapsDetails(request);
+        }
+        #endregion
+
+        #region Title GSM
+        public async Task<int> SaveTitleGSM(TitleGSMSaveParameters request)
+        {
+            return await _adminRepository.SaveTitleGSM(request);
+        }
+        public async Task<IEnumerable<TitleGSMDetailsResponse>> GetTitleGSMList(TitleGSMSearchParameters request)
+        {
+            return await _adminRepository.GetTitleGSMList(request);
+        }
+        public async Task<TitleGSMDetailsResponse?> GetTitleGSMDetailsById(long id)
+        {
+            return await _adminRepository.GetTitleGSMDetailsById(id);
+        }
+        public async Task<IEnumerable<TitleGSMFailToImportValidationErrors>> ImportTitleGSMsDetails(List<TitleGSMImportSaveParameters> request)
+        {
+            return await _adminRepository.ImportTitleGSMsDetails(request);
+        }
+        #endregion
+
+        #region Flap GSM
+        public async Task<int> SaveFlapGSM(FlapGSMSaveParameters request)
+        {
+            return await _adminRepository.SaveFlapGSM(request);
+        }
+        public async Task<IEnumerable<FlapGSMDetailsResponse>> GetFlapGSMList(FlapGSMSearchParameters request)
+        {
+            return await _adminRepository.GetFlapGSMList(request);
+        }
+        public async Task<FlapGSMDetailsResponse?> GetFlapGSMDetailsById(long id)
+        {
+            return await _adminRepository.GetFlapGSMDetailsById(id);
+        }
+        public async Task<IEnumerable<FlapGSMFailToImportValidationErrors>> ImportFlapGSMsDetails(List<FlapGSMImportSaveParameters> request)
+        {
+            return await _adminRepository.ImportFlapGSMsDetails(request);
+        }
+        #endregion
+    }
 }

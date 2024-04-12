@@ -43,6 +43,9 @@
         public const string ReferralImportFormatFileName = "ReferralImportFormatFileName.xlsx";
         public const string DealerImportFormatFileName = "DealerImportFormatFileName.xlsx";
         public const string AllVendorImportFormatFileName = "AllVendorImportFormatFileName.xlsx";
-
+        public const string FoldImportFormatFileName = "FoldMasterImportFileFormat.xlsx";
+        public const string FlapImportFormatFileName = "FlapMasterImportFileFormat.xlsx";
+        public const string TitleGSMImportFormatFileName = "TitleGSMMasterImportFileFormat.xlsx";
+        public const string FlapGSMImportFormatFileName = "FlapGSMMasterImportFileFormat.xlsx";
     }
 }

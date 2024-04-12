@@ -90,6 +90,7 @@ namespace CasaAPI.Controllers
                     data.GSTNumber = record.GSTNumber;
                     data.TelephpneNo = record.TelephpneNo;
                     data.NameOfBank = record.NameOfBank;
+                    data.BankAddress = record.BankAddress;
                     data.ModeOfTransportation = record.ModeOfTransportation;
                     data.BankBranchName = record.BankBranchName;
                     data.UploadGSTNumber=record.UploadGSTNumber;
@@ -192,6 +193,7 @@ namespace CasaAPI.Controllers
                     data.IECCode = vender.IECCode;
                     data.IFSCCode = vender.IFSCCode;
                     data.NameOfBank= vender.NameOfBank;
+                    data.BankAddress = vender.BankAddress;
                     data.ModeOfTransportation= vender.ModeOfTransportation;
                     data.BankBranchName= vender.BankBranchName;
                     data.CreatedBy = vender.CreatedBy;

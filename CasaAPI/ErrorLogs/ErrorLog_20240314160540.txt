@@ -1,0 +1,9 @@
+2024-03-14 16:05:40
+Error Message:
+Ambiguous column name 'Remark'.
+Ambiguous column name 'Remark'.
+Full Exception Details:
+{"Error":"Ambiguous column name \u0027Remark\u0027.\r\nAmbiguous column name \u0027Remark\u0027.","Type":"SqlException"}
+
+*************************************************************************
+

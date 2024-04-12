@@ -22,6 +22,10 @@ using static CasaAPI.Models.GendorModel;
 using LicenseContext = OfficeOpenXml.LicenseContext;
 using static CasaAPI.Models.CuttingSizeModel;
 using static CasaAPI.Models.PanelTypeModel;
+using static CasaAPI.Models.FoldModel;
+using static CasaAPI.Models.FlapModel;
+using static CasaAPI.Models.TitleGSMModel;
+using static CasaAPI.Models.FlapGSMModel;
 
 namespace CasaAPI.Controllers.Admin
 {
@@ -4024,6 +4028,1072 @@ namespace CasaAPI.Controllers.Admin
             return result;
         }
 
+        #endregion
+
+        #region Fold
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveFold(FoldSaveParameters Request)
+        {
+            int result = await _adminService.SaveFold(Request);
+            _response.IsSuccess = false;
+
+            if (result == (int)SaveEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveEnums.NameExists)
+            {
+                _response.Message = "Fold Name is already exists";
+            }
+            else if (result == (int)SaveEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.IsSuccess = true;
+                _response.Message = "Fold details saved sucessfully";
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetFoldsList(FoldSearchParameters request)
+        {
+            IEnumerable<FoldDetailsResponse> lstFolds = await _adminService.GetFoldList(request);
+            _response.Data = lstFolds.ToList();
+            _response.Total = request.pagination.Total;
+            return _response;
+        }
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> GetFoldDetails(long id)
+        {
+            FoldDetailsResponse? fold;
+            if (id <= 0)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstants.Id_Required_Msg;
+            }
+            else
+            {
+                fold = await _adminService.GetFoldDetailsById(id);
+                _response.Data = fold;
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ImportFoldsData([FromQuery] ImportRequest request)
+        {
+            _response.IsSuccess = false;
+            ExcelWorksheets currentSheet;
+            ExcelWorksheet workSheet;
+            List<FoldImportSaveParameters> lstFoldImportDetails = new List<FoldImportSaveParameters>();
+            List<FoldFailToImportValidationErrors>? lstFoldsFailedToImport = new List<FoldFailToImportValidationErrors>();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            int noOfCol, noOfRow;
+            ResponseModel? fileDataValidationRes;
+            FoldImportSaveParameters tempFoldImport;
+
+            if (request.FileUpload == null || request.FileUpload.Length == 0)
+            {
+                _response.Message = "Please upload an excel file to import Fold data";
+                return _response;
+            }
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                request.FileUpload.CopyTo(stream);
+                using ExcelPackage package = new ExcelPackage(stream);
+                currentSheet = package.Workbook.Worksheets;
+                workSheet = currentSheet.First();
+                noOfCol = workSheet.Dimension.End.Column;
+                noOfRow = workSheet.Dimension.End.Row;
+
+                if (!string.Equals(workSheet.Cells[1, 1].Value.ToString(), "FoldName", StringComparison.OrdinalIgnoreCase) ||
+                   !string.Equals(workSheet.Cells[1, 2].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Please upload a valid excel file. Please Download Format file for reference";
+                    return _response;
+                }
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    tempFoldImport = new FoldImportSaveParameters()
+                    {
+                        FoldName = workSheet.Cells[rowIterator, 1].Value?.ToString(),
+                        IsActive = workSheet.Cells[rowIterator, 2].Value?.ToString()
+                    };
+
+                    fileDataValidationRes = ModelStateHelper.GetValidationErrorsList(model: tempFoldImport);
+
+                    if (fileDataValidationRes.IsSuccess)
+                    {
+                        lstFoldImportDetails.Add(tempFoldImport);
+                    }
+                    else
+                    {
+                        lstFoldsFailedToImport.Add(new FoldFailToImportValidationErrors()
+                        {
+                            FoldName = tempFoldImport.FoldName,
+                            IsActive = tempFoldImport.IsActive,
+                            ValidationMessage = fileDataValidationRes.Message
+                        });
+                    }
+                }
+            }
+
+            if (lstFoldImportDetails.Count == 0)
+            {
+                _response.Message = "File does not contains any record(s)";
+                return _response;
+            }
+
+            lstFoldsFailedToImport.AddRange(await _adminService.ImportFoldsDetails(lstFoldImportDetails));
+
+            _response.IsSuccess = true;
+            _response.Message = "Folds list imported successfully";
+
+            #region Generate Excel file for Invalid Data
+            if (lstFoldsFailedToImport != null && lstFoldsFailedToImport.ToList().Count > 0)
+            {
+                _response.Message = "Uploaded file contains invalid records, please check downloaded file for more details";
+                _response.Data = GenerateInvalidFoldDataFile(lstFoldsFailedToImport);
+
+            }
+            #endregion
+
+            return _response;
+        }
+        private byte[] GenerateInvalidFoldDataFile(IEnumerable<FoldFailToImportValidationErrors> lstFoldsFailedToImport)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+
+            using (MemoryStream msInvalidDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelInvalidData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelInvalidData.Workbook.Worksheets.Add("Invalid_Fold_Records");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "FoldName";
+                    WorkSheet1.Cells[1, 2].Value = "IsActive";
+                    WorkSheet1.Cells[1, 3].Value = "ValidationMessage";
+
+                    recordIndex = 2;
+
+                    foreach (FoldFailToImportValidationErrors record in lstFoldsFailedToImport)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = record.FoldName;
+                        WorkSheet1.Cells[recordIndex, 2].Value = record.IsActive;
+                        WorkSheet1.Cells[recordIndex, 3].Value = record.ValidationMessage;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Column(1).AutoFit();
+                    WorkSheet1.Column(2).AutoFit();
+                    WorkSheet1.Column(3).AutoFit();
+
+                    excelInvalidData.SaveAs(msInvalidDataFile);
+                    msInvalidDataFile.Position = 0;
+                    result = msInvalidDataFile.ToArray();
+                }
+            }
+
+            return result;
+        }
+       
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> DownloadFoldTemplate()
+        {
+            byte[]? fileContent = await Task.Run(() => _fileManager.GetFormatFileFromPath(FormatFilesName.FoldImportFormatFileName));
+            if (fileContent == null || fileContent.Length == 0)
+            {
+                _response.Message = ErrorConstants.FileNotExistsToDownload;
+                _response.IsSuccess = false;
+            }
+            else
+            {
+                _response.Data = fileContent;
+            }
+            return _response;
+        }
+     
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportFoldListToExcel(FoldSearchParameters request)
+        {
+            IEnumerable<FoldDetailsResponse> foldDetailsResponses;
+
+            request.IsExport = true;
+            foldDetailsResponses = await _adminService.GetFoldList(request);
+            if (foldDetailsResponses != null && foldDetailsResponses.ToList().Count > 0)
+            {
+                _response.Data = GenerateExcelFoldDataFile(foldDetailsResponses);
+            }
+            else
+            {
+                _response.Message = "Record Not Exists";
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+        private byte[] GenerateExcelFoldDataFile(IEnumerable<FoldDetailsResponse> lstFoldsToImport)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet excelWorksheet;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (MemoryStream msDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelData = new ExcelPackage(new FileInfo($"Fold_List_{DateTime.Now.ToString("yyyyMMddHHmm")}")))
+                {
+                    excelWorksheet = excelData.Workbook.Worksheets.Add("Fold");
+                    excelWorksheet.TabColor = System.Drawing.Color.Black;
+                    excelWorksheet.DefaultRowHeight = 12;
+
+                    //Header of table
+                    excelWorksheet.Row(1).Height = 20;
+                    excelWorksheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    excelWorksheet.Row(1).Style.Font.Bold = true;
+
+                    excelWorksheet.Cells[1, 1].Value = "Fold Name";
+                    excelWorksheet.Cells[1, 2].Value = "Is Active?";
+
+                    recordIndex = 2;
+
+                    foreach (FoldDetailsResponse record in lstFoldsToImport)
+                    {
+                        excelWorksheet.Cells[recordIndex, 1].Value = record.FoldName;
+                        excelWorksheet.Cells[recordIndex, 2].Value = record.IsActive;
+                        recordIndex += 1;
+                    }
+
+                    excelWorksheet.Column(1).AutoFit();
+                    excelWorksheet.Column(2).AutoFit();
+
+                    excelData.SaveAs(msDataFile);
+                    msDataFile.Position = 0;
+                    result = msDataFile.ToArray();
+                }
+            }
+            return result;
+        }
+        #endregion
+
+        #region Flap
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveFlap(FlapSaveParameters Request)
+        {
+            int result = await _adminService.SaveFlap(Request);
+            _response.IsSuccess = false;
+
+            if (result == (int)SaveEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveEnums.NameExists)
+            {
+                _response.Message = "Flap Name is already exists";
+            }
+            else if (result == (int)SaveEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.IsSuccess = true;
+                _response.Message = "Flap details saved sucessfully";
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetFlapsList(FlapSearchParameters request)
+        {
+            IEnumerable<FlapDetailsResponse> lstFlaps = await _adminService.GetFlapList(request);
+            _response.Data = lstFlaps.ToList();
+            _response.Total = request.pagination.Total;
+            return _response;
+        }
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> GetFlapDetails(long id)
+        {
+            FlapDetailsResponse? flap;
+            if (id <= 0)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstants.Id_Required_Msg;
+            }
+            else
+            {
+                flap = await _adminService.GetFlapDetailsById(id);
+                _response.Data = flap;
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ImportFlapsData([FromQuery] ImportRequest request)
+        {
+            _response.IsSuccess = false;
+            ExcelWorksheets currentSheet;
+            ExcelWorksheet workSheet;
+            List<FlapImportSaveParameters> lstFlapImportDetails = new List<FlapImportSaveParameters>();
+            List<FlapFailToImportValidationErrors>? lstFlapsFailedToImport = new List<FlapFailToImportValidationErrors>();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            int noOfCol, noOfRow;
+            ResponseModel? fileDataValidationRes;
+            FlapImportSaveParameters tempFlapImport;
+
+            if (request.FileUpload == null || request.FileUpload.Length == 0)
+            {
+                _response.Message = "Please upload an excel file to import Flap data";
+                return _response;
+            }
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                request.FileUpload.CopyTo(stream);
+                using ExcelPackage package = new ExcelPackage(stream);
+                currentSheet = package.Workbook.Worksheets;
+                workSheet = currentSheet.First();
+                noOfCol = workSheet.Dimension.End.Column;
+                noOfRow = workSheet.Dimension.End.Row;
+
+                if (!string.Equals(workSheet.Cells[1, 1].Value.ToString(), "FlapName", StringComparison.OrdinalIgnoreCase) ||
+                   !string.Equals(workSheet.Cells[1, 2].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Please upload a valid excel file. Please Download Format file for reference";
+                    return _response;
+                }
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    tempFlapImport = new FlapImportSaveParameters()
+                    {
+                        FlapName = workSheet.Cells[rowIterator, 1].Value?.ToString(),
+                        IsActive = workSheet.Cells[rowIterator, 2].Value?.ToString()
+                    };
+
+                    fileDataValidationRes = ModelStateHelper.GetValidationErrorsList(model: tempFlapImport);
+
+                    if (fileDataValidationRes.IsSuccess)
+                    {
+                        lstFlapImportDetails.Add(tempFlapImport);
+                    }
+                    else
+                    {
+                        lstFlapsFailedToImport.Add(new FlapFailToImportValidationErrors()
+                        {
+                            FlapName = tempFlapImport.FlapName,
+                            IsActive = tempFlapImport.IsActive,
+                            ValidationMessage = fileDataValidationRes.Message
+                        });
+                    }
+                }
+            }
+
+            if (lstFlapImportDetails.Count == 0)
+            {
+                _response.Message = "File does not contains any record(s)";
+                return _response;
+            }
+
+            lstFlapsFailedToImport.AddRange(await _adminService.ImportFlapsDetails(lstFlapImportDetails));
+
+            _response.IsSuccess = true;
+            _response.Message = "Flaps list imported successfully";
+
+            #region Generate Excel file for Invalid Data
+            if (lstFlapsFailedToImport != null && lstFlapsFailedToImport.ToList().Count > 0)
+            {
+                _response.Message = "Uploaded file contains invalid records, please check downloaded file for more details";
+                _response.Data = GenerateInvalidFlapDataFile(lstFlapsFailedToImport);
+
+            }
+            #endregion
+
+            return _response;
+        }
+        private byte[] GenerateInvalidFlapDataFile(IEnumerable<FlapFailToImportValidationErrors> lstFlapsFailedToImport)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+
+            using (MemoryStream msInvalidDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelInvalidData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelInvalidData.Workbook.Worksheets.Add("Invalid_Flap_Records");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "FlapName";
+                    WorkSheet1.Cells[1, 2].Value = "IsActive";
+                    WorkSheet1.Cells[1, 3].Value = "ValidationMessage";
+
+                    recordIndex = 2;
+
+                    foreach (FlapFailToImportValidationErrors record in lstFlapsFailedToImport)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = record.FlapName;
+                        WorkSheet1.Cells[recordIndex, 2].Value = record.IsActive;
+                        WorkSheet1.Cells[recordIndex, 3].Value = record.ValidationMessage;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Column(1).AutoFit();
+                    WorkSheet1.Column(2).AutoFit();
+                    WorkSheet1.Column(3).AutoFit();
+
+                    excelInvalidData.SaveAs(msInvalidDataFile);
+                    msInvalidDataFile.Position = 0;
+                    result = msInvalidDataFile.ToArray();
+                }
+            }
+
+            return result;
+        }
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> DownloadFlapTemplate()
+        {
+            byte[]? fileContent = await Task.Run(() => _fileManager.GetFormatFileFromPath(FormatFilesName.FlapImportFormatFileName));
+            if (fileContent == null || fileContent.Length == 0)
+            {
+                _response.Message = ErrorConstants.FileNotExistsToDownload;
+                _response.IsSuccess = false;
+            }
+            else
+            {
+                _response.Data = fileContent;
+            }
+            return _response;
+        }
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportFlapListToExcel(FlapSearchParameters request)
+        {
+            IEnumerable<FlapDetailsResponse> flapDetailsResponses;
+
+            request.IsExport = true;
+            flapDetailsResponses = await _adminService.GetFlapList(request);
+            if (flapDetailsResponses != null && flapDetailsResponses.ToList().Count > 0)
+            {
+                _response.Data = GenerateExcelFlapDataFile(flapDetailsResponses);
+            }
+            else
+            {
+                _response.Message = "Record Not Exists";
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+        private byte[] GenerateExcelFlapDataFile(IEnumerable<FlapDetailsResponse> lstFlapsToImport)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet excelWorksheet;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (MemoryStream msDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelData = new ExcelPackage(new FileInfo($"Flap_List_{DateTime.Now.ToString("yyyyMMddHHmm")}")))
+                {
+                    excelWorksheet = excelData.Workbook.Worksheets.Add("Flap");
+                    excelWorksheet.TabColor = System.Drawing.Color.Black;
+                    excelWorksheet.DefaultRowHeight = 12;
+
+                    //Header of table
+                    excelWorksheet.Row(1).Height = 20;
+                    excelWorksheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    excelWorksheet.Row(1).Style.Font.Bold = true;
+
+                    excelWorksheet.Cells[1, 1].Value = "Flap Name";
+                    excelWorksheet.Cells[1, 2].Value = "Is Active?";
+
+                    recordIndex = 2;
+
+                    foreach (FlapDetailsResponse record in lstFlapsToImport)
+                    {
+                        excelWorksheet.Cells[recordIndex, 1].Value = record.FlapName;
+                        excelWorksheet.Cells[recordIndex, 2].Value = record.IsActive;
+                        recordIndex += 1;
+                    }
+
+                    excelWorksheet.Column(1).AutoFit();
+                    excelWorksheet.Column(2).AutoFit();
+
+                    excelData.SaveAs(msDataFile);
+                    msDataFile.Position = 0;
+                    result = msDataFile.ToArray();
+                }
+            }
+            return result;
+        }
+        #endregion
+
+        #region Title GSM
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveTitleGSM(TitleGSMSaveParameters Request)
+        {
+            int result = await _adminService.SaveTitleGSM(Request);
+            _response.IsSuccess = false;
+
+            if (result == (int)SaveEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveEnums.NameExists)
+            {
+                _response.Message = "Title GSM Name is already exists";
+            }
+            else if (result == (int)SaveEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.IsSuccess = true;
+                _response.Message = "Title GSM details saved sucessfully";
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetTitleGSMsList(TitleGSMSearchParameters request)
+        {
+            IEnumerable<TitleGSMDetailsResponse> lstTitleGSM = await _adminService.GetTitleGSMList(request);
+            _response.Data = lstTitleGSM.ToList();
+            _response.Total = request.pagination.Total;
+            return _response;
+        }
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> GetTitleGSMDetails(long id)
+        {
+            TitleGSMDetailsResponse? titleGSM;
+            if (id <= 0)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstants.Id_Required_Msg;
+            }
+            else
+            {
+                titleGSM = await _adminService.GetTitleGSMDetailsById(id);
+                _response.Data = titleGSM;
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ImportTitleGSMsData([FromQuery] ImportRequest request)
+        {
+            _response.IsSuccess = false;
+            ExcelWorksheets currentSheet;
+            ExcelWorksheet workSheet;
+            List<TitleGSMImportSaveParameters> lstTitleGSMImportDetails = new List<TitleGSMImportSaveParameters>();
+            List<TitleGSMFailToImportValidationErrors>? lstTitleGSMsFailedToImport = new List<TitleGSMFailToImportValidationErrors>();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            int noOfCol, noOfRow;
+            ResponseModel? fileDataValidationRes;
+            TitleGSMImportSaveParameters tempTitleGSMImport;
+
+            if (request.FileUpload == null || request.FileUpload.Length == 0)
+            {
+                _response.Message = "Please upload an excel file to import TitleGSM data";
+                return _response;
+            }
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                request.FileUpload.CopyTo(stream);
+                using ExcelPackage package = new ExcelPackage(stream);
+                currentSheet = package.Workbook.Worksheets;
+                workSheet = currentSheet.First();
+                noOfCol = workSheet.Dimension.End.Column;
+                noOfRow = workSheet.Dimension.End.Row;
+
+                if (!string.Equals(workSheet.Cells[1, 1].Value.ToString(), "TitleGSMName", StringComparison.OrdinalIgnoreCase) ||
+                   !string.Equals(workSheet.Cells[1, 2].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Please upload a valid excel file. Please Download Format file for reference";
+                    return _response;
+                }
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    tempTitleGSMImport = new TitleGSMImportSaveParameters()
+                    {
+                        TitleGSMName = workSheet.Cells[rowIterator, 1].Value?.ToString(),
+                        IsActive = workSheet.Cells[rowIterator, 2].Value?.ToString()
+                    };
+
+                    fileDataValidationRes = ModelStateHelper.GetValidationErrorsList(model: tempTitleGSMImport);
+
+                    if (fileDataValidationRes.IsSuccess)
+                    {
+                        lstTitleGSMImportDetails.Add(tempTitleGSMImport);
+                    }
+                    else
+                    {
+                        lstTitleGSMsFailedToImport.Add(new TitleGSMFailToImportValidationErrors()
+                        {
+                            TitleGSMName = tempTitleGSMImport.TitleGSMName,
+                            IsActive = tempTitleGSMImport.IsActive,
+                            ValidationMessage = fileDataValidationRes.Message
+                        });
+                    }
+                }
+            }
+
+            if (lstTitleGSMImportDetails.Count == 0)
+            {
+                _response.Message = "File does not contains any record(s)";
+                return _response;
+            }
+
+            lstTitleGSMsFailedToImport.AddRange(await _adminService.ImportTitleGSMsDetails(lstTitleGSMImportDetails));
+
+            _response.IsSuccess = true;
+            _response.Message = "Title GSM list imported successfully";
+
+            #region Generate Excel file for Invalid Data
+            if (lstTitleGSMsFailedToImport != null && lstTitleGSMsFailedToImport.ToList().Count > 0)
+            {
+                _response.Message = "Uploaded file contains invalid records, please check downloaded file for more details";
+                _response.Data = GenerateInvalidTitleGSMDataFile(lstTitleGSMsFailedToImport);
+
+            }
+            #endregion
+
+            return _response;
+        }
+        private byte[] GenerateInvalidTitleGSMDataFile(IEnumerable<TitleGSMFailToImportValidationErrors> lstTitleGSMsFailedToImport)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+
+            using (MemoryStream msInvalidDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelInvalidData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelInvalidData.Workbook.Worksheets.Add("Invalid_TitleGSM_Records");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "TitleGSMName";
+                    WorkSheet1.Cells[1, 2].Value = "IsActive";
+                    WorkSheet1.Cells[1, 3].Value = "ValidationMessage";
+
+                    recordIndex = 2;
+
+                    foreach (TitleGSMFailToImportValidationErrors record in lstTitleGSMsFailedToImport)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = record.TitleGSMName;
+                        WorkSheet1.Cells[recordIndex, 2].Value = record.IsActive;
+                        WorkSheet1.Cells[recordIndex, 3].Value = record.ValidationMessage;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Column(1).AutoFit();
+                    WorkSheet1.Column(2).AutoFit();
+                    WorkSheet1.Column(3).AutoFit();
+
+                    excelInvalidData.SaveAs(msInvalidDataFile);
+                    msInvalidDataFile.Position = 0;
+                    result = msInvalidDataFile.ToArray();
+                }
+            }
+
+            return result;
+        }
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> DownloadTitleGSMTemplate()
+        {
+            byte[]? fileContent = await Task.Run(() => _fileManager.GetFormatFileFromPath(FormatFilesName.TitleGSMImportFormatFileName));
+            if (fileContent == null || fileContent.Length == 0)
+            {
+                _response.Message = ErrorConstants.FileNotExistsToDownload;
+                _response.IsSuccess = false;
+            }
+            else
+            {
+                _response.Data = fileContent;
+            }
+            return _response;
+        }
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportTitleGSMListToExcel(TitleGSMSearchParameters request)
+        {
+            IEnumerable<TitleGSMDetailsResponse> titleGSMDetailsResponses;
+
+            request.IsExport = true;
+            titleGSMDetailsResponses = await _adminService.GetTitleGSMList(request);
+            if (titleGSMDetailsResponses != null && titleGSMDetailsResponses.ToList().Count > 0)
+            {
+                _response.Data = GenerateExcelTitleGSMDataFile(titleGSMDetailsResponses);
+            }
+            else
+            {
+                _response.Message = "Record Not Exists";
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+        private byte[] GenerateExcelTitleGSMDataFile(IEnumerable<TitleGSMDetailsResponse> lstTitleGSMToImport)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet excelWorksheet;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (MemoryStream msDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelData = new ExcelPackage(new FileInfo($"TitleGSM_List_{DateTime.Now.ToString("yyyyMMddHHmm")}")))
+                {
+                    excelWorksheet = excelData.Workbook.Worksheets.Add("TitleGSM");
+                    excelWorksheet.TabColor = System.Drawing.Color.Black;
+                    excelWorksheet.DefaultRowHeight = 12;
+
+                    //Header of table
+                    excelWorksheet.Row(1).Height = 20;
+                    excelWorksheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    excelWorksheet.Row(1).Style.Font.Bold = true;
+
+                    excelWorksheet.Cells[1, 1].Value = "Title GSM Name";
+                    excelWorksheet.Cells[1, 2].Value = "Is Active?";
+
+                    recordIndex = 2;
+
+                    foreach (TitleGSMDetailsResponse record in lstTitleGSMToImport)
+                    {
+                        excelWorksheet.Cells[recordIndex, 1].Value = record.TitleGSMName;
+                        excelWorksheet.Cells[recordIndex, 2].Value = record.IsActive;
+                        recordIndex += 1;
+                    }
+
+                    excelWorksheet.Column(1).AutoFit();
+                    excelWorksheet.Column(2).AutoFit();
+
+                    excelData.SaveAs(msDataFile);
+                    msDataFile.Position = 0;
+                    result = msDataFile.ToArray();
+                }
+            }
+            return result;
+        }
+        #endregion
+
+        #region Flap GSM
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveFlapGSM(FlapGSMSaveParameters Request)
+        {
+            int result = await _adminService.SaveFlapGSM(Request);
+            _response.IsSuccess = false;
+
+            if (result == (int)SaveEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveEnums.NameExists)
+            {
+                _response.Message = "Flap GSM Name is already exists";
+            }
+            else if (result == (int)SaveEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.IsSuccess = true;
+                _response.Message = "Flap GSM details saved sucessfully";
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetFlapGSMsList(FlapGSMSearchParameters request)
+        {
+            IEnumerable<FlapGSMDetailsResponse> lstFlapGSM = await _adminService.GetFlapGSMList(request);
+            _response.Data = lstFlapGSM.ToList();
+            _response.Total = request.pagination.Total;
+            return _response;
+        }
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> GetFlapGSMDetails(long id)
+        {
+            FlapGSMDetailsResponse? flapGSM;
+            if (id <= 0)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstants.Id_Required_Msg;
+            }
+            else
+            {
+                flapGSM = await _adminService.GetFlapGSMDetailsById(id);
+                _response.Data = flapGSM;
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ImportFlapGSMsData([FromQuery] ImportRequest request)
+        {
+            _response.IsSuccess = false;
+            ExcelWorksheets currentSheet;
+            ExcelWorksheet workSheet;
+            List<FlapGSMImportSaveParameters> lstFlapGSMImportDetails = new List<FlapGSMImportSaveParameters>();
+            List<FlapGSMFailToImportValidationErrors>? lstFlapGSMsFailedToImport = new List<FlapGSMFailToImportValidationErrors>();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            int noOfCol, noOfRow;
+            ResponseModel? fileDataValidationRes;
+            FlapGSMImportSaveParameters tempFlapGSMImport;
+
+            if (request.FileUpload == null || request.FileUpload.Length == 0)
+            {
+                _response.Message = "Please upload an excel file to import FlapGSM data";
+                return _response;
+            }
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                request.FileUpload.CopyTo(stream);
+                using ExcelPackage package = new ExcelPackage(stream);
+                currentSheet = package.Workbook.Worksheets;
+                workSheet = currentSheet.First();
+                noOfCol = workSheet.Dimension.End.Column;
+                noOfRow = workSheet.Dimension.End.Row;
+
+                if (!string.Equals(workSheet.Cells[1, 1].Value.ToString(), "FlapGSMName", StringComparison.OrdinalIgnoreCase) ||
+                   !string.Equals(workSheet.Cells[1, 2].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Please upload a valid excel file. Please Download Format file for reference";
+                    return _response;
+                }
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    tempFlapGSMImport = new FlapGSMImportSaveParameters()
+                    {
+                        FlapGSMName = workSheet.Cells[rowIterator, 1].Value?.ToString(),
+                        IsActive = workSheet.Cells[rowIterator, 2].Value?.ToString()
+                    };
+
+                    fileDataValidationRes = ModelStateHelper.GetValidationErrorsList(model: tempFlapGSMImport);
+
+                    if (fileDataValidationRes.IsSuccess)
+                    {
+                        lstFlapGSMImportDetails.Add(tempFlapGSMImport);
+                    }
+                    else
+                    {
+                        lstFlapGSMsFailedToImport.Add(new FlapGSMFailToImportValidationErrors()
+                        {
+                            FlapGSMName = tempFlapGSMImport.FlapGSMName,
+                            IsActive = tempFlapGSMImport.IsActive,
+                            ValidationMessage = fileDataValidationRes.Message
+                        });
+                    }
+                }
+            }
+
+            if (lstFlapGSMImportDetails.Count == 0)
+            {
+                _response.Message = "File does not contains any record(s)";
+                return _response;
+            }
+
+            lstFlapGSMsFailedToImport.AddRange(await _adminService.ImportFlapGSMsDetails(lstFlapGSMImportDetails));
+
+            _response.IsSuccess = true;
+            _response.Message = "Flap GSM list imported successfully";
+
+            #region Generate Excel file for Invalid Data
+            if (lstFlapGSMsFailedToImport != null && lstFlapGSMsFailedToImport.ToList().Count > 0)
+            {
+                _response.Message = "Uploaded file contains invalid records, please check downloaded file for more details";
+                _response.Data = GenerateInvalidFlapGSMDataFile(lstFlapGSMsFailedToImport);
+
+            }
+            #endregion
+
+            return _response;
+        }
+        private byte[] GenerateInvalidFlapGSMDataFile(IEnumerable<FlapGSMFailToImportValidationErrors> lstFlapGSMsFailedToImport)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+
+            using (MemoryStream msInvalidDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelInvalidData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelInvalidData.Workbook.Worksheets.Add("Invalid_FlapGSM_Records");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "FlapGSMName";
+                    WorkSheet1.Cells[1, 2].Value = "IsActive";
+                    WorkSheet1.Cells[1, 3].Value = "ValidationMessage";
+
+                    recordIndex = 2;
+
+                    foreach (FlapGSMFailToImportValidationErrors record in lstFlapGSMsFailedToImport)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = record.FlapGSMName;
+                        WorkSheet1.Cells[recordIndex, 2].Value = record.IsActive;
+                        WorkSheet1.Cells[recordIndex, 3].Value = record.ValidationMessage;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Column(1).AutoFit();
+                    WorkSheet1.Column(2).AutoFit();
+                    WorkSheet1.Column(3).AutoFit();
+
+                    excelInvalidData.SaveAs(msInvalidDataFile);
+                    msInvalidDataFile.Position = 0;
+                    result = msInvalidDataFile.ToArray();
+                }
+            }
+
+            return result;
+        }
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> DownloadFlapGSMTemplate()
+        {
+            byte[]? fileContent = await Task.Run(() => _fileManager.GetFormatFileFromPath(FormatFilesName.FlapGSMImportFormatFileName));
+            if (fileContent == null || fileContent.Length == 0)
+            {
+                _response.Message = ErrorConstants.FileNotExistsToDownload;
+                _response.IsSuccess = false;
+            }
+            else
+            {
+                _response.Data = fileContent;
+            }
+            return _response;
+        }
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportFlapGSMListToExcel(FlapGSMSearchParameters request)
+        {
+            IEnumerable<FlapGSMDetailsResponse> flapGSMDetailsResponses;
+
+            request.IsExport = true;
+            flapGSMDetailsResponses = await _adminService.GetFlapGSMList(request);
+            if (flapGSMDetailsResponses != null && flapGSMDetailsResponses.ToList().Count > 0)
+            {
+                _response.Data = GenerateExcelFlapGSMDataFile(flapGSMDetailsResponses);
+            }
+            else
+            {
+                _response.Message = "Record Not Exists";
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+        private byte[] GenerateExcelFlapGSMDataFile(IEnumerable<FlapGSMDetailsResponse> lstFlapGSMToImport)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet excelWorksheet;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (MemoryStream msDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelData = new ExcelPackage(new FileInfo($"FlapGSM_List_{DateTime.Now.ToString("yyyyMMddHHmm")}")))
+                {
+                    excelWorksheet = excelData.Workbook.Worksheets.Add("FlapGSM");
+                    excelWorksheet.TabColor = System.Drawing.Color.Black;
+                    excelWorksheet.DefaultRowHeight = 12;
+
+                    //Header of table
+                    excelWorksheet.Row(1).Height = 20;
+                    excelWorksheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    excelWorksheet.Row(1).Style.Font.Bold = true;
+
+                    excelWorksheet.Cells[1, 1].Value = "Flap GSM Name";
+                    excelWorksheet.Cells[1, 2].Value = "Is Active?";
+
+                    recordIndex = 2;
+
+                    foreach (FlapGSMDetailsResponse record in lstFlapGSMToImport)
+                    {
+                        excelWorksheet.Cells[recordIndex, 1].Value = record.FlapGSMName;
+                        excelWorksheet.Cells[recordIndex, 2].Value = record.IsActive;
+                        recordIndex += 1;
+                    }
+
+                    excelWorksheet.Column(1).AutoFit();
+                    excelWorksheet.Column(2).AutoFit();
+
+                    excelData.SaveAs(msDataFile);
+                    msDataFile.Position = 0;
+                    result = msDataFile.ToArray();
+                }
+            }
+            return result;
+        }
         #endregion
     }
 }

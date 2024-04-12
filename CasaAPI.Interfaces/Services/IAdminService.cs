@@ -14,6 +14,10 @@ using static CasaAPI.Models.TypeModel;
 using static CasaAPI.Models.WeekCloseModel;
 using static CasaAPI.Models.CuttingSizeModel;
 using static CasaAPI.Models.PanelTypeModel;
+using static CasaAPI.Models.FoldModel;
+using static CasaAPI.Models.FlapModel;
+using static CasaAPI.Models.TitleGSMModel;
+using static CasaAPI.Models.FlapGSMModel;
 
 namespace CasaAPI.Interfaces.Services
 {
@@ -101,6 +105,7 @@ namespace CasaAPI.Interfaces.Services
         #region Master Data
         Task<IEnumerable<SelectListResponse>> GetSizeForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetBrandForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetCollection_PanelForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetCollectionForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetCategoryForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetTypeForSelectList(CommonSelectListRequestModel parameters);
@@ -108,6 +113,14 @@ namespace CasaAPI.Interfaces.Services
         Task<IEnumerable<SelectListResponse>> GetSurfaceForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetThicknessForSelectList(CommonSelectListRequestModel parameters);
         Task<IEnumerable<SelectListResponse>> GetTileForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetSubVendorForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetContactTypeForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetReferralForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetCuttingPlanForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetProductDesignForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetTileSizeForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetDriverNameForSelectList(CommonSelectListRequestModel parameters);
+        Task<IEnumerable<SelectListResponse>> GetFinishNameForSelectList(CommonSelectListRequestModel parameters);
         #endregion
 
         #region Product Design
@@ -125,10 +138,6 @@ namespace CasaAPI.Interfaces.Services
         Task<IEnumerable<ManageBoxSizeValidationErrors>> ImportManageBoxSize(List<ImportManageBoxSize> parameters);
         #endregion
 
-        Task<IEnumerable<SelectListResponse>> GetSubVendorForSelectList(CommonSelectListRequestModel parameters);
-        Task<IEnumerable<SelectListResponse>> GetContactTypeForSelectList(CommonSelectListRequestModel parameters);
-        Task<IEnumerable<SelectListResponse>> GetReferralForSelectList(CommonSelectListRequestModel parameters);
-
         #region TileType
         Task<int> SaveTileType(TileTypeSaveParameters request);
         Task<IEnumerable<TileTypeDetailsResponse>> GetTileTypesList(TileTypeSearchParameters request);
@@ -144,7 +153,6 @@ namespace CasaAPI.Interfaces.Services
         Task<IEnumerable<ContactTypeFailToImportValidationErrors>> ImportContactTypesDetails(List<ContactTypeImportSaveParameters> request);
 
         #endregion
-
 
         #region WeekClose
         Task<int> SaveWeekClose(WeekCloseSaveParameters request);
@@ -264,6 +272,38 @@ namespace CasaAPI.Interfaces.Services
         Task<CollectionResponseModel?> GetCollectionMasterDetails(int id);
         Task<IEnumerable<CollectionDataValidationErrors>> ImportCollection(List<ImportedCollection> parameters);
         #endregion
+        #endregion
+
+        #region Fold
+        Task<int> SaveFold(FoldSaveParameters request);
+        Task<IEnumerable<FoldDetailsResponse>> GetFoldList(FoldSearchParameters request);
+        Task<FoldDetailsResponse?> GetFoldDetailsById(long id);
+        Task<IEnumerable<FoldFailToImportValidationErrors>> ImportFoldsDetails(List<FoldImportSaveParameters> request);
+
+        #endregion
+
+        #region Flap
+        Task<int> SaveFlap(FlapSaveParameters request);
+        Task<IEnumerable<FlapDetailsResponse>> GetFlapList(FlapSearchParameters request);
+        Task<FlapDetailsResponse?> GetFlapDetailsById(long id);
+        Task<IEnumerable<FlapFailToImportValidationErrors>> ImportFlapsDetails(List<FlapImportSaveParameters> request);
+
+        #endregion
+
+        #region Title GSM
+        Task<int> SaveTitleGSM(TitleGSMSaveParameters request);
+        Task<IEnumerable<TitleGSMDetailsResponse>> GetTitleGSMList(TitleGSMSearchParameters request);
+        Task<TitleGSMDetailsResponse?> GetTitleGSMDetailsById(long id);
+        Task<IEnumerable<TitleGSMFailToImportValidationErrors>> ImportTitleGSMsDetails(List<TitleGSMImportSaveParameters> request);
+
+        #endregion
+
+        #region Flap GSM
+        Task<int> SaveFlapGSM(FlapGSMSaveParameters request);
+        Task<IEnumerable<FlapGSMDetailsResponse>> GetFlapGSMList(FlapGSMSearchParameters request);
+        Task<FlapGSMDetailsResponse?> GetFlapGSMDetailsById(long id);
+        Task<IEnumerable<FlapGSMFailToImportValidationErrors>> ImportFlapGSMsDetails(List<FlapGSMImportSaveParameters> request);
+
         #endregion
     }
 }

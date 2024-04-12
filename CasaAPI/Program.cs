@@ -138,21 +138,13 @@ var app = builder.Build();
     //}
     #endregion
 
-    app.UseStaticFiles(); // For the wwwroot folder
+    //app.UseStaticFiles(); // For the wwwroot folder
 
-    app.UseStaticFiles(new StaticFileOptions()    {        FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), @"Uploads")),
-        RequestPath = new PathString("/Uploads")    });
-
-    //app.UseStaticFiles(new StaticFileOptions()
-    //{
-    //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Uploads")),
-    //    RequestPath = new PathString("/Uploads")
-
-
-    //    //FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Uploads")),
-    //    //RequestPath = new PathString("/Uploads")
-    //});
+    app.UseStaticFiles(new StaticFileOptions()
+    {
+        FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Uploads")),
+        RequestPath = new PathString("/Uploads")
+    });
 
     app.UseAuthentication();
     app.UseAuthorization();

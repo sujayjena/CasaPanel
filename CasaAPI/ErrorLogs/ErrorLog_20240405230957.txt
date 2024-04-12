@@ -1,0 +1,8 @@
+2024-04-05 23:09:57
+Error Message:
+@Total is not a parameter for procedure GetFoldsList.
+Full Exception Details:
+{"Error":"@Total is not a parameter for procedure GetFoldsList.","Type":"SqlException"}
+
+*************************************************************************
+

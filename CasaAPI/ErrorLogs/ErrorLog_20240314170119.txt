@@ -1,0 +1,8 @@
+2024-03-14 17:01:19
+Error Message:
+The input is not a valid Base-64 string as it contains a non-base 64 character, more than two padding characters, or an illegal character among the padding characters.
+Full Exception Details:
+{"Error":"The input is not a valid Base-64 string as it contains a non-base 64 character, more than two padding characters, or an illegal character among the padding characters.","Type":"FormatException"}
+
+*************************************************************************
+

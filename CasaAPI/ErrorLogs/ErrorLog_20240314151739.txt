@@ -1,0 +1,8 @@
+2024-03-14 15:17:39
+Error Message:
+Procedure or function 'SaveProductDesigns' expects parameter '@FinishName', which was not supplied.
+Full Exception Details:
+{"Error":"Procedure or function \u0027SaveProductDesigns\u0027 expects parameter \u0027@FinishName\u0027, which was not supplied.","Type":"SqlException"}
+
+*************************************************************************
+

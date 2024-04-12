@@ -19,6 +19,10 @@ using static CasaAPI.Models.PanelTypeModel;
 using static CasaAPI.Models.WeekCloseModel;
 using static CasaAPI.Models.CuttingSizeModel;
 using Newtonsoft.Json.Linq;
+using static CasaAPI.Models.FoldModel;
+using static CasaAPI.Models.FlapModel;
+using static CasaAPI.Models.TitleGSMModel;
+using static CasaAPI.Models.FlapGSMModel;
 
 namespace CasaAPI.Repositories
 {
@@ -436,6 +440,13 @@ namespace CasaAPI.Repositories
             return await ListByStoredProcedure<SelectListResponse>("GetBrandMasterForSelectList", queryParameters);
         }
 
+        public async Task<IEnumerable<SelectListResponse>> GetCollection_PanelForSelectList(CommonSelectListRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            return await ListByStoredProcedure<SelectListResponse>("GetCollection_PanelForSelectList", queryParameters);
+        }
+
         public async Task<IEnumerable<SelectListResponse>> GetCollectionForSelectList(CommonSelectListRequestModel parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
@@ -483,6 +494,60 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@IsActive", parameters.IsActive);
             return await ListByStoredProcedure<SelectListResponse>("GetTileSizeMasterForSelectList", queryParameters);
         }
+        public async Task<IEnumerable<SelectListResponse>> GetSubVendorForSelectList(CommonSelectListRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            return await ListByStoredProcedure<SelectListResponse>("GetSubVendorMasterForSelectList", queryParameters);
+        }
+        public async Task<IEnumerable<SelectListResponse>> GetContactTypeForSelectList(CommonSelectListRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            return await ListByStoredProcedure<SelectListResponse>("GetContactTypeForSelectList", queryParameters);
+        }
+        public async Task<IEnumerable<SelectListResponse>> GetReferralForSelectList(CommonSelectListRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            return await ListByStoredProcedure<SelectListResponse>("GetReferralForSelectList", queryParameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetCuttingPlanForSelectList(CommonSelectListRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            return await ListByStoredProcedure<SelectListResponse>("GetCuttingPlanForSelectList", queryParameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetProductDesignForSelectList(CommonSelectListRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            return await ListByStoredProcedure<SelectListResponse>("GetProductDesignForSelectList", queryParameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetTileSizeForSelectList(CommonSelectListRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            return await ListByStoredProcedure<SelectListResponse>("GetTileSizeForSelectList", queryParameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetDriverNameForSelectList(CommonSelectListRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            return await ListByStoredProcedure<SelectListResponse>("GetDriverNameForSelectList", queryParameters);
+        }
+
+        public async Task<IEnumerable<SelectListResponse>> GetFinishNameForSelectList(CommonSelectListRequestModel parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            return await ListByStoredProcedure<SelectListResponse>("GetFinishNameForSelectList", queryParameters);
+        }
+
         #endregion
 
         #region Manage Product Design
@@ -539,6 +604,7 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@BoxCoverageAreaSqFoot", parameters?.BoxCoverageAreaSqFoot);
             queryParameters.Add("@BoxCoverageAreaSqMeter", parameters?.BoxCoverageAreaSqMeter);
             queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@FinishName", parameters.FinishName);
             queryParameters.Add("@XmlProductDesignFiles", xmlProductDesignFiles);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
 
@@ -601,25 +667,6 @@ namespace CasaAPI.Repositories
             return await ListByStoredProcedure<ManageBoxSizeValidationErrors>("SaveImportManageBoxSize", queryParameters);
         }
         #endregion
-
-        public async Task<IEnumerable<SelectListResponse>> GetSubVendorForSelectList(CommonSelectListRequestModel parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@IsActive", parameters.IsActive);
-            return await ListByStoredProcedure<SelectListResponse>("GetSubVendorMasterForSelectList", queryParameters);
-        }
-        public async Task<IEnumerable<SelectListResponse>> GetContactTypeForSelectList(CommonSelectListRequestModel parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@IsActive", parameters.IsActive);
-            return await ListByStoredProcedure<SelectListResponse>("GetContactTypeForSelectList", queryParameters);
-        }
-        public async Task<IEnumerable<SelectListResponse>> GetReferralForSelectList(CommonSelectListRequestModel parameters)
-        {
-            DynamicParameters queryParameters = new DynamicParameters();
-            queryParameters.Add("@IsActive", parameters.IsActive);
-            return await ListByStoredProcedure<SelectListResponse>("GetReferralForSelectList", queryParameters);
-        }
 
         #region TitleType
         public async Task<int> SaveTileType(TileTypeSaveParameters parameters)
@@ -1399,6 +1446,182 @@ namespace CasaAPI.Repositories
         }
         #endregion
 
+        #endregion
+
+        #region Fold
+        public async Task<int> SaveFold(FoldSaveParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@FoldId", parameters.FoldId);
+            queryParameters.Add("@FoldName", parameters.FoldName.SanitizeValue().ToUpper());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveFoldDetails", queryParameters);
+        }
+        public async Task<IEnumerable<FoldDetailsResponse>> GetFoldList(FoldSearchParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<FoldDetailsResponse>("GetFoldList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+        public async Task<FoldDetailsResponse?> GetFoldDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+
+            return (await ListByStoredProcedure<FoldDetailsResponse>("GetFoldDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<FoldFailToImportValidationErrors>> ImportFoldsDetails(List<FoldImportSaveParameters> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlFoldData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlFoldData", xmlFoldData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<FoldFailToImportValidationErrors>("SaveImportFoldDetails", queryParameters);
+        }
+        #endregion
+
+        #region Flap
+        public async Task<int> SaveFlap(FlapSaveParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@FlapId", parameters.FlapId);
+            queryParameters.Add("@FlapName", parameters.FlapName.SanitizeValue().ToUpper());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveFlapDetails", queryParameters);
+        }
+        public async Task<IEnumerable<FlapDetailsResponse>> GetFlapList(FlapSearchParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<FlapDetailsResponse>("GetFlapList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+        public async Task<FlapDetailsResponse?> GetFlapDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+
+            return (await ListByStoredProcedure<FlapDetailsResponse>("GetFlapDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<FlapFailToImportValidationErrors>> ImportFlapsDetails(List<FlapImportSaveParameters> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlFlapData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlFlapData", xmlFlapData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<FlapFailToImportValidationErrors>("SaveImportFlapDetails", queryParameters);
+        }
+        #endregion
+
+        #region Title GSM
+        public async Task<int> SaveTitleGSM(TitleGSMSaveParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@TitleGSMId", parameters.TitleGSMId);
+            queryParameters.Add("@TitleGSMName", parameters.TitleGSMName.SanitizeValue().ToUpper());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveTitleGSMDetails", queryParameters);
+        }
+        public async Task<IEnumerable<TitleGSMDetailsResponse>> GetTitleGSMList(TitleGSMSearchParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<TitleGSMDetailsResponse>("GetTitleGSMList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+        public async Task<TitleGSMDetailsResponse?> GetTitleGSMDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+
+            return (await ListByStoredProcedure<TitleGSMDetailsResponse>("GetTitleGSMDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<TitleGSMFailToImportValidationErrors>> ImportTitleGSMsDetails(List<TitleGSMImportSaveParameters> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlTitleGSMData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlTitleGSMData", xmlTitleGSMData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<TitleGSMFailToImportValidationErrors>("SaveImportTitleGSMDetails", queryParameters);
+        }
+        #endregion
+
+        #region Flap GSM
+        public async Task<int> SaveFlapGSM(FlapGSMSaveParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@FlapGSMId", parameters.FlapGSMId);
+            queryParameters.Add("@FlapGSMName", parameters.FlapGSMName.SanitizeValue().ToUpper());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveFlapGSMDetails", queryParameters);
+        }
+        public async Task<IEnumerable<FlapGSMDetailsResponse>> GetFlapGSMList(FlapGSMSearchParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<FlapGSMDetailsResponse>("GetFlapGSMList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+        public async Task<FlapGSMDetailsResponse?> GetFlapGSMDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+
+            return (await ListByStoredProcedure<FlapGSMDetailsResponse>("GetFlapGSMDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<FlapGSMFailToImportValidationErrors>> ImportFlapGSMsDetails(List<FlapGSMImportSaveParameters> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlFlapGSMData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlFlapGSMData", xmlFlapGSMData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<FlapGSMFailToImportValidationErrors>("SaveImportFlapGSMDetails", queryParameters);
+        }
         #endregion
     }
 }

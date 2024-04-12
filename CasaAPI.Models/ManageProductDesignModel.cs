@@ -60,6 +60,8 @@ namespace CasaAPI.Models
         public decimal? BoxCoverageAreaSqMeter { get; set; }
         public bool IsActive { get; set; }
 
+        public string FinishName { get; set; }
+
         public List<IFormFile>? DesignFiles { get; set; }
         public List<ProductDesignFiles> ProductDesignFiles { get; set; }
 
@@ -100,6 +102,7 @@ namespace CasaAPI.Models
         public decimal WeightPerBox { get; set; }
         public decimal BoxCoverageAreaSqFoot { get; set; }
         public decimal BoxCoverageAreaSqMeter { get; set; }
+        public string FinishName { get; set; }
     }
 
     public class ProductDesignDetailsResponse : ProductDesignResponse
@@ -144,6 +147,8 @@ namespace CasaAPI.Models
         public decimal BoxCoverageAreaSqMeter { get; set; }
         [Required(ErrorMessage = ValidationConstants.IsActiveYesNoRequired_Msg)]
         [RegularExpression(ValidationConstants.IsActiveYesNoRegExp, ErrorMessage = ValidationConstants.IsActiveYesNoRegExp_Msg)]
+
+        public string FinishName { get; set; }
         public string IsActive { get; set; }
     }
 
@@ -163,6 +168,7 @@ namespace CasaAPI.Models
         public decimal WeightPerBox { get; set; }
         public decimal BoxCoverageAreaSqFoot { get; set; }
         public decimal BoxCoverageAreaSqMeter { get; set; }
+        public string FinishName { get; set; }
         public string IsActive { get; set; }
         public string ValidationMessage { get; set; }
     }

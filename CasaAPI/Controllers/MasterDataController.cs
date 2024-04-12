@@ -40,6 +40,15 @@ namespace AVSalesBoosterAPI.Controllers
 
         [Route("[action]")]
         [HttpPost]
+        public async Task<ResponseModel> GetCollection_PanelForSelectList(CommonSelectListRequestModel parameters)
+        {
+            IEnumerable<SelectListResponse> lstResponse = await _adminService.GetCollection_PanelForSelectList(parameters);
+            _response.Data = lstResponse.ToList();
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
         public async Task<ResponseModel> GetCollectionForSelectList(CommonSelectListRequestModel parameters)
         {
             IEnumerable<SelectListResponse> lstResponse = await _adminService.GetCollectionForSelectList(parameters);
@@ -178,6 +187,51 @@ namespace AVSalesBoosterAPI.Controllers
         public async Task<ResponseModel> GetCustomerContactsListForFields(CustomerContactsListRequest parameters)
         {
             IEnumerable<CustomerContactsListForFields> lstResponse = await _adminService.GetCustomerContactsListForFields(parameters);
+            _response.Data = lstResponse.ToList();
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetCuttingPlanForSelectList(CommonSelectListRequestModel parameters)
+        {
+            IEnumerable<SelectListResponse> lstResponse = await _adminService.GetCuttingPlanForSelectList(parameters);
+            _response.Data = lstResponse.ToList();
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetProductDesignForSelectList(CommonSelectListRequestModel parameters)
+        {
+            IEnumerable<SelectListResponse> lstResponse = await _adminService.GetProductDesignForSelectList(parameters);
+            _response.Data = lstResponse.ToList();
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetTileSizeForSelectList(CommonSelectListRequestModel parameters)
+        {
+            IEnumerable<SelectListResponse> lstResponse = await _adminService.GetTileSizeForSelectList(parameters);
+            _response.Data = lstResponse.ToList();
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetDriverNameForSelectList(CommonSelectListRequestModel parameters)
+        {
+            IEnumerable<SelectListResponse> lstResponse = await _adminService.GetDriverNameForSelectList(parameters);
+            _response.Data = lstResponse.ToList();
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetFinishNameForSelectList(CommonSelectListRequestModel parameters)
+        {
+            IEnumerable<SelectListResponse> lstResponse = await _adminService.GetFinishNameForSelectList(parameters);
             _response.Data = lstResponse.ToList();
             return _response;
         }

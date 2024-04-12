@@ -51,6 +51,7 @@ namespace CasaAPI.Models
         public string ContactEmailId { get; set; }
         public decimal? BankAcNo { get; set; }
         public string NameOfBank { get; set; }
+        public string BankAddress { get; set; }
         public string BankBranchName { get; set; }
         public string IFSCCode { get; set; }
         public string MICRCode { get; set; }
@@ -106,6 +107,7 @@ namespace CasaAPI.Models
         public string ContactEmailId { get; set; }
         public decimal BankAcNo { get; set; }
         public string NameOfBank { get; set; }
+        public string BankAddress { get; set; }
         public string BankBranchName { get; set; }
         public string IFSCCode { get; set; }
         public string MICRCode { get; set; }

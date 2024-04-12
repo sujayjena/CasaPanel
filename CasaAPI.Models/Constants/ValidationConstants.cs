@@ -445,6 +445,30 @@
         public const string SeriesRequied_Msg = @"Series is required";
         public const string ProjectNameRequied_Msg = @"Project Name is required";
 
+        public const string FoldNameRequied_Msg = @"Fold Name is required";
+        public const string FoldNameRegExp = @"^[a-zA-Z0-9-\s]+$";
+        public const string FoldNameRegExp_Msg = "Please enter a valid value for Fold Name";
+        public const int FoldName_MaxLength = 100;
+        public const string FoldName_MaxLength_Msg = "More than 100 characters are not allowed for Fold Name";
+
+        public const string FlapNameRequied_Msg = @"Flap Name is required";
+        public const string FlapNameRegExp = @"^[a-zA-Z0-9-\s]+$";
+        public const string FlapNameRegExp_Msg = "Please enter a valid value for Flap Name";
+        public const int FlapName_MaxLength = 100;
+        public const string FlapName_MaxLength_Msg = "More than 100 characters are not allowed for Flap Name";
+
+        public const string TitleGSMNameRequied_Msg = @"Title GSM Name is required";
+        public const string TitleGSMNameRegExp = @"^[a-zA-Z0-9-\s]+$";
+        public const string TitleGSMNameRegExp_Msg = "Please enter a valid value for Title GSM Name";
+        public const int TitleGSMName_MaxLength = 100;
+        public const string TitleGSMName_MaxLength_Msg = "More than 100 characters are not allowed for Title GSM Name";
+
+        public const string FlapGSMNameRequied_Msg = @"Flap GSM Name is required";
+        public const string FlapGSMNameRegExp = @"^[a-zA-Z0-9-\s]+$";
+        public const string FlapGSMNameRegExp_Msg = "Please enter a valid value for Flap GSM Name";
+        public const int FlapGSMName_MaxLength = 100;
+        public const string FlapGSMName_MaxLength_Msg = "More than 100 characters are not allowed for Flap GSM Name";
+
         #endregion
     }
 }
