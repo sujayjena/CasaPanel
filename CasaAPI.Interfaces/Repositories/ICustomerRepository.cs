@@ -6,7 +6,7 @@ namespace CasaAPI.Interfaces.Repositories
     {
         Task<IEnumerable<CustomerResponse>> GetCustomersList(SearchCustomerRequest request);
         Task<int> SaveCustomerDetails(CustomerRequest parameters);
-        Task<IEnumerable<ContactDetail>> GetCustomerContactDetailsById(long CustomerId);
+        Task<IEnumerable<ContactDetailResponse>> GetCustomerContactDetailsById(long CustomerId);
         Task<IEnumerable<AddressDetail>> GetCustomerAddressDetailsById(long CustomerId);
         Task<CustomerResponse?> GetCustomerDetailsById(long id);
         Task<IEnumerable<CustomerDataValidationErrors>> ImportCustomersDetails(List<ImportedCustomerDetails> parameters);

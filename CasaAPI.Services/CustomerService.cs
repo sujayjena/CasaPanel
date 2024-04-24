@@ -40,11 +40,11 @@ namespace CasaAPI.Services
 
                 objCustomerDetailsResponse.contactDetails = (await _customerRepository.GetCustomerContactDetailsById(data.CustomerId)).ToList();
 
-                foreach (ContactDetail contact in objCustomerDetailsResponse.contactDetails)
-                {
-                    contact.PanCardFile = _fileManager.GetCustomerDocuments(contact.PanCardSavedFileName);
-                    contact.AdharCardFile = _fileManager.GetCustomerDocuments(contact.AdharCardSavedFileName);
-                }
+                //foreach (ContactDetailResponse contact in objCustomerDetailsResponse.contactDetails)
+                //{
+                //    contact.PanCardFile = _fileManager.GetCustomerDocuments(contact.PanCardSavedFileName);
+                //    contact.AdharCardFile = _fileManager.GetCustomerDocuments(contact.AdharCardSavedFileName);
+                //}
 
                 objCustomerDetailsResponse.addressDetails = (await _customerRepository.GetCustomerAddressDetailsById(data.CustomerId)).ToList();
             }

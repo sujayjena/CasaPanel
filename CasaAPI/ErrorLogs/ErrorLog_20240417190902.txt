@@ -1,0 +1,8 @@
+2024-04-17 19:09:02
+Error Message:
+Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+Full Exception Details:
+{"Error":"Index was out of range. Must be non-negative and less than the size of the collection. (Parameter \u0027index\u0027)","Type":"ArgumentOutOfRangeException"}
+
+*************************************************************************
+

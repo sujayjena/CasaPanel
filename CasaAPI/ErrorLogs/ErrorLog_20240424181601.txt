@@ -1,0 +1,8 @@
+2024-04-24 18:16:01
+Error Message:
+Incorrect syntax near '*'.
+Full Exception Details:
+{"Error":"Incorrect syntax near \u0027*\u0027.","Type":"SqlException"}
+
+*************************************************************************
+

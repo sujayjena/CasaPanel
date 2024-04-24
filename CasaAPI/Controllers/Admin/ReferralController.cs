@@ -28,9 +28,45 @@ namespace CasaAPI.Controllers.Admin
         #region Referral
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> SaveReferral(ReferralSaveParameters Request)
+        public async Task<ResponseModel> SaveReferral([FromForm] ReferralSaveParameters parameter)
         {
-            int result = await _adminService.SaveReferral(Request);
+            int result;
+            List<ResponseModel> lstValidationResponse = new List<ResponseModel>();
+            ResponseModel? validationResponse;
+
+
+            if (HttpContext.Request.Form.Files.Count > 0)
+            {
+                if (string.IsNullOrEmpty(parameter.AadharSaveFileName))
+                {
+                    parameter.AadharFile = HttpContext.Request.Form.Files["AadharFile"];
+                    parameter.AadharFileName = parameter.AadharFile?.FileName;
+                }
+
+                if (string.IsNullOrEmpty(parameter.PanCardSaveFileName))
+                {
+                    parameter.PanCardFile = HttpContext.Request.Form.Files["PanCardFile"];
+                    parameter.PanCardFileName = parameter.PanCardFile?.FileName;
+                }
+            }
+
+            //To validate Main object
+            lstValidationResponse.Add(ModelStateHelper.GetValidationErrorsList(parameter));
+
+            validationResponse = lstValidationResponse.Where(v => v.IsSuccess == false).FirstOrDefault();
+
+            if (validationResponse != null && validationResponse.IsSuccess == false)
+            {
+                return validationResponse;
+            }
+
+            if (parameter.AadharFile != null)
+                parameter.AadharSaveFileName = _fileManager.UploadReferralDocuments(parameter.AadharFile);
+
+            if (parameter.PanCardFile != null)
+                parameter.PanCardSaveFileName = _fileManager.UploadReferralDocuments(parameter.PanCardFile);
+
+            result = await _adminService.SaveReferral(parameter);
             _response.IsSuccess = false;
 
             if (result == (int)SaveEnums.NoRecordExists)
@@ -66,6 +102,7 @@ namespace CasaAPI.Controllers.Admin
         [HttpGet]
         public async Task<ResponseModel> GetReferralDetails(long id)
         {
+            var host = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
             ReferralDetailsResponse? referral;
 
             if (id <= 0)
@@ -76,6 +113,18 @@ namespace CasaAPI.Controllers.Admin
             else
             {
                 referral = await _adminService.GetReferralDetailsById(id);
+                if (referral != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(referral.AadharSaveFileName))
+                    {
+                        referral.AadharFileUrl = host + _fileManager.GetReferralDocumentsFile(referral.AadharSaveFileName);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(referral.PanCardSaveFileName))
+                    {
+                        referral.PanCardFileUrl = host + _fileManager.GetReferralDocumentsFile(referral.PanCardSaveFileName);
+                    }
+                }
                 _response.Data = referral;
             }
 

@@ -469,6 +469,18 @@
         public const int FlapGSMName_MaxLength = 100;
         public const string FlapGSMName_MaxLength_Msg = "More than 100 characters are not allowed for Flap GSM Name";
 
+        public const string InnerGSMNameRequied_Msg = @"Inner GSM Name is required";
+        public const string InnerGSMNameRegExp = @"^[a-zA-Z0-9-\s]+$";
+        public const string InnerGSMNameRegExp_Msg = "Please enter a valid value for Inner GSM Name";
+        public const int InnerGSMName_MaxLength = 100;
+        public const string InnerGSMName_MaxLength_Msg = "More than 100 characters are not allowed for Inner GSM Name";
+
+        public const string TitleProcessNameRequied_Msg = @"Title Process Name is required";
+        public const string TitleProcessNameRegExp = @"^[a-zA-Z0-9-\s]+$";
+        public const string TitleProcessNameRegExp_Msg = "Please enter a valid value for Title Process Name";
+        public const int TitleProcessName_MaxLength = 100;
+        public const string TitleProcessName_MaxLength_Msg = "More than 100 characters are not allowed for Title Process Name";
+
         #endregion
     }
 }

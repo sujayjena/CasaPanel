@@ -46,12 +46,14 @@ namespace CasaAPI.Controllers
                     VisitDate = list.VisitDate,
                     CustomerId = list.CustomerId,
                     CustomerTypeId = list.CustomerTypeId,
-                    StateId = list.StateId,
-                    StateName = list.StateName,
                     RegionId = list.RegionId,
                     RegionName = list.RegionName,
+                    StateId = list.StateId,
+                    StateName = list.StateName,
                     DistrictId = list.DistrictId,
                     DistrictName = list.DistrictName,
+                    CityId = list.CityId,
+                    CityName = list.CityName,
                     AreaId = list.AreaId,
                     AreaName = list.AreaName,
                     AddressId = list.AddressId,
@@ -231,19 +233,20 @@ namespace CasaAPI.Controllers
                     !string.Equals(workSheet.Cells[1, 2].Value.ToString(), "EmployeeName", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 3].Value.ToString(), "CustomerTypeName", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 4].Value.ToString(), "CustomerName", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 5].Value.ToString(), "StateName", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 6].Value.ToString(), "RegionName", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 5].Value.ToString(), "RegionName", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 6].Value.ToString(), "StateName", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 7].Value.ToString(), "DistrictName", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 8].Value.ToString(), "AreaName", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 9].Value.ToString(), "ContactPerson", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 10].Value.ToString(), "ContactNumber", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 11].Value.ToString(), "EmailId", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 12].Value.ToString(), "NextActionDate", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 13].Value.ToString(), "Latitude", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 14].Value.ToString(), "Longitude", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 15].Value.ToString(), "Address", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 16].Value.ToString(), "Remarks", StringComparison.OrdinalIgnoreCase) ||
-                   !string.Equals(workSheet.Cells[1, 17].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
+                    !string.Equals(workSheet.Cells[1, 8].Value.ToString(), "CityName", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 9].Value.ToString(), "AreaName", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 10].Value.ToString(), "ContactPerson", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 11].Value.ToString(), "ContactNumber", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 12].Value.ToString(), "EmailId", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 13].Value.ToString(), "NextActionDate", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 14].Value.ToString(), "Latitude", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 15].Value.ToString(), "Longitude", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 16].Value.ToString(), "Address", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(workSheet.Cells[1, 17].Value.ToString(), "Remarks", StringComparison.OrdinalIgnoreCase) ||
+                   !string.Equals(workSheet.Cells[1, 18].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
                 {
                     _response.IsSuccess = false;
                     _response.Message = "Please upload a valid excel file. Please Download Format file for reference";
@@ -265,19 +268,20 @@ namespace CasaAPI.Controllers
                         EmployeeName = workSheet.Cells[rowIterator, 2].Value?.ToString(),
                         CustomerTypeName = workSheet.Cells[rowIterator, 3].Value?.ToString(),
                         CustomerName = workSheet.Cells[rowIterator, 4].Value?.ToString(),
-                        StateName = workSheet.Cells[rowIterator, 5].Value?.ToString(),
-                        RegionName = workSheet.Cells[rowIterator, 6].Value?.ToString(),
+                        RegionName = workSheet.Cells[rowIterator, 5].Value?.ToString(),
+                        StateName = workSheet.Cells[rowIterator, 6].Value?.ToString(),
                         DistrictName = workSheet.Cells[rowIterator, 7].Value?.ToString(),
-                        AreaName = workSheet.Cells[rowIterator, 8].Value?.ToString(),
-                        ContactPerson = workSheet.Cells[rowIterator, 9].Value?.ToString(),
-                        ContactNumber = workSheet.Cells[rowIterator, 10].Value?.ToString(),
-                        EmailId = workSheet.Cells[rowIterator, 11].Value?.ToString(),
-                        NextActionDate = Convert.ToDateTime(workSheet.Cells[rowIterator, 12].Value),
-                        Latitude = Convert.ToDecimal(workSheet.Cells[rowIterator, 13].Value?.ToString()),
-                        Longitude = Convert.ToDecimal(workSheet.Cells[rowIterator, 14].Value?.ToString()),
-                        Address = workSheet.Cells[rowIterator, 15].Value?.ToString(),
-                        Remarks = workSheet.Cells[rowIterator, 16].Value?.ToString(),
-                        IsActive = workSheet.Cells[rowIterator, 17].Value?.ToString()
+                        CityName = workSheet.Cells[rowIterator, 8].Value?.ToString(),
+                        AreaName = workSheet.Cells[rowIterator, 9].Value?.ToString(),
+                        ContactPerson = workSheet.Cells[rowIterator, 10].Value?.ToString(),
+                        ContactNumber = workSheet.Cells[rowIterator, 11].Value?.ToString(),
+                        EmailId = workSheet.Cells[rowIterator, 12].Value?.ToString(),
+                        NextActionDate = Convert.ToDateTime(workSheet.Cells[rowIterator, 13].Value),
+                        Latitude = Convert.ToDecimal(workSheet.Cells[rowIterator, 14].Value?.ToString()),
+                        Longitude = Convert.ToDecimal(workSheet.Cells[rowIterator, 15].Value?.ToString()),
+                        Address = workSheet.Cells[rowIterator, 16].Value?.ToString(),
+                        Remarks = workSheet.Cells[rowIterator, 17].Value?.ToString(),
+                        IsActive = workSheet.Cells[rowIterator, 18].Value?.ToString()
                     });
                 }
             }

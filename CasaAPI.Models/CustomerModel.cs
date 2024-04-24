@@ -89,9 +89,11 @@ namespace CasaAPI.Models
         public long RoleId { get; set; }
         public string EmployeeRole { get; set; }
         public string Address { get; set; }
-        public string StateName { get; set; }
+       
         public string RegionName { get; set; }
+        public string StateName { get; set; }
         public string DistrictName { get; set; }
+        public string CityName { get; set; }
         public string AreaName { get; set; }
 
         public string GstFileName { get; set; }
@@ -109,10 +111,36 @@ namespace CasaAPI.Models
         public DateTime CreatedOn { get; set; }
     }
 
+    public class ContactDetailResponse: CreationDetails
+    {
+        public long ContactId { get; set; }
+        public string ContactName { get; set; }
+        public string MobileNo { get; set; }
+        public string EmailId { get; set; }
+        public string RefPartyName { get; set; }
+
+        public string PanCardFileName { get; set; }
+        public string PanCardSavedFileName { get; set; }
+        public string PanCardFileUrl { get; set; }
+
+        public string AdharCardFileName { get; set; }
+        public string AdharCardSavedFileName { get; set; }
+        public string AdharCardFileUrl { get; set; }
+
+        public bool IsActive { get; set; }
+        public bool IsDefault { get; set; }
+        public string PartyName { get; set; }
+        public string RefPhoneNumber { get; set; }
+        public string RefMobileNumber { get; set; }
+        public string ModifierName { get; set; }
+        public long? ModifiedBy { get; set; }
+        public DateTime? ModifiedOn { get; set; }
+    }
+
     public class CustomerDetailsResponse
     {
         public CustomerResponse customerDetails { get; set; }
-        public List<ContactDetail> contactDetails { get; set; }
+        public List<ContactDetailResponse> contactDetails { get; set; }
         public List<AddressDetail> addressDetails { get; set; }
     }
 
@@ -173,17 +201,21 @@ namespace CasaAPI.Models
         //[MaxLength(ValidationConstants.Address_MaxLength, ErrorMessage = ValidationConstants.Address_MaxLength_Msg)]
         public string Address { get; set; }
 
-        //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.StateRequied_Dropdown_Msg)]
-        public long StateId { get; set; }
-        public string StateName { get; set; }
-
         //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.ReportingToRequied_Dropdown_Msg)]
         public long RegionId { get; set; }
         public string RegionName { get; set; }
 
+        //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.StateRequied_Dropdown_Msg)]
+        public long StateId { get; set; }
+        public string StateName { get; set; }
+
         //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.DistrictRequied_Dropdown_Msg)]
         public long DistrictId { get; set; }
         public string DistrictName { get; set; }
+
+        //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.AreaRequied_Dropdown_Msg)]
+        public long CityId { get; set; }
+        public string CityName { get; set; }
 
         //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.AreaRequied_Dropdown_Msg)]
         public long AreaId { get; set; }

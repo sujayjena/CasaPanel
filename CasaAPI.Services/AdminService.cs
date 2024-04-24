@@ -13,6 +13,7 @@ using static CasaAPI.Models.FlapGSMModel;
 using static CasaAPI.Models.FlapModel;
 using static CasaAPI.Models.FoldModel;
 using static CasaAPI.Models.GendorModel;
+using static CasaAPI.Models.InnerGSMModel;
 using static CasaAPI.Models.PanelTypeModel;
 using static CasaAPI.Models.PunchModel;
 using static CasaAPI.Models.SurfaceModel;
@@ -20,6 +21,7 @@ using static CasaAPI.Models.ThicknessModel;
 using static CasaAPI.Models.TileSizeModel;
 using static CasaAPI.Models.TileTypeModel;
 using static CasaAPI.Models.TitleGSMModel;
+using static CasaAPI.Models.TitleProcessModel;
 using static CasaAPI.Models.TypeModel;
 using static CasaAPI.Models.WeekCloseModel;
 
@@ -830,6 +832,44 @@ namespace CasaAPI.Services
         public async Task<IEnumerable<FlapGSMFailToImportValidationErrors>> ImportFlapGSMsDetails(List<FlapGSMImportSaveParameters> request)
         {
             return await _adminRepository.ImportFlapGSMsDetails(request);
+        }
+        #endregion
+
+        #region Inner GSM
+        public async Task<int> SaveInnerGSM(InnerGSMSaveParameters request)
+        {
+            return await _adminRepository.SaveInnerGSM(request);
+        }
+        public async Task<IEnumerable<InnerGSMDetailsResponse>> GetInnerGSMList(InnerGSMSearchParameters request)
+        {
+            return await _adminRepository.GetInnerGSMList(request);
+        }
+        public async Task<InnerGSMDetailsResponse?> GetInnerGSMDetailsById(long id)
+        {
+            return await _adminRepository.GetInnerGSMDetailsById(id);
+        }
+        public async Task<IEnumerable<InnerGSMFailToImportValidationErrors>> ImportInnerGSMsDetails(List<InnerGSMImportSaveParameters> request)
+        {
+            return await _adminRepository.ImportInnerGSMsDetails(request);
+        }
+        #endregion
+
+        #region Title Process
+        public async Task<int> SaveTitleProcess(TitleProcessSaveParameters request)
+        {
+            return await _adminRepository.SaveTitleProcess(request);
+        }
+        public async Task<IEnumerable<TitleProcessDetailsResponse>> GetTitleProcessList(TitleProcessSearchParameters request)
+        {
+            return await _adminRepository.GetTitleProcessList(request);
+        }
+        public async Task<TitleProcessDetailsResponse?> GetTitleProcessDetailsById(long id)
+        {
+            return await _adminRepository.GetTitleProcessDetailsById(id);
+        }
+        public async Task<IEnumerable<TitleProcessFailToImportValidationErrors>> ImportTitleProcesssDetails(List<TitleProcessImportSaveParameters> request)
+        {
+            return await _adminRepository.ImportTitleProcesssDetails(request);
         }
         #endregion
     }

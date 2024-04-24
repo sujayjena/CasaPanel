@@ -1,4 +1,5 @@
 ﻿using CasaAPI.Models.Constants;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,6 +30,12 @@ namespace CasaAPI.Models
         public string Mobile { get; set; }
         public string GstNo { get; set; }
         public string PanNo { get; set; }
+        public string AadharFileName { get; set; }
+        public string AadharSaveFileName { get; set; }
+        public IFormFile AadharFile { get; set; }
+        public string PanCardFileName { get; set; }
+        public string PanCardSaveFileName { get; set; }
+        public IFormFile PanCardFile { get; set; }
         public bool IsActive { get; set; }
     }
 
@@ -53,7 +60,12 @@ namespace CasaAPI.Models
         public string Mobile { get; set; }
         public string GstNo { get; set; }
         public string PanNo { get; set; }
-
+        public string AadharFileName { get; set; }
+        public string AadharSaveFileName { get; set; }
+        public string AadharFileUrl { get; set; }
+        public string PanCardFileName { get; set; }
+        public string PanCardSaveFileName { get; set; }
+        public string PanCardFileUrl { get; set; }
     }
     public class ReferralSearchParameters
     {

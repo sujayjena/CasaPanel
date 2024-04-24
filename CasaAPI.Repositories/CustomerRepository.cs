@@ -38,11 +38,11 @@ namespace CasaAPI.Repositories
             return result;
         }
 
-        public async Task<IEnumerable<ContactDetail>> GetCustomerContactDetailsById(long CustomerId)
+        public async Task<IEnumerable<ContactDetailResponse>> GetCustomerContactDetailsById(long CustomerId)
         {
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@CustomerId", CustomerId);
-            return await ListByStoredProcedure<ContactDetail>("GetCustomerContactDetailsById", queryParameters);
+            return await ListByStoredProcedure<ContactDetailResponse>("GetCustomerContactDetailsById", queryParameters);
         }
         
 

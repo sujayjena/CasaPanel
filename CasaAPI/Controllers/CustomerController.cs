@@ -133,6 +133,7 @@ namespace CasaAPI.Controllers
                 parameter.AddressDetails[0].StateId = parameter.AddressDetails[0].StateId == null ? 0 : parameter.AddressDetails[0].StateId;
                 parameter.AddressDetails[0].RegionId = parameter.AddressDetails[0].RegionId == null ? 0 : parameter.AddressDetails[0].RegionId;
                 parameter.AddressDetails[0].DistrictId = parameter.AddressDetails[0].DistrictId == null ? 0 : parameter.AddressDetails[0].DistrictId;
+                parameter.AddressDetails[0].CityId = parameter.AddressDetails[0].CityId == null ? 0 : parameter.AddressDetails[0].CityId;
                 parameter.AddressDetails[0].AreaId = parameter.AddressDetails[0].AreaId == null ? 0 : parameter.AddressDetails[0].AreaId;
                 parameter.AddressDetails[0].Pincode = string.IsNullOrEmpty(parameter.AddressDetails[0].Pincode) ? "0" : parameter.AddressDetails[0].Pincode;
             }
@@ -178,6 +179,7 @@ namespace CasaAPI.Controllers
         [HttpGet]
         public async Task<ResponseModel> GetCustomerDetails(long id)
         {
+            var host = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
             CustomerDetailsResponse? customer;
 
             if (id <= 0)
@@ -188,6 +190,35 @@ namespace CasaAPI.Controllers
             else
             {
                 customer = await _customerService.GetCustomerDetailsById(id);
+
+                if (customer != null)
+                {
+                    //Customer files url
+                    if (!string.IsNullOrWhiteSpace(customer?.customerDetails.GstSavedFileName))
+                    {
+                        customer.customerDetails.GstFileUrl = host + _fileManager.GetCustomerDocumentsFile(customer.customerDetails.GstSavedFileName);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(customer?.customerDetails.PanCardSavedFileName))
+                    {
+                        customer.customerDetails.PanCardFileUrl = host + _fileManager.GetCustomerDocumentsFile(customer.customerDetails.PanCardSavedFileName);
+                    }
+
+                    //contact files url
+                    foreach(var item in customer.contactDetails)
+                    {
+                        if (!string.IsNullOrWhiteSpace(item.PanCardSavedFileName))
+                        {
+                            item.PanCardFileUrl = host + _fileManager.GetCustomerDocumentsFile(item.PanCardSavedFileName);
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(item.AdharCardSavedFileName))
+                        {
+                            item.AdharCardFileUrl = host + _fileManager.GetCustomerDocumentsFile(item.AdharCardSavedFileName);
+                        }
+                    }
+                }
+
                 _response.Data = customer;
             }
 

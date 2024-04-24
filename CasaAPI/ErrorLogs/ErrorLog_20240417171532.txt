@@ -1,0 +1,9 @@
+2024-04-17 17:15:32
+Error Message:
+The INSERT statement conflicted with the FOREIGN KEY SAME TABLE constraint "FK__VisitMast__BaseV__3552E9B6". The conflict occurred in database "db_a749f3_casapanel", table "dbo.VisitMaster", column 'VisitId'.
+The statement has been terminated.
+Full Exception Details:
+{"Error":"The INSERT statement conflicted with the FOREIGN KEY SAME TABLE constraint \u0022FK__VisitMast__BaseV__3552E9B6\u0022. The conflict occurred in database \u0022db_a749f3_casapanel\u0022, table \u0022dbo.VisitMaster\u0022, column \u0027VisitId\u0027.\r\nThe statement has been terminated.","Type":"SqlException"}
+
+*************************************************************************
+

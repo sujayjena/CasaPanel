@@ -1,0 +1,55 @@
+2024-04-17 18:44:23
+Error Message:
+The correlation name 'Region' is specified multiple times in a FROM clause.
+The correlation name 'Region' is specified multiple times in a FROM clause.
+Select DISTINCT
+					CD.CustomerId,CD.CompanyName,CD.LandlineNo,CD.MobileNo as MobileNumber,CD.EmailId,
+					CD.CustomerTypeId,CTM.CustomerTypeName as CustomerTypeName,CD.SpecialRemarks,
+					CD.EmployeeId,
+					EM.EmployeeName as EmployeeName,
+					RM.RoleName as EmployeeRole,
+					Addr.[Address],
+					Region.RegionName,
+					SM.StateName,
+					DM.DistrictName,
+					CT.CityName,
+					AM.AreaName,
+					CD.GstSavedFileName,
+					CD.PanCardSavedFileName,
+					CD.IsActive,
+					CreatorEM.EmployeeName As CreatorName,
+					CD.CreatedBy,
+					CD.CreatedOn
+				From CustomerDetails CD WITH(NOLOCK)
+				Inner Join Users U With(NoLock)
+					On U.UserId = CD.CreatedBy
+				Left Join EmployeeMaster CreatorEM With(NoLock)
+					On CreatorEM.EmployeeId = U.EmployeeId And U.EmployeeId Is Not Null
+				Left Join CustomerTypeMaster CTM  WITH(NOLOCK)
+					ON CTM.CustomerTypeId = CD.CustomerTypeId
+				Left Join EmployeeMaster EM WITH(NOLOCK)
+					ON EM.EmployeeId = CD.EmployeeId
+				Left Join RoleMaster RM With(NoLock)
+					On RM.RoleId = EM.RoleId
+				Left Join CustomerAddressMapping CAM With(NoLock)
+					On CAM.CustomerId = CD.CustomerId
+				--Left Join AddressMaster Addr With(NoLock)
+				--	On Addr.AddressId = CAM.AddressId
+				Left Join AddressMaster Addr With(NoLock)
+					On Addr.AddressId = CAM.AddressId --AND Addr.IsActive=1 
+				Left Join StateMaster SM With(NoLock)
+					On SM.StateId = Addr.StateId
+				Left Join RegionMaster Region With(NoLock)
+					On Region.RegionId = Addr.RegionId
+				Left Join CityMaster Region With(NoLock)
+					On CT.CityId = Addr.CityId
+				Left Join DistrictMaster DM With(NoLock)
+					On DM.DistrictId = Addr.DistrictId
+				Left Join AreaMaster AM With(NoLock)
+					On AM.AreaId = Addr.AreaId
+				Where 1=1 AND CD.IsActive =1 AND (@CustomerTypeId = 0 OR CD.CustomerTypeId = @CustomerTypeId) AND (@EmployeeId = 0 OR CD.EmployeeId = @EmployeeId) AND Addr.IsDefault = 1 AND Addr.IsActive=1  AND CD.CreatedBy IN (SELECT * FROM fn_ReportingTo_Hierarchy_UserList (@LoggedInUserId)) ORDER by CD.CustomerId DESC 
+Full Exception Details:
+{"Error":"The correlation name \u0027Region\u0027 is specified multiple times in a FROM clause.\r\nThe correlation name \u0027Region\u0027 is specified multiple times in a FROM clause.\r\nSelect DISTINCT\r\n\t\t\t\t\tCD.CustomerId,CD.CompanyName,CD.LandlineNo,CD.MobileNo as MobileNumber,CD.EmailId,\r\n\t\t\t\t\tCD.CustomerTypeId,CTM.CustomerTypeName as CustomerTypeName,CD.SpecialRemarks,\r\n\t\t\t\t\tCD.EmployeeId,\r\n\t\t\t\t\tEM.EmployeeName as EmployeeName,\r\n\t\t\t\t\tRM.RoleName as EmployeeRole,\r\n\t\t\t\t\tAddr.[Address],\r\n\t\t\t\t\tRegion.RegionName,\r\n\t\t\t\t\tSM.StateName,\r\n\t\t\t\t\tDM.DistrictName,\r\n\t\t\t\t\tCT.CityName,\r\n\t\t\t\t\tAM.AreaName,\r\n\t\t\t\t\tCD.GstSavedFileName,\r\n\t\t\t\t\tCD.PanCardSavedFileName,\r\n\t\t\t\t\tCD.IsActive,\r\n\t\t\t\t\tCreatorEM.EmployeeName As CreatorName,\r\n\t\t\t\t\tCD.CreatedBy,\r\n\t\t\t\t\tCD.CreatedOn\r\n\t\t\t\tFrom CustomerDetails CD WITH(NOLOCK)\r\n\t\t\t\tInner Join Users U With(NoLock)\r\n\t\t\t\t\tOn U.UserId = CD.CreatedBy\r\n\t\t\t\tLeft Join EmployeeMaster CreatorEM With(NoLock)\r\n\t\t\t\t\tOn CreatorEM.EmployeeId = U.EmployeeId And U.EmployeeId Is Not Null\r\n\t\t\t\tLeft Join CustomerTypeMaster CTM  WITH(NOLOCK)\r\n\t\t\t\t\tON CTM.CustomerTypeId = CD.CustomerTypeId\r\n\t\t\t\tLeft Join EmployeeMaster EM WITH(NOLOCK)\r\n\t\t\t\t\tON EM.EmployeeId = CD.EmployeeId\r\n\t\t\t\tLeft Join RoleMaster RM With(NoLock)\r\n\t\t\t\t\tOn RM.RoleId = EM.RoleId\r\n\t\t\t\tLeft Join CustomerAddressMapping CAM With(NoLock)\r\n\t\t\t\t\tOn CAM.CustomerId = CD.CustomerId\r\n\t\t\t\t--Left Join AddressMaster Addr With(NoLock)\r\n\t\t\t\t--\tOn Addr.AddressId = CAM.AddressId\r\n\t\t\t\tLeft Join AddressMaster Addr With(NoLock)\r\n\t\t\t\t\tOn Addr.AddressId = CAM.AddressId --AND Addr.IsActive=1 \r\n\t\t\t\tLeft Join StateMaster SM With(NoLock)\r\n\t\t\t\t\tOn SM.StateId = Addr.StateId\r\n\t\t\t\tLeft Join RegionMaster Region With(NoLock)\r\n\t\t\t\t\tOn Region.RegionId = Addr.RegionId\r\n\t\t\t\tLeft Join CityMaster Region With(NoLock)\r\n\t\t\t\t\tOn CT.CityId = Addr.CityId\r\n\t\t\t\tLeft Join DistrictMaster DM With(NoLock)\r\n\t\t\t\t\tOn DM.DistrictId = Addr.DistrictId\r\n\t\t\t\tLeft Join AreaMaster AM With(NoLock)\r\n\t\t\t\t\tOn AM.AreaId = Addr.AreaId\r\n\t\t\t\tWhere 1=1 AND CD.IsActive =1 AND (@CustomerTypeId = 0 OR CD.CustomerTypeId = @CustomerTypeId) AND (@EmployeeId = 0 OR CD.EmployeeId = @EmployeeId) AND Addr.IsDefault = 1 AND Addr.IsActive=1  AND CD.CreatedBy IN (SELECT * FROM fn_ReportingTo_Hierarchy_UserList (@LoggedInUserId)) ORDER by CD.CustomerId DESC ","Type":"SqlException"}
+
+*************************************************************************
+

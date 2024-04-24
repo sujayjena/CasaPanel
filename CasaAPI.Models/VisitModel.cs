@@ -27,15 +27,16 @@ namespace CasaAPI.Models
         //[Range(1, long.MaxValue, ErrorMessage = "Contact is required")]
         public long ContactId { get; set; }
 
+        //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.ReportingToRequied_Dropdown_Msg)]
+        public long RegionId { get; set; }
 
         //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.StateRequied_Dropdown_Msg)]
         public long StateId { get; set; }
 
-        //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.ReportingToRequied_Dropdown_Msg)]
-        public long RegionId { get; set; }
-
         //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.DistrictRequied_Dropdown_Msg)]
         public long DistrictId { get; set; }
+
+        public long CityId { get; set; }
 
         //[Range(1, long.MaxValue, ErrorMessage = ValidationConstants.AreaRequied_Dropdown_Msg)]
         public long AreaId { get; set; }
@@ -111,12 +112,14 @@ namespace CasaAPI.Models
         public DateTime VisitDate { get; set; }
         public long CustomerId { get; set; }
         public long CustomerTypeId { get; set; }
-        public long StateId { get; set; }
-        public string StateName { get; set; }
         public long RegionId { get; set; }
         public string RegionName { get; set; }
+        public long StateId { get; set; }
+        public string StateName { get; set; }
         public long DistrictId { get; set; }
         public string DistrictName { get; set; }
+        public long CityId { get; set; }
+        public string CityName { get; set; }
         public long AreaId { get; set; }
         public string AreaName { get; set; }
         public long AddressId { get; set; }
@@ -163,12 +166,14 @@ namespace CasaAPI.Models
         public long? CustomerTypeId { get; set; }
         public string CustomerName { get; set; }
         public string CustomerTypeName { get; set; }
-        public long StateId { get; set; }
-        public string StateName { get; set; }
         public long RegionId { get; set; }
         public string RegionName { get; set; }
+        public long StateId { get; set; }
+        public string StateName { get; set; }
         public long DistrictId { get; set; }
         public string DistrictName { get; set; }
+        public long CityId { get; set; }
+        public string CityName { get; set; }
         public long AreaId { get; set; }
         public string AreaName { get; set; }
         public DateTime? NextActionDate { get; set; }
@@ -195,9 +200,10 @@ namespace CasaAPI.Models
         public string EmployeeName { get; set; }
         public string CustomerTypeName { get; set; }
         public string CustomerName { get; set; }
-        public string StateName { get; set; }
         public string RegionName { get; set; }
+        public string StateName { get; set; }
         public string DistrictName { get; set; }
+        public string CityName { get; set; }
         public string AreaName { get; set; }
         public string ContactPerson { get; set; }
         public string ContactNumber { get; set; }
@@ -218,9 +224,10 @@ namespace CasaAPI.Models
         public string EmployeeName { get; set; }
         public long? CustomerTypeName { get; set; }
         public string CustomerName { get; set; }
-        public string StateName { get; set; }
         public string RegionName { get; set; }
+        public string StateName { get; set; }
         public string DistrictName { get; set; }
+        public string CityName { get; set; }
         public string AreaName { get; set; }
         public string ContactPerson { get; set; }
         public string ContactNumber { get; set; }

@@ -1,0 +1,8 @@
+2024-04-17 21:23:22
+Error Message:
+Could not find stored procedure 'GetInnerGSMDetailsById'.
+Full Exception Details:
+{"Error":"Could not find stored procedure \u0027GetInnerGSMDetailsById\u0027.","Type":"SqlException"}
+
+*************************************************************************
+

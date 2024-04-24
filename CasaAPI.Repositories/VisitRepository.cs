@@ -66,9 +66,10 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@CustomerId", parameters.CustomerId);
             queryParameters.Add("@CustomerTypeId", parameters.CustomerTypeId);
             queryParameters.Add("@ContactId", parameters.ContactId);
-            queryParameters.Add("@StateId", parameters.StateId);
             queryParameters.Add("@RegionId", parameters.RegionId);
+            queryParameters.Add("@StateId", parameters.StateId);
             queryParameters.Add("@DistrictId", parameters.DistrictId);
+            queryParameters.Add("@CityId", parameters.CityId);
             queryParameters.Add("@AreaId", parameters.AreaId);
             queryParameters.Add("@AddressId", parameters.AddressId);
             queryParameters.Add("@Address", parameters.Address.SanitizeValue());

@@ -23,6 +23,8 @@ namespace CasaAPI.Helpers
         byte[]? GetCustomerDocuments(string fileName);
         string? GetCustomerDocumentsFile(string fileName);
 
+        string UploadReferralDocuments(IFormFile file);
+        string? GetReferralDocumentsFile(string fileName);
 
         string UploadVisitDocuments(IFormFile file);
         byte[]? GetVisitDocuments(string fileName);
@@ -193,6 +195,18 @@ namespace CasaAPI.Helpers
             return fileWithFullPath;
         }
 
+        public string UploadReferralDocuments(IFormFile file)
+        {
+            string folderPath = $"{_environment.ContentRootPath}\\Uploads\\Referral\\";
+            string fileName = SaveFileToPath(folderPath, file);
+            return fileName;
+        }
+
+        public string? GetReferralDocumentsFile(string fileName)
+        {
+            string fileWithFullPath = "\\Uploads\\Referral\\" + fileName;
+            return fileWithFullPath;
+        }
 
         public string UploadVisitDocuments(IFormFile file)
         {

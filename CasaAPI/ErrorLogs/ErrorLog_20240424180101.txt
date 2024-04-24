@@ -1,0 +1,8 @@
+2024-04-24 18:01:01
+Error Message:
+Object reference not set to an instance of an object.
+Full Exception Details:
+{"Error":"Object reference not set to an instance of an object.","Type":"NullReferenceException"}
+
+*************************************************************************
+

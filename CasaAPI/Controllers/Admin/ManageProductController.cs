@@ -26,6 +26,8 @@ using static CasaAPI.Models.FoldModel;
 using static CasaAPI.Models.FlapModel;
 using static CasaAPI.Models.TitleGSMModel;
 using static CasaAPI.Models.FlapGSMModel;
+using static CasaAPI.Models.InnerGSMModel;
+using static CasaAPI.Models.TitleProcessModel;
 
 namespace CasaAPI.Controllers.Admin
 {
@@ -5080,6 +5082,539 @@ namespace CasaAPI.Controllers.Admin
                     foreach (FlapGSMDetailsResponse record in lstFlapGSMToImport)
                     {
                         excelWorksheet.Cells[recordIndex, 1].Value = record.FlapGSMName;
+                        excelWorksheet.Cells[recordIndex, 2].Value = record.IsActive;
+                        recordIndex += 1;
+                    }
+
+                    excelWorksheet.Column(1).AutoFit();
+                    excelWorksheet.Column(2).AutoFit();
+
+                    excelData.SaveAs(msDataFile);
+                    msDataFile.Position = 0;
+                    result = msDataFile.ToArray();
+                }
+            }
+            return result;
+        }
+        #endregion
+
+        #region Inner GSM
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveInnerGSM(InnerGSMSaveParameters Request)
+        {
+            int result = await _adminService.SaveInnerGSM(Request);
+            _response.IsSuccess = false;
+
+            if (result == (int)SaveEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveEnums.NameExists)
+            {
+                _response.Message = "Inner GSM Name is already exists";
+            }
+            else if (result == (int)SaveEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.IsSuccess = true;
+                _response.Message = "Inner GSM details saved sucessfully";
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetInnerGSMsList(InnerGSMSearchParameters request)
+        {
+            IEnumerable<InnerGSMDetailsResponse> lstInnerGSM = await _adminService.GetInnerGSMList(request);
+            _response.Data = lstInnerGSM.ToList();
+            _response.Total = request.pagination.Total;
+            return _response;
+        }
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> GetInnerGSMDetails(long id)
+        {
+            InnerGSMDetailsResponse? innerGSM;
+            if (id <= 0)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstants.Id_Required_Msg;
+            }
+            else
+            {
+                innerGSM = await _adminService.GetInnerGSMDetailsById(id);
+                _response.Data = innerGSM;
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ImportInnerGSMsData([FromQuery] ImportRequest request)
+        {
+            _response.IsSuccess = false;
+            ExcelWorksheets currentSheet;
+            ExcelWorksheet workSheet;
+            List<InnerGSMImportSaveParameters> lstInnerGSMImportDetails = new List<InnerGSMImportSaveParameters>();
+            List<InnerGSMFailToImportValidationErrors>? lstInnerGSMsFailedToImport = new List<InnerGSMFailToImportValidationErrors>();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            int noOfCol, noOfRow;
+            ResponseModel? fileDataValidationRes;
+            InnerGSMImportSaveParameters tempInnerGSMImport;
+
+            if (request.FileUpload == null || request.FileUpload.Length == 0)
+            {
+                _response.Message = "Please upload an excel file to import InnerGSM data";
+                return _response;
+            }
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                request.FileUpload.CopyTo(stream);
+                using ExcelPackage package = new ExcelPackage(stream);
+                currentSheet = package.Workbook.Worksheets;
+                workSheet = currentSheet.First();
+                noOfCol = workSheet.Dimension.End.Column;
+                noOfRow = workSheet.Dimension.End.Row;
+
+                if (!string.Equals(workSheet.Cells[1, 1].Value.ToString(), "InnerGSMName", StringComparison.OrdinalIgnoreCase) ||
+                   !string.Equals(workSheet.Cells[1, 2].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Please upload a valid excel file. Please Download Format file for reference";
+                    return _response;
+                }
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    tempInnerGSMImport = new InnerGSMImportSaveParameters()
+                    {
+                        InnerGSMName = workSheet.Cells[rowIterator, 1].Value?.ToString(),
+                        IsActive = workSheet.Cells[rowIterator, 2].Value?.ToString()
+                    };
+
+                    fileDataValidationRes = ModelStateHelper.GetValidationErrorsList(model: tempInnerGSMImport);
+
+                    if (fileDataValidationRes.IsSuccess)
+                    {
+                        lstInnerGSMImportDetails.Add(tempInnerGSMImport);
+                    }
+                    else
+                    {
+                        lstInnerGSMsFailedToImport.Add(new InnerGSMFailToImportValidationErrors()
+                        {
+                            InnerGSMName = tempInnerGSMImport.InnerGSMName,
+                            IsActive = tempInnerGSMImport.IsActive,
+                            ValidationMessage = fileDataValidationRes.Message
+                        });
+                    }
+                }
+            }
+
+            if (lstInnerGSMImportDetails.Count == 0)
+            {
+                _response.Message = "File does not contains any record(s)";
+                return _response;
+            }
+
+            lstInnerGSMsFailedToImport.AddRange(await _adminService.ImportInnerGSMsDetails(lstInnerGSMImportDetails));
+
+            _response.IsSuccess = true;
+            _response.Message = "Inner GSM list imported successfully";
+
+            #region Generate Excel file for Invalid Data
+            if (lstInnerGSMsFailedToImport != null && lstInnerGSMsFailedToImport.ToList().Count > 0)
+            {
+                _response.Message = "Uploaded file contains invalid records, please check downloaded file for more details";
+                _response.Data = GenerateInvalidInnerGSMDataFile(lstInnerGSMsFailedToImport);
+
+            }
+            #endregion
+
+            return _response;
+        }
+        private byte[] GenerateInvalidInnerGSMDataFile(IEnumerable<InnerGSMFailToImportValidationErrors> lstInnerGSMsFailedToImport)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+
+            using (MemoryStream msInvalidDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelInvalidData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelInvalidData.Workbook.Worksheets.Add("Invalid_InnerGSM_Records");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "InnerGSMName";
+                    WorkSheet1.Cells[1, 2].Value = "IsActive";
+                    WorkSheet1.Cells[1, 3].Value = "ValidationMessage";
+
+                    recordIndex = 2;
+
+                    foreach (InnerGSMFailToImportValidationErrors record in lstInnerGSMsFailedToImport)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = record.InnerGSMName;
+                        WorkSheet1.Cells[recordIndex, 2].Value = record.IsActive;
+                        WorkSheet1.Cells[recordIndex, 3].Value = record.ValidationMessage;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Column(1).AutoFit();
+                    WorkSheet1.Column(2).AutoFit();
+                    WorkSheet1.Column(3).AutoFit();
+
+                    excelInvalidData.SaveAs(msInvalidDataFile);
+                    msInvalidDataFile.Position = 0;
+                    result = msInvalidDataFile.ToArray();
+                }
+            }
+
+            return result;
+        }
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> DownloadInnerGSMTemplate()
+        {
+            byte[]? fileContent = await Task.Run(() => _fileManager.GetFormatFileFromPath(FormatFilesName.InnerGSMImportFormatFileName));
+            if (fileContent == null || fileContent.Length == 0)
+            {
+                _response.Message = ErrorConstants.FileNotExistsToDownload;
+                _response.IsSuccess = false;
+            }
+            else
+            {
+                _response.Data = fileContent;
+            }
+            return _response;
+        }
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportInnerGSMListToExcel(InnerGSMSearchParameters request)
+        {
+            IEnumerable<InnerGSMDetailsResponse> innerGSMDetailsResponses;
+
+            request.IsExport = true;
+            innerGSMDetailsResponses = await _adminService.GetInnerGSMList(request);
+            if (innerGSMDetailsResponses != null && innerGSMDetailsResponses.ToList().Count > 0)
+            {
+                _response.Data = GenerateExcelInnerGSMDataFile(innerGSMDetailsResponses);
+            }
+            else
+            {
+                _response.Message = "Record Not Exists";
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+        private byte[] GenerateExcelInnerGSMDataFile(IEnumerable<InnerGSMDetailsResponse> lstInnerGSMToImport)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet excelWorksheet;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (MemoryStream msDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelData = new ExcelPackage(new FileInfo($"InnerGSM_List_{DateTime.Now.ToString("yyyyMMddHHmm")}")))
+                {
+                    excelWorksheet = excelData.Workbook.Worksheets.Add("InnerGSM");
+                    excelWorksheet.TabColor = System.Drawing.Color.Black;
+                    excelWorksheet.DefaultRowHeight = 12;
+
+                    //Header of table
+                    excelWorksheet.Row(1).Height = 20;
+                    excelWorksheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    excelWorksheet.Row(1).Style.Font.Bold = true;
+
+                    excelWorksheet.Cells[1, 1].Value = "Inner GSM Name";
+                    excelWorksheet.Cells[1, 2].Value = "Is Active?";
+
+                    recordIndex = 2;
+
+                    foreach (InnerGSMDetailsResponse record in lstInnerGSMToImport)
+                    {
+                        excelWorksheet.Cells[recordIndex, 1].Value = record.InnerGSMName;
+                        excelWorksheet.Cells[recordIndex, 2].Value = record.IsActive;
+                        recordIndex += 1;
+                    }
+
+                    excelWorksheet.Column(1).AutoFit();
+                    excelWorksheet.Column(2).AutoFit();
+
+                    excelData.SaveAs(msDataFile);
+                    msDataFile.Position = 0;
+                    result = msDataFile.ToArray();
+                }
+            }
+            return result;
+        }
+        #endregion
+
+        #region Title Process
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveTitleProcess(TitleProcessSaveParameters Request)
+        {
+            int result = await _adminService.SaveTitleProcess(Request);
+            _response.IsSuccess = false;
+
+            if (result == (int)SaveEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveEnums.NameExists)
+            {
+                _response.Message = "Title Process Name is already exists";
+            }
+            else if (result == (int)SaveEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.IsSuccess = true;
+                _response.Message = "Title Process details saved sucessfully";
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetTitleProcesssList(TitleProcessSearchParameters request)
+        {
+            IEnumerable<TitleProcessDetailsResponse> lstTitleProcess = await _adminService.GetTitleProcessList(request);
+            _response.Data = lstTitleProcess.ToList();
+            _response.Total = request.pagination.Total;
+            return _response;
+        }
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> GetTitleProcessDetails(long id)
+        {
+            TitleProcessDetailsResponse? titleProcess;
+            if (id <= 0)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstants.Id_Required_Msg;
+            }
+            else
+            {
+                titleProcess = await _adminService.GetTitleProcessDetailsById(id);
+                _response.Data = titleProcess;
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ImportTitleProcesssData([FromQuery] ImportRequest request)
+        {
+            _response.IsSuccess = false;
+            ExcelWorksheets currentSheet;
+            ExcelWorksheet workSheet;
+            List<TitleProcessImportSaveParameters> lstTitleProcessImportDetails = new List<TitleProcessImportSaveParameters>();
+            List<TitleProcessFailToImportValidationErrors>? lstTitleProcesssFailedToImport = new List<TitleProcessFailToImportValidationErrors>();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            int noOfCol, noOfRow;
+            ResponseModel? fileDataValidationRes;
+            TitleProcessImportSaveParameters tempTitleProcessImport;
+
+            if (request.FileUpload == null || request.FileUpload.Length == 0)
+            {
+                _response.Message = "Please upload an excel file to import TitleProcess data";
+                return _response;
+            }
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                request.FileUpload.CopyTo(stream);
+                using ExcelPackage package = new ExcelPackage(stream);
+                currentSheet = package.Workbook.Worksheets;
+                workSheet = currentSheet.First();
+                noOfCol = workSheet.Dimension.End.Column;
+                noOfRow = workSheet.Dimension.End.Row;
+
+                if (!string.Equals(workSheet.Cells[1, 1].Value.ToString(), "TitleProcessName", StringComparison.OrdinalIgnoreCase) ||
+                   !string.Equals(workSheet.Cells[1, 2].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Please upload a valid excel file. Please Download Format file for reference";
+                    return _response;
+                }
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    tempTitleProcessImport = new TitleProcessImportSaveParameters()
+                    {
+                        TitleProcessName = workSheet.Cells[rowIterator, 1].Value?.ToString(),
+                        IsActive = workSheet.Cells[rowIterator, 2].Value?.ToString()
+                    };
+
+                    fileDataValidationRes = ModelStateHelper.GetValidationErrorsList(model: tempTitleProcessImport);
+
+                    if (fileDataValidationRes.IsSuccess)
+                    {
+                        lstTitleProcessImportDetails.Add(tempTitleProcessImport);
+                    }
+                    else
+                    {
+                        lstTitleProcesssFailedToImport.Add(new TitleProcessFailToImportValidationErrors()
+                        {
+                            TitleProcessName = tempTitleProcessImport.TitleProcessName,
+                            IsActive = tempTitleProcessImport.IsActive,
+                            ValidationMessage = fileDataValidationRes.Message
+                        });
+                    }
+                }
+            }
+
+            if (lstTitleProcessImportDetails.Count == 0)
+            {
+                _response.Message = "File does not contains any record(s)";
+                return _response;
+            }
+
+            lstTitleProcesssFailedToImport.AddRange(await _adminService.ImportTitleProcesssDetails(lstTitleProcessImportDetails));
+
+            _response.IsSuccess = true;
+            _response.Message = "Title Process list imported successfully";
+
+            #region Generate Excel file for Invalid Data
+            if (lstTitleProcesssFailedToImport != null && lstTitleProcesssFailedToImport.ToList().Count > 0)
+            {
+                _response.Message = "Uploaded file contains invalid records, please check downloaded file for more details";
+                _response.Data = GenerateInvalidTitleProcessDataFile(lstTitleProcesssFailedToImport);
+
+            }
+            #endregion
+
+            return _response;
+        }
+        private byte[] GenerateInvalidTitleProcessDataFile(IEnumerable<TitleProcessFailToImportValidationErrors> lstTitleProcesssFailedToImport)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet WorkSheet1;
+
+            using (MemoryStream msInvalidDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelInvalidData = new ExcelPackage())
+                {
+                    WorkSheet1 = excelInvalidData.Workbook.Worksheets.Add("Invalid_TitleProcess_Records");
+                    WorkSheet1.TabColor = System.Drawing.Color.Black;
+                    WorkSheet1.DefaultRowHeight = 12;
+
+                    //Header of table
+                    WorkSheet1.Row(1).Height = 20;
+                    WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                    WorkSheet1.Cells[1, 1].Value = "TitleProcessName";
+                    WorkSheet1.Cells[1, 2].Value = "IsActive";
+                    WorkSheet1.Cells[1, 3].Value = "ValidationMessage";
+
+                    recordIndex = 2;
+
+                    foreach (TitleProcessFailToImportValidationErrors record in lstTitleProcesssFailedToImport)
+                    {
+                        WorkSheet1.Cells[recordIndex, 1].Value = record.TitleProcessName;
+                        WorkSheet1.Cells[recordIndex, 2].Value = record.IsActive;
+                        WorkSheet1.Cells[recordIndex, 3].Value = record.ValidationMessage;
+
+                        recordIndex += 1;
+                    }
+
+                    WorkSheet1.Column(1).AutoFit();
+                    WorkSheet1.Column(2).AutoFit();
+                    WorkSheet1.Column(3).AutoFit();
+
+                    excelInvalidData.SaveAs(msInvalidDataFile);
+                    msInvalidDataFile.Position = 0;
+                    result = msInvalidDataFile.ToArray();
+                }
+            }
+
+            return result;
+        }
+      
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> DownloadTitleProcessTemplate()
+        {
+            byte[]? fileContent = await Task.Run(() => _fileManager.GetFormatFileFromPath(FormatFilesName.TitleProcessImportFormatFileName));
+            if (fileContent == null || fileContent.Length == 0)
+            {
+                _response.Message = ErrorConstants.FileNotExistsToDownload;
+                _response.IsSuccess = false;
+            }
+            else
+            {
+                _response.Data = fileContent;
+            }
+            return _response;
+        }
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> ExportTitleProcessListToExcel(TitleProcessSearchParameters request)
+        {
+            IEnumerable<TitleProcessDetailsResponse> titleProcessDetailsResponses;
+
+            request.IsExport = true;
+            titleProcessDetailsResponses = await _adminService.GetTitleProcessList(request);
+            if (titleProcessDetailsResponses != null && titleProcessDetailsResponses.ToList().Count > 0)
+            {
+                _response.Data = GenerateExcelTitleProcessDataFile(titleProcessDetailsResponses);
+            }
+            else
+            {
+                _response.Message = "Record Not Exists";
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+        private byte[] GenerateExcelTitleProcessDataFile(IEnumerable<TitleProcessDetailsResponse> lstTitleProcessToImport)
+        {
+            byte[] result;
+            int recordIndex;
+            ExcelWorksheet excelWorksheet;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (MemoryStream msDataFile = new MemoryStream())
+            {
+                using (ExcelPackage excelData = new ExcelPackage(new FileInfo($"TitleProcess_List_{DateTime.Now.ToString("yyyyMMddHHmm")}")))
+                {
+                    excelWorksheet = excelData.Workbook.Worksheets.Add("TitleProcess");
+                    excelWorksheet.TabColor = System.Drawing.Color.Black;
+                    excelWorksheet.DefaultRowHeight = 12;
+
+                    //Header of table
+                    excelWorksheet.Row(1).Height = 20;
+                    excelWorksheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    excelWorksheet.Row(1).Style.Font.Bold = true;
+
+                    excelWorksheet.Cells[1, 1].Value = "Title Process Name";
+                    excelWorksheet.Cells[1, 2].Value = "Is Active?";
+
+                    recordIndex = 2;
+
+                    foreach (TitleProcessDetailsResponse record in lstTitleProcessToImport)
+                    {
+                        excelWorksheet.Cells[recordIndex, 1].Value = record.TitleProcessName;
                         excelWorksheet.Cells[recordIndex, 2].Value = record.IsActive;
                         recordIndex += 1;
                     }

@@ -23,6 +23,8 @@ using static CasaAPI.Models.FoldModel;
 using static CasaAPI.Models.FlapModel;
 using static CasaAPI.Models.TitleGSMModel;
 using static CasaAPI.Models.FlapGSMModel;
+using static CasaAPI.Models.InnerGSMModel;
+using static CasaAPI.Models.TitleProcessModel;
 
 namespace CasaAPI.Repositories
 {
@@ -842,6 +844,10 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@Mobile", parameters.Mobile.SanitizeValue());
             queryParameters.Add("@GstNo", parameters.GstNo.SanitizeValue());
             queryParameters.Add("@PanNo", parameters.PanNo.SanitizeValue());
+            queryParameters.Add("@AadharFileName", parameters.AadharFileName.SanitizeValue());
+            queryParameters.Add("@AadharSaveFileName", parameters.AadharSaveFileName.SanitizeValue());
+            queryParameters.Add("@PanCardFileName", parameters.PanCardFileName.SanitizeValue());
+            queryParameters.Add("@PanCardSaveFileName", parameters.PanCardSaveFileName.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
             return await SaveByStoredProcedure<int>("SaveReferralMasterDetails", queryParameters);
@@ -1621,6 +1627,94 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@XmlFlapGSMData", xmlFlapGSMData);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
             return await ListByStoredProcedure<FlapGSMFailToImportValidationErrors>("SaveImportFlapGSMDetails", queryParameters);
+        }
+        #endregion
+
+        #region Inner GSM
+        public async Task<int> SaveInnerGSM(InnerGSMSaveParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@InnerGSMId", parameters.InnerGSMId);
+            queryParameters.Add("@InnerGSMName", parameters.InnerGSMName.SanitizeValue().ToUpper());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveInnerGSMDetails", queryParameters);
+        }
+        public async Task<IEnumerable<InnerGSMDetailsResponse>> GetInnerGSMList(InnerGSMSearchParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<InnerGSMDetailsResponse>("GetInnerGSMList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+        public async Task<InnerGSMDetailsResponse?> GetInnerGSMDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+
+            return (await ListByStoredProcedure<InnerGSMDetailsResponse>("GetInnerGSMDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<InnerGSMFailToImportValidationErrors>> ImportInnerGSMsDetails(List<InnerGSMImportSaveParameters> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlInnerGSMData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlInnerGSMData", xmlInnerGSMData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<InnerGSMFailToImportValidationErrors>("SaveImportInnerGSMDetails", queryParameters);
+        }
+        #endregion
+
+        #region Title Process
+        public async Task<int> SaveTitleProcess(TitleProcessSaveParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@TitleProcessId", parameters.TitleProcessId);
+            queryParameters.Add("@TitleProcessName", parameters.TitleProcessName.SanitizeValue().ToUpper());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveTitleProcessDetails", queryParameters);
+        }
+        public async Task<IEnumerable<TitleProcessDetailsResponse>> GetTitleProcessList(TitleProcessSearchParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<TitleProcessDetailsResponse>("GetTitleProcessList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+        public async Task<TitleProcessDetailsResponse?> GetTitleProcessDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+
+            return (await ListByStoredProcedure<TitleProcessDetailsResponse>("GetTitleProcessDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<TitleProcessFailToImportValidationErrors>> ImportTitleProcesssDetails(List<TitleProcessImportSaveParameters> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlTitleProcessData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlTitleProcessData", xmlTitleProcessData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<TitleProcessFailToImportValidationErrors>("SaveImportTitleProcessDetails", queryParameters);
         }
         #endregion
     }

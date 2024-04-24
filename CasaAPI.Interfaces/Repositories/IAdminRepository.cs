@@ -9,6 +9,7 @@ using static CasaAPI.Models.FlapGSMModel;
 using static CasaAPI.Models.FlapModel;
 using static CasaAPI.Models.FoldModel;
 using static CasaAPI.Models.GendorModel;
+using static CasaAPI.Models.InnerGSMModel;
 using static CasaAPI.Models.PanelTypeModel;
 using static CasaAPI.Models.PunchModel;
 using static CasaAPI.Models.SurfaceModel;
@@ -16,6 +17,7 @@ using static CasaAPI.Models.ThicknessModel;
 using static CasaAPI.Models.TileSizeModel;
 using static CasaAPI.Models.TileTypeModel;
 using static CasaAPI.Models.TitleGSMModel;
+using static CasaAPI.Models.TitleProcessModel;
 using static CasaAPI.Models.TypeModel;
 using static CasaAPI.Models.WeekCloseModel;
 
@@ -301,6 +303,22 @@ namespace CasaAPI.Interfaces.Repositories
         Task<IEnumerable<FlapGSMDetailsResponse>> GetFlapGSMList(FlapGSMSearchParameters parameters);
         Task<FlapGSMDetailsResponse?> GetFlapGSMDetailsById(long id);
         Task<IEnumerable<FlapGSMFailToImportValidationErrors>> ImportFlapGSMsDetails(List<FlapGSMImportSaveParameters> parameters);
+
+        #endregion
+
+        #region Inner GSM
+        Task<int> SaveInnerGSM(InnerGSMSaveParameters parameters);
+        Task<IEnumerable<InnerGSMDetailsResponse>> GetInnerGSMList(InnerGSMSearchParameters parameters);
+        Task<InnerGSMDetailsResponse?> GetInnerGSMDetailsById(long id);
+        Task<IEnumerable<InnerGSMFailToImportValidationErrors>> ImportInnerGSMsDetails(List<InnerGSMImportSaveParameters> parameters);
+
+        #endregion
+
+        #region Title Process
+        Task<int> SaveTitleProcess(TitleProcessSaveParameters parameters);
+        Task<IEnumerable<TitleProcessDetailsResponse>> GetTitleProcessList(TitleProcessSearchParameters parameters);
+        Task<TitleProcessDetailsResponse?> GetTitleProcessDetailsById(long id);
+        Task<IEnumerable<TitleProcessFailToImportValidationErrors>> ImportTitleProcesssDetails(List<TitleProcessImportSaveParameters> parameters);
 
         #endregion
     }
