@@ -47,6 +47,8 @@ namespace CasaAPI.Helpers
 
         string UploadPanelPlanningImage(IFormFile file);
         string? GetPanelPlanningFile(string fileName);
+
+        string UploadDocumentsBase64ToFile(string base64String, string folderPath, string? fileName);
     }
 
     public class FileManager : IFileManager
@@ -340,6 +342,34 @@ namespace CasaAPI.Helpers
         {
             string fileWithFullPath = "\\Uploads\\PanelPlanning\\" + fileName;
             return fileWithFullPath;
+        }
+
+        public string UploadDocumentsBase64ToFile(string base64String, string folderPath, string? fileName)
+        {
+            string sFileName = string.Empty;
+            try
+            {
+                var extentioName = Path.GetExtension(fileName);
+
+                string newfileName = $"{Guid.NewGuid()}" + extentioName;
+                string fileDirectory = $"{_environment.ContentRootPath}" + folderPath;
+                string fileSavePath = $"{_environment.ContentRootPath}" + folderPath + newfileName;
+
+                if (!Directory.Exists(fileDirectory))
+                {
+                    Directory.CreateDirectory(fileDirectory);
+                }
+
+                var byteData = Convert.FromBase64String(base64String);
+                File.WriteAllBytes(fileSavePath, byteData);
+
+                sFileName = newfileName;
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return sFileName;
         }
 
         /*

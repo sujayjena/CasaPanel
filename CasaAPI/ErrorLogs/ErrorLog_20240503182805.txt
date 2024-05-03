@@ -1,0 +1,9 @@
+2024-05-03 18:28:05
+Error Message:
+Invalid object name 'dbo.tblExpense'.
+Invalid object name 'dbo.tblExpense'.
+Full Exception Details:
+{"Error":"Invalid object name \u0027dbo.tblExpense\u0027.\r\nInvalid object name \u0027dbo.tblExpense\u0027.","Type":"SqlException"}
+
+*************************************************************************
+

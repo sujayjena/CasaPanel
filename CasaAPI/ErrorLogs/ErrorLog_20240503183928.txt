@@ -1,0 +1,9 @@
+2024-05-03 18:39:28
+Error Message:
+Invalid column name 'ExpenseType'.
+Invalid column name 'ExpenseType'.
+Full Exception Details:
+{"Error":"Invalid column name \u0027ExpenseType\u0027.\r\nInvalid column name \u0027ExpenseType\u0027.","Type":"SqlException"}
+
+*************************************************************************
+

@@ -1717,5 +1717,41 @@ namespace CasaAPI.Repositories
             return await ListByStoredProcedure<TitleProcessFailToImportValidationErrors>("SaveImportTitleProcessDetails", queryParameters);
         }
         #endregion
+
+        #region Expense Type
+        public async Task<int> SaveExpenseType(ExpenseTypeRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@ExpenseTypeId", parameters.ExpenseTypeId);
+            queryParameters.Add("@ExpenseTypeName", parameters.ExpenseTypeName.SanitizeValue().ToUpper());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveExpenseType", queryParameters);
+        }
+        public async Task<IEnumerable<ExpenseTypeResponse>> GetExpenseTypeList(SearchExpenseTypeRequest parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<ExpenseTypeResponse>("GetExpenseTypeList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+        public async Task<ExpenseTypeResponse?> GetExpenseTypeDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+
+            return (await ListByStoredProcedure<ExpenseTypeResponse>("GetExpenseTypeDetailsById", queryParameters)).FirstOrDefault();
+        }
+        #endregion
     }
 }

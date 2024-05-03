@@ -1,0 +1,9 @@
+2024-05-03 18:29:20
+Error Message:
+The multi-part identifier "expc.VisitId" could not be bound.
+The multi-part identifier "expc.VisitId" could not be bound.
+Full Exception Details:
+{"Error":"The multi-part identifier \u0022expc.VisitId\u0022 could not be bound.\r\nThe multi-part identifier \u0022expc.VisitId\u0022 could not be bound.","Type":"SqlException"}
+
+*************************************************************************
+

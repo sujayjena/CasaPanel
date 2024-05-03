@@ -107,6 +107,8 @@ var services = builder.Services;
     services.AddScoped<ILeaveRepository, LeaveRepository>();
     services.AddScoped<IVisitService, VisitService>();
     services.AddScoped<IVisitRepository, VisitRepository>();
+    services.AddScoped<IManageExpenseService, ManageExpenseService>();
+    services.AddScoped<IManageExpenseRepository, ManageExpenseRepository>();
     #endregion
 }
 

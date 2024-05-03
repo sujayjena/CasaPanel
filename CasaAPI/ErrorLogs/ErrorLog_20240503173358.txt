@@ -1,0 +1,8 @@
+2024-05-03 17:33:58
+Error Message:
+Unable to resolve service for type 'CasaAPI.Interfaces.Services.IManageExpenseService' while attempting to activate 'CasaAPI.Controllers.ManageExpenseController'.
+Full Exception Details:
+{"Error":"Unable to resolve service for type \u0027CasaAPI.Interfaces.Services.IManageExpenseService\u0027 while attempting to activate \u0027CasaAPI.Controllers.ManageExpenseController\u0027.","Type":"InvalidOperationException"}
+
+*************************************************************************
+

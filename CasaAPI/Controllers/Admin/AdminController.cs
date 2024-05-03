@@ -1785,5 +1785,66 @@ namespace CasaAPI.Controllers.Admin
             return _response;
         }
         #endregion
+
+        #region Expense Type API
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveExpenseType(ExpenseTypeRequest expenseTypeRequest)
+        {
+            int result = await _adminService.SaveExpenseType(expenseTypeRequest);
+            _response.IsSuccess = false;
+
+            if (result == (int)SaveEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveEnums.NameExists)
+            {
+                _response.Message = "Expense Type Name is already exists";
+            }
+            else if (result == (int)SaveEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.IsSuccess = true;
+                _response.Message = "Expense Type details saved sucessfully";
+            }
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetExpenseTypeList(SearchExpenseTypeRequest request)
+        {
+            IEnumerable<ExpenseTypeResponse> lstExpenseTypes = await _adminService.GetExpenseTypeList(request);
+            _response.Data = lstExpenseTypes.ToList();
+            _response.Total = request.pagination.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> GetExpenseTypeDetailsById(long id)
+        {
+            ExpenseTypeResponse? expenseType;
+
+            if (id <= 0)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstants.Id_Required_Msg;
+            }
+            else
+            {
+                expenseType = await _adminService.GetExpenseTypeDetailsById(id);
+                _response.Data = expenseType;
+            }
+
+            return _response;
+        }
+
+        #endregion
     }
 }

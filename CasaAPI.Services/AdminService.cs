@@ -872,5 +872,20 @@ namespace CasaAPI.Services
             return await _adminRepository.ImportTitleProcesssDetails(request);
         }
         #endregion
+
+        #region Expense Type
+        public async Task<int> SaveExpenseType(ExpenseTypeRequest request)
+        {
+            return await _adminRepository.SaveExpenseType(request);
+        }
+        public async Task<IEnumerable<ExpenseTypeResponse>> GetExpenseTypeList(SearchExpenseTypeRequest request)
+        {
+            return await _adminRepository.GetExpenseTypeList(request);
+        }
+        public async Task<ExpenseTypeResponse?> GetExpenseTypeDetailsById(long id)
+        {
+            return await _adminRepository.GetExpenseTypeDetailsById(id);
+        }
+        #endregion
     }
 }

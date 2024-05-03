@@ -323,5 +323,12 @@ namespace CasaAPI.Interfaces.Services
         Task<IEnumerable<TitleProcessFailToImportValidationErrors>> ImportTitleProcesssDetails(List<TitleProcessImportSaveParameters> request);
 
         #endregion
+
+        #region Expense Type
+        Task<int> SaveExpenseType(ExpenseTypeRequest request);
+        Task<IEnumerable<ExpenseTypeResponse>> GetExpenseTypeList(SearchExpenseTypeRequest request);
+        Task<ExpenseTypeResponse?> GetExpenseTypeDetailsById(long id);
+
+        #endregion
     }
 }
