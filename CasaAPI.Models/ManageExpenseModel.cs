@@ -91,6 +91,9 @@ namespace CasaAPI.Models
         public int Id { get; set; }
         public int ExpenseId { get; set; }
         public int StatusId { get; set; }
+
+        [DefaultValue("")]
+        public string Remarks { get; set; }
     }
 
 
@@ -146,6 +149,7 @@ namespace CasaAPI.Models
         public string ExpenseImageFileURL { get; set; }
         public int? StatusId { get; set; }
         public string StatusName { get; set; }
+        public string Remarks { get; set; }
         public string CreatorName { get; set; }
         public long CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
