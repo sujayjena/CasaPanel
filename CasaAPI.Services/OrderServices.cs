@@ -19,6 +19,7 @@ namespace CasaAPI.Services
             _orderRepository = orderRepository;
             _fileManager = fileManager;
         }
+
         #region DispatchOrder
         public async Task<int> SaveDispatchOrder(DispatchOrderSaveParameters request)
         {
@@ -35,6 +36,29 @@ namespace CasaAPI.Services
         public async Task<DispatchOrderDetailsResponse?> GetDispatchOrderDetailsById(long id)
         {
             return await _orderRepository.GetDispatchOrderDetailsById(id);
+        }
+        #endregion
+
+        #region Orders
+        public async Task<int> SaveOrder(OrderSaveParameters request)
+        {
+            return await _orderRepository.SaveOrder(request);
+        }
+        public async Task<IEnumerable<OrderListResponse>> GetOrderList(OrderSearchParameters request)
+        {
+            return await _orderRepository.GetOrderList(request);
+        }
+        public async Task<OrderListResponse?> GetOrderById(int id)
+        {
+            return await _orderRepository.GetOrderById(id);
+        }
+        public async Task<int> SaveOrderDetails(OrderDetailsSaveParameters request)
+        {
+            return await _orderRepository.SaveOrderDetails(request);
+        }
+        public async Task<IEnumerable<OrderDetailsResponse>> GetOrderDetailsList(OrderDetailsSearchParameters request)
+        {
+            return await _orderRepository.GetOrderDetailsList(request);
         }
         #endregion
     }

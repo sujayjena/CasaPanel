@@ -1,0 +1,8 @@
+2024-05-08 14:22:24
+Error Message:
+Invalid column name 'Id'.
+Full Exception Details:
+{"Error":"Invalid column name \u0027Id\u0027.","Type":"SqlException"}
+
+*************************************************************************
+

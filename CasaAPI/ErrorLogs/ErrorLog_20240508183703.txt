@@ -1,0 +1,8 @@
+2024-05-08 18:37:03
+Error Message:
+Procedure or function 'GetOrderList' expects parameter '@Total', which was not supplied.
+Full Exception Details:
+{"Error":"Procedure or function \u0027GetOrderList\u0027 expects parameter \u0027@Total\u0027, which was not supplied.","Type":"SqlException"}
+
+*************************************************************************
+
