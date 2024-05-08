@@ -15,5 +15,13 @@ namespace CasaAPI.Interfaces.Services
         Task<DispatchOrderDetailsResponse?> GetDispatchOrderDetailsById(long id);
         Task<IEnumerable<DispatchPanelDisplayDetailsResponse>> GetDispatchPanelDisplayOrderList(long dispatchOrderId);
         #endregion
+
+        #region Order
+        Task<int> SaveOrder(OrderSaveParameters request);
+        Task<IEnumerable<OrderListResponse>> GetOrderList(OrderSearchParameters request);
+        Task<OrderListResponse?> GetOrderById(int id);
+        Task<int> SaveOrderDetails(OrderDetailsSaveParameters request);
+        Task<IEnumerable<OrderDetailsResponse>> GetOrderDetailsList(OrderDetailsSearchParameters parameters);
+        #endregion
     }
 }

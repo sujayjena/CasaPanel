@@ -23,6 +23,7 @@ namespace CasaAPI.Controllers
             _response = new ResponseModel();
             _response.IsSuccess = true;
         }
+       
         #region DispatchOrder
         [Route("[action]")]
         [HttpPost]
@@ -50,6 +51,7 @@ namespace CasaAPI.Controllers
             }
             return _response;
         }
+       
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetDispatchOrderList(DispatchOrderSearchParameters request)
@@ -58,6 +60,7 @@ namespace CasaAPI.Controllers
             _response.Data = lstDealer.ToList();
             return _response;
         }
+       
         [Route("[action]")]
         [HttpGet]
         public async Task<ResponseModel> GetDispatchPanelDisplayOrderList(long dispatchOrderId)
@@ -66,6 +69,7 @@ namespace CasaAPI.Controllers
             _response.Data = lstDispatchPanel.ToList();
             return _response;
         }
+       
         [Route("[action]")]
         [HttpGet]
         public async Task<ResponseModel> GetDispatchOrderDetails(long id)
@@ -81,6 +85,135 @@ namespace CasaAPI.Controllers
             {
                 dispatchOrder = await _orderService.GetDispatchOrderDetailsById(id);
                 _response.Data = dispatchOrder;
+            }
+
+            return _response;
+        }
+        #endregion
+
+        #region Order
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveOrder(OrderSaveParameters request)
+        {
+            int result = await _orderService.SaveOrder(request);
+            _response.IsSuccess = false;
+
+            if (result == (int)SaveEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveEnums.NameExists)
+            {
+                _response.Message = "Order is already exists";
+            }
+            else if (result == (int)SaveEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.IsSuccess = true;
+                _response.Message = "Order details saved sucessfully";
+            }
+
+            if (result > 0)
+            {
+                // Save/Update Order Details
+                foreach (var item in request.orderDetailsList)
+                {
+                    var vOrderDetailsSaveParameters = new OrderDetailsSaveParameters()
+                    {
+                        Id = item.Id,
+                        OrderId = result,
+                        CollectionId = item.CollectionId,
+                        BaseDesignId = item.BaseDesignId,
+                        SizeId = item.SizeId,
+                        SurfaceId = item.SurfaceId,
+                        ThicknessId = item.ThicknessId,
+                        Quantity = item.Quantity,
+                    };
+
+                    int result_OrderDetails = await _orderService.SaveOrderDetails(vOrderDetailsSaveParameters);
+                }
+            }
+
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetOrderList(OrderSearchParameters request)
+        {
+            IEnumerable<OrderListResponse> lstDealer = await _orderService.GetOrderList(request);
+            _response.Data = lstDealer.ToList();
+            _response.Total = request.pagination.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> GetOrderById(int id)
+        {
+            var vOrderDetailsByIdResponse = new OrderDetailsByIdResponse();
+
+            if (id <= 0)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstants.Id_Required_Msg;
+            }
+            else
+            {
+                var vResultObj = await _orderService.GetOrderById(id);
+                if (vResultObj != null)
+                {
+                    vOrderDetailsByIdResponse.Id = vResultObj.Id;
+                    vOrderDetailsByIdResponse.OrderNo = vResultObj.OrderNo;
+                    vOrderDetailsByIdResponse.OrderDate = vResultObj.OrderDate;
+                    vOrderDetailsByIdResponse.CustomerId = vResultObj.CustomerId;
+                    vOrderDetailsByIdResponse.CompanyName = vResultObj.CompanyName;
+                    vOrderDetailsByIdResponse.MobileNo = vResultObj.MobileNo;
+                    vOrderDetailsByIdResponse.CustomerTypeId = vResultObj.CustomerTypeId;
+                    vOrderDetailsByIdResponse.CustomerTypeName = vResultObj.CustomerTypeName;
+                    vOrderDetailsByIdResponse.EmailId = vResultObj.EmailId;
+                    vOrderDetailsByIdResponse.RefName = vResultObj.RefName;
+                    vOrderDetailsByIdResponse.StateId = vResultObj.StateId;
+                    vOrderDetailsByIdResponse.StateName = vResultObj.StateName;
+                    vOrderDetailsByIdResponse.RegionId = vResultObj.RegionId;
+                    vOrderDetailsByIdResponse.RegionName = vResultObj.RegionName;
+                    vOrderDetailsByIdResponse.DistrictId = vResultObj.DistrictId;
+                    vOrderDetailsByIdResponse.DistrictName = vResultObj.DistrictName;
+                    vOrderDetailsByIdResponse.AreaId = vResultObj.AreaId;
+                    vOrderDetailsByIdResponse.AreaName = vResultObj.AreaName;
+                    vOrderDetailsByIdResponse.Pincode = vResultObj.Pincode;
+                    vOrderDetailsByIdResponse.BrandId = vResultObj.BrandId;
+                    vOrderDetailsByIdResponse.BrandName = vResultObj.BrandName;
+                    vOrderDetailsByIdResponse.PanelQty = vResultObj.PanelQty;
+                    vOrderDetailsByIdResponse.BinderQty = vResultObj.BinderQty;
+                    vOrderDetailsByIdResponse.Remarks = vResultObj.Remarks;
+                    vOrderDetailsByIdResponse.GrandTotalQty = vResultObj.GrandTotalQty;
+                    vOrderDetailsByIdResponse.StatusId = vResultObj.StatusId;
+                    vOrderDetailsByIdResponse.StatusName = vResultObj.StatusName;
+                    vOrderDetailsByIdResponse.IsActive = vResultObj.IsActive;
+                    vOrderDetailsByIdResponse.CreatorName = vResultObj.CreatorName;
+                    vOrderDetailsByIdResponse.CreatedBy = vResultObj.CreatedBy;
+
+                    // Order Details
+                    var vSearchObj = new OrderDetailsSearchParameters()
+                    {
+                        OrderId = vResultObj.Id,
+                        pagination = new PaginationParameters()
+                    };
+
+                    var objOrderDetailsList = await _orderService.GetOrderDetailsList(vSearchObj);
+                    foreach (var item in objOrderDetailsList)
+                    {
+                        vOrderDetailsByIdResponse.orderDetails.Add(item);
+                    }
+                }
+
+                _response.Data = vOrderDetailsByIdResponse;
             }
 
             return _response;
