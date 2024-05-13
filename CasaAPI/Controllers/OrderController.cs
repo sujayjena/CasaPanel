@@ -171,6 +171,8 @@ namespace CasaAPI.Controllers
                     vOrderDetailsByIdResponse.Id = vResultObj.Id;
                     vOrderDetailsByIdResponse.OrderNo = vResultObj.OrderNo;
                     vOrderDetailsByIdResponse.OrderDate = vResultObj.OrderDate;
+                    vOrderDetailsByIdResponse.EmployeeId = vResultObj.EmployeeId;
+                    vOrderDetailsByIdResponse.EmployeeName = vResultObj.EmployeeName;
                     vOrderDetailsByIdResponse.CustomerId = vResultObj.CustomerId;
                     vOrderDetailsByIdResponse.CompanyName = vResultObj.CompanyName;
                     vOrderDetailsByIdResponse.MobileNo = vResultObj.MobileNo;
@@ -186,6 +188,8 @@ namespace CasaAPI.Controllers
                     vOrderDetailsByIdResponse.DistrictName = vResultObj.DistrictName;
                     vOrderDetailsByIdResponse.AreaId = vResultObj.AreaId;
                     vOrderDetailsByIdResponse.AreaName = vResultObj.AreaName;
+                    vOrderDetailsByIdResponse.CityId = vResultObj.CityId;
+                    vOrderDetailsByIdResponse.CityName = vResultObj.CityName;
                     vOrderDetailsByIdResponse.Pincode = vResultObj.Pincode;
                     vOrderDetailsByIdResponse.BrandId = vResultObj.BrandId;
                     vOrderDetailsByIdResponse.BrandName = vResultObj.BrandName;
@@ -215,6 +219,86 @@ namespace CasaAPI.Controllers
 
                 _response.Data = vOrderDetailsByIdResponse;
             }
+
+            return _response;
+        }
+
+        #endregion
+
+        #region Order Booking
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveOrderBooking(OrderBooking_Request request)
+        {
+            //Image Upload
+            if (!string.IsNullOrWhiteSpace(request.ImageFile_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(request.ImageFile_Base64, "\\Uploads\\Order\\", request.ImageOriginalFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    request.ImageFileName = vUploadFile;
+                }
+            }
+
+            int result = await _orderService.SaveOrderBooking(request);
+            _response.IsSuccess = false;
+
+            if (result == (int)SaveEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveEnums.NameExists)
+            {
+                _response.Message = "Order Booking is already exists";
+            }
+            else if (result == (int)SaveEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.IsSuccess = true;
+                _response.Message = "Order Booking details saved sucessfully";
+            }
+
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetOrderBookingList(OrderBooking_Search request)
+        {
+            IEnumerable<OrderBooking_Response> lstDealer = await _orderService.GetOrderBookingList(request);
+            _response.Data = lstDealer.ToList();
+            _response.Total = request.pagination.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<ResponseModel> GetOrderBookingById(int id)
+        {
+            if (id <= 0)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstants.Id_Required_Msg;
+            }
+            else
+            {
+                var vResultObj = await _orderService.GetOrderBookingById(id);
+                _response.Data = vResultObj;
+            }
+
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetOrderBooking_Collection_BaseDesign_Size_Surface_List_ById(OrderBooking_Collection_BaseDesign_Size_Surface_Search parameters)
+        {
+            var vResultObj = await _orderService.GetOrderBooking_Collection_BaseDesign_Size_Surface_List_ById(parameters);
+            _response.Data = vResultObj;
 
             return _response;
         }

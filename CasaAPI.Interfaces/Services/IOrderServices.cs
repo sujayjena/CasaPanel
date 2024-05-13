@@ -23,5 +23,12 @@ namespace CasaAPI.Interfaces.Services
         Task<int> SaveOrderDetails(OrderDetailsSaveParameters request);
         Task<IEnumerable<OrderDetailsResponse>> GetOrderDetailsList(OrderDetailsSearchParameters parameters);
         #endregion
+
+        #region Order Booking
+        Task<int> SaveOrderBooking(OrderBooking_Request request);
+        Task<IEnumerable<OrderBooking_Response>> GetOrderBookingList(OrderBooking_Search request);
+        Task<OrderBooking_Response?> GetOrderBookingById(int id);
+        Task<IEnumerable<OrderBooking_Collection_BaseDesign_Size_Surface_Response>> GetOrderBooking_Collection_BaseDesign_Size_Surface_List_ById(OrderBooking_Collection_BaseDesign_Size_Surface_Search parameters);
+        #endregion
     }
 }

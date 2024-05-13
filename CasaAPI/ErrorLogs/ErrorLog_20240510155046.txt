@@ -1,0 +1,8 @@
+2024-05-10 15:50:46
+Error Message:
+Procedure or function GetOrderBookingList has too many arguments specified.
+Full Exception Details:
+{"Error":"Procedure or function GetOrderBookingList has too many arguments specified.","Type":"SqlException"}
+
+*************************************************************************
+

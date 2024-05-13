@@ -1,0 +1,8 @@
+2024-05-10 15:50:06
+Error Message:
+@SurfaceId is not a parameter for procedure GetOrderList.
+Full Exception Details:
+{"Error":"@SurfaceId is not a parameter for procedure GetOrderList.","Type":"SqlException"}
+
+*************************************************************************
+

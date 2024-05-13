@@ -61,5 +61,24 @@ namespace CasaAPI.Services
             return await _orderRepository.GetOrderDetailsList(request);
         }
         #endregion
+
+        #region Order Booking
+        public async Task<int> SaveOrderBooking(OrderBooking_Request request)
+        {
+            return await _orderRepository.SaveOrderBooking(request);
+        }
+        public async Task<IEnumerable<OrderBooking_Response>> GetOrderBookingList(OrderBooking_Search request)
+        {
+            return await _orderRepository.GetOrderBookingList(request);
+        }
+        public async Task<OrderBooking_Response?> GetOrderBookingById(int id)
+        {
+            return await _orderRepository.GetOrderBookingById(id);
+        }
+        public async Task<IEnumerable<OrderBooking_Collection_BaseDesign_Size_Surface_Response>> GetOrderBooking_Collection_BaseDesign_Size_Surface_List_ById(OrderBooking_Collection_BaseDesign_Size_Surface_Search request)
+        {
+            return await _orderRepository.GetOrderBooking_Collection_BaseDesign_Size_Surface_List_ById(request);
+        }
+        #endregion
     }
 }
