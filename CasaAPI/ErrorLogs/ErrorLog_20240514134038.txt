@@ -1,0 +1,8 @@
+2024-05-14 13:40:38
+Error Message:
+Unable to resolve service for type 'CasaAPI.Interfaces.Services.IDashboardService' while attempting to activate 'CasaAPI.Controllers.DashboardController'.
+Full Exception Details:
+{"Error":"Unable to resolve service for type \u0027CasaAPI.Interfaces.Services.IDashboardService\u0027 while attempting to activate \u0027CasaAPI.Controllers.DashboardController\u0027.","Type":"InvalidOperationException"}
+
+*************************************************************************
+

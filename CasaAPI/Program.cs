@@ -109,6 +109,8 @@ var services = builder.Services;
     services.AddScoped<IVisitRepository, VisitRepository>();
     services.AddScoped<IManageExpenseService, ManageExpenseService>();
     services.AddScoped<IManageExpenseRepository, ManageExpenseRepository>();
+    services.AddScoped<IDashboardService, DashboardService>();
+    services.AddScoped<IDashboardRepository, DashboardRepository>();
     #endregion
 }
 

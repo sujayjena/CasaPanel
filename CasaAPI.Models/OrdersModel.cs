@@ -210,6 +210,9 @@ namespace CasaAPI.Models
         public string SurfaceName { get; set; }
         public int ThicknessId { get; set; }
         public string ThicknessName { get; set; }
+        public string? ImageFileName { get; set; }
+        public string? ImageOriginalFileName { get; set; }
+        public string? ImageURL { get; set; }
         public int Quantity { get; set; }
         public string CreatorName { get; set; }
         public long CreatedBy { get; set; }

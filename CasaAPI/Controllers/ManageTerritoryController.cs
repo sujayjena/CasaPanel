@@ -23,6 +23,7 @@ namespace CasaAPI.Controllers
             _response = new ResponseModel();
             _response.IsSuccess = true;
         }
+
         #region State API
         [Route("[action]")]
         [HttpPost]
@@ -1432,6 +1433,7 @@ namespace CasaAPI.Controllers
             _response.Data = lstArea.ToList();
             return _response;
         }
+       
         [Route("[action]")]
         [HttpGet]
         public async Task<ResponseModel> GetAreaMappingDetails(long id)
