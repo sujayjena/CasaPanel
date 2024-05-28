@@ -139,6 +139,11 @@ namespace CasaAPI.Services
         {
             return await _manageTerritorRepository.GetAreaMappingDetailsById(id);
         }
+
+        public async Task<IEnumerable<Territories_State_Dist_City_Area_Response>> GetTerritories_State_Dist_City_Area_List_ById(Territories_State_Dist_City_Area_Search request)
+        {
+            return await _manageTerritorRepository.GetTerritories_State_Dist_City_Area_List_ById(request);
+        }
         #endregion
     }
 }

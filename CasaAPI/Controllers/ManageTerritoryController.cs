@@ -1453,6 +1453,16 @@ namespace CasaAPI.Controllers
             return _response;
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetTerritories_State_Dist_City_Area_List_ById(Territories_State_Dist_City_Area_Search parameters)
+        {
+            var vResultObj = await _manageTerritorService.GetTerritories_State_Dist_City_Area_List_ById(parameters);
+            _response.Data = vResultObj;
+
+            return _response;
+        }
+
         #endregion
     }
 }

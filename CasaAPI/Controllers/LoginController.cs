@@ -39,8 +39,8 @@ namespace CasaAPI.Controllers
 
             //_response.Data = await Login(loginParameters);
 
-            var vLoginObj = new ResponseModel();
-            vLoginObj.Data = await Login(loginParameters);
+            //var vLoginObj = new ResponseModel();
+            var vLoginObj = await Login(loginParameters);
 
             return vLoginObj;
         }

@@ -1,0 +1,8 @@
+2024-05-16 11:39:58
+Error Message:
+The type initializer for 'CasaAPI.Helpers.SessionManager' threw an exception.
+Full Exception Details:
+{"Error":"The type initializer for \u0027CasaAPI.Helpers.SessionManager\u0027 threw an exception.","Type":"TypeInitializationException","InnerException":{"Error":"Object reference not set to an instance of an object.","Type":"NullReferenceException"}}
+
+*************************************************************************
+

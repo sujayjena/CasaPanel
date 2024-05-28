@@ -36,6 +36,7 @@ namespace CasaAPI.Interfaces.Services
         Task<IEnumerable<AreaMappingResponse>> GetAreaTerritoryList(SearchAreaMappingRequest request);
         Task<int> SaveareaTerritory(SaveAreamapping stateRequest);
         Task<AreaMappingResponse?> GetAreaMappingDetailsById(long id);
+        Task<IEnumerable<Territories_State_Dist_City_Area_Response>> GetTerritories_State_Dist_City_Area_List_ById(Territories_State_Dist_City_Area_Search request);
         #endregion
     }
 }
