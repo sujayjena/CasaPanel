@@ -20,6 +20,7 @@ using static CasaAPI.Models.TitleGSMModel;
 using static CasaAPI.Models.FlapGSMModel;
 using static CasaAPI.Models.InnerGSMModel;
 using static CasaAPI.Models.TitleProcessModel;
+using static CasaAPI.Models.CalanderModel;
 
 namespace CasaAPI.Interfaces.Services
 {
@@ -328,6 +329,14 @@ namespace CasaAPI.Interfaces.Services
         Task<int> SaveExpenseType(ExpenseTypeRequest request);
         Task<IEnumerable<ExpenseTypeResponse>> GetExpenseTypeList(SearchExpenseTypeRequest request);
         Task<ExpenseTypeResponse?> GetExpenseTypeDetailsById(long id);
+
+        #endregion
+
+        #region Calander
+        Task<int> SaveCalander(CalanderSaveParameters request);
+        Task<IEnumerable<CalanderDetailsResponse>> GetCalanderList(CalanderSearchParameters request);
+        Task<CalanderDetailsResponse?> GetCalanderDetailsById(long id);
+        Task<IEnumerable<CalanderFailToImportValidationErrors>> ImportCalandersDetails(List<CalanderImportSaveParameters> request);
 
         #endregion
     }

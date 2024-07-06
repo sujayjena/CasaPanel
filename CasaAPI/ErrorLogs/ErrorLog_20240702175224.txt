@@ -1,0 +1,9 @@
+2024-07-02 17:52:24
+Error Message:
+The multi-part identifier "TM.IsActive" could not be bound.
+The multi-part identifier "TM.IsActive" could not be bound.
+Full Exception Details:
+{"Error":"The multi-part identifier \u0022TM.IsActive\u0022 could not be bound.\r\nThe multi-part identifier \u0022TM.IsActive\u0022 could not be bound.","Type":"SqlException"}
+
+*************************************************************************
+

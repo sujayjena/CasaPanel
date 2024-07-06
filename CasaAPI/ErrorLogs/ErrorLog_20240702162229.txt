@@ -1,0 +1,8 @@
+2024-07-02 16:22:29
+Error Message:
+Invalid object name 'CalanderMaster'.
+Full Exception Details:
+{"Error":"Invalid object name \u0027CalanderMaster\u0027.","Type":"SqlException"}
+
+*************************************************************************
+

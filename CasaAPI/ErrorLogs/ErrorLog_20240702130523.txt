@@ -1,0 +1,8 @@
+2024-07-02 13:05:23
+Error Message:
+Procedure or function 'GetDealerList' expects parameter '@Total', which was not supplied.
+Full Exception Details:
+{"Error":"Procedure or function \u0027GetDealerList\u0027 expects parameter \u0027@Total\u0027, which was not supplied.","Type":"SqlException"}
+
+*************************************************************************
+

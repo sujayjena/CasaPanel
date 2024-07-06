@@ -1,0 +1,8 @@
+2024-07-02 17:48:59
+Error Message:
+Procedure or function 'GetAreasMapping' expects parameter '@Total', which was not supplied.
+Full Exception Details:
+{"Error":"Procedure or function \u0027GetAreasMapping\u0027 expects parameter \u0027@Total\u0027, which was not supplied.","Type":"SqlException"}
+
+*************************************************************************
+

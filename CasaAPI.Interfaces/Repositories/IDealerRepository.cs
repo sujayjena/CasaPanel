@@ -14,6 +14,7 @@ namespace CasaAPI.Interfaces.Repositories
         Task<int> SaveDealer(DealerSaveParameters parameters);
         Task<IEnumerable<DealerDetailsResponse>> GetDealerList(DealerSearchParameters parameters);
         Task<DealerDetailsResponse?> GetDealerDetailsById(long id);
+        Task<int> UpdateDealerStatus(DealerStatusUpdate request);
         #endregion
         #region DealerAddress
         Task<int> SaveDealeAddress(DealerAddressSaveParameters parameters);

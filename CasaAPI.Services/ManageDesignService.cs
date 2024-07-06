@@ -57,10 +57,10 @@ namespace CasaAPI.Services
             {
                 lstDesignImages = (await _manageDesignRepository.GetDesignImagesList(id)).ToList();
 
-                foreach (var designImage in lstDesignImages)
-                {
-                    designImage!.DesignFile = _fileManager.GetDesignFiles(designImage.SavedFilesName);
-                }
+                //foreach (var designImage in lstDesignImages)
+                //{
+                //    designImage!.DesignFile = _fileManager.GetDesignFiles(designImage.SavedFilesName);
+                //}
 
                 result.DesignImages = lstDesignImages;
             }

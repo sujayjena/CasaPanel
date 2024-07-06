@@ -101,7 +101,7 @@ namespace CasaAPI.Models
         public string UploadedFilesName { get; set; }
         public string SavedFilesName { get; set; }
         public bool IsToDeleteImage { get; set; }
-        public byte[] DesignFile { get; set; }
+        //public byte[] DesignFile { get; set; }
         public string DesignFileUrl { get; set; }
     }
 }

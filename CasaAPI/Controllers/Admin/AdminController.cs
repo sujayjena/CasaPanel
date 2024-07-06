@@ -704,8 +704,25 @@ namespace CasaAPI.Controllers.Admin
         }
 
         [Route("[action]")]
-        [HttpPost]
+        [HttpGet]
+        public async Task<ResponseModel> DownloadBaseDesignTemplate()
+        {
+            byte[]? fileContent = await Task.Run(() => _fileManager.GetFormatFileFromPath(FormatFilesName.BaseDesignImportFormatFileName));
+            if (fileContent == null || fileContent.Length == 0)
+            {
+                _response.Message = ErrorConstants.FileNotExistsToDownload;
+                _response.IsSuccess = false;
+            }
+            else
+            {
+                _response.Data = fileContent;
+            }
+            return _response;
+        }
 
+
+        [Route("[action]")]
+        [HttpPost]
         public async Task<ResponseModel> ImportBaseDesignsData([FromQuery] ImportRequest request)
         {
             _response.IsSuccess = false;
@@ -759,7 +776,7 @@ namespace CasaAPI.Controllers.Admin
             lstBaseDesignsFailedToImport = await _adminService.ImportBaseDesignsDetails(lstImportedBaseDesignDetails);
 
             _response.IsSuccess = true;
-            _response.Message = "Design Types list imported successfully";
+            _response.Message = "Base Designs list imported successfully";
 
             #region Generate Excel file for Invalid Data
             if (lstBaseDesignsFailedToImport.ToList().Count > 0)
@@ -772,7 +789,6 @@ namespace CasaAPI.Controllers.Admin
 
             return _response;
         }
-
 
         private byte[] GenerateInvalidBaseDesignDataFile(IEnumerable<BaseDesignDataValidationErrors> lstBaseDesignsFailedToImport)
         {
@@ -1585,7 +1601,7 @@ namespace CasaAPI.Controllers.Admin
         [HttpGet]
         public async Task<ResponseModel> DownloadTemplateToImportCollection()
         {
-            byte[]? formatFile = await Task.Run(() => _fileManager.GetFormatFileFromPath("ImportCollectionFormat.xlsx"));
+            byte[]? formatFile = await Task.Run(() => _fileManager.GetFormatFileFromPath("CollectionMasterImportFileFormat.xlsx"));
 
             if (formatFile != null)
             {
@@ -1627,7 +1643,8 @@ namespace CasaAPI.Controllers.Admin
                 noOfRow = workSheet.Dimension.End.Row;
 
                 if (!string.Equals(workSheet.Cells[1, 1].Value.ToString(), "CollectionName", StringComparison.OrdinalIgnoreCase) ||
-                   !string.Equals(workSheet.Cells[1, 2].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
+                   !string.Equals(workSheet.Cells[1, 2].Value.ToString(), "CollectionNameId", StringComparison.OrdinalIgnoreCase) ||
+                   !string.Equals(workSheet.Cells[1, 3].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
                 {
                     _response.IsSuccess = false;
                     _response.Message = "Please upload a valid excel file. Please Download Format file for reference";
@@ -1639,7 +1656,8 @@ namespace CasaAPI.Controllers.Admin
                     lstImportedCollection.Add(new ImportedCollection()
                     {
                         CollectionName = workSheet.Cells[rowIterator, 1].Value?.ToString(),
-                        IsActive = workSheet.Cells[rowIterator, 2].Value?.ToString()
+                        CollectionNameId = workSheet.Cells[rowIterator, 2].Value?.ToString(),
+                        IsActive = workSheet.Cells[rowIterator, 3].Value?.ToString()
                     });
                 }
             }
@@ -1686,16 +1704,18 @@ namespace CasaAPI.Controllers.Admin
                     WorkSheet1.Row(1).Style.Font.Bold = true;
 
                     WorkSheet1.Cells[1, 1].Value = "CollectionName";
-                    WorkSheet1.Cells[1, 2].Value = "IsActive";
-                    WorkSheet1.Cells[1, 3].Value = "ValidationMessage";
+                    WorkSheet1.Cells[1, 2].Value = "CollectionNameId";
+                    WorkSheet1.Cells[1, 3].Value = "IsActive";
+                    WorkSheet1.Cells[1, 4].Value = "ValidationMessage";
 
                     recordIndex = 2;
 
                     foreach (CollectionDataValidationErrors record in lstCollectionFailedToImport)
                     {
                         WorkSheet1.Cells[recordIndex, 1].Value = record.CollectionName;
-                        WorkSheet1.Cells[recordIndex, 2].Value = record.IsActive;
-                        WorkSheet1.Cells[recordIndex, 3].Value = record.ValidationMessage;
+                        WorkSheet1.Cells[recordIndex, 2].Value = record.CollectionNameId;
+                        WorkSheet1.Cells[recordIndex, 3].Value = record.IsActive;
+                        WorkSheet1.Cells[recordIndex, 4].Value = record.ValidationMessage;
 
                         recordIndex += 1;
                     }
@@ -1703,6 +1723,7 @@ namespace CasaAPI.Controllers.Admin
                     WorkSheet1.Column(1).AutoFit();
                     WorkSheet1.Column(2).AutoFit();
                     WorkSheet1.Column(3).AutoFit();
+                    WorkSheet1.Column(4).AutoFit();
 
                     excelInvalidData.SaveAs(msInvalidDataFile);
                     msInvalidDataFile.Position = 0;
@@ -1743,22 +1764,24 @@ namespace CasaAPI.Controllers.Admin
 
                     WorkSheet1.Cells[1, 1].Value = "CollectionId";
                     WorkSheet1.Cells[1, 2].Value = "Collection";
-                    WorkSheet1.Cells[1, 3].Value = "Status";
+                    WorkSheet1.Cells[1, 3].Value = "CollectionNameId";
+                    WorkSheet1.Cells[1, 4].Value = "Status";
 
-                    WorkSheet1.Cells[1, 4].Value = "CreatedBy";
-                    WorkSheet1.Cells[1, 5].Value = "CreatedDate";
+                    WorkSheet1.Cells[1, 5].Value = "CreatedBy";
+                    WorkSheet1.Cells[1, 6].Value = "CreatedDate";
 
                     recordIndex = 2;
 
                     foreach (var items in lstCollectionObj)
                     {
-                        WorkSheet1.Cells[recordIndex, 1].Value = items.CollectionNameId;
+                        WorkSheet1.Cells[recordIndex, 1].Value = items.CollectionId;
                         WorkSheet1.Cells[recordIndex, 2].Value = items.CollectionName;
-                        WorkSheet1.Cells[recordIndex, 3].Value = items.IsActive == true ? "Active" : "Inactive";
+                        WorkSheet1.Cells[recordIndex, 3].Value = items.CollectionNameId;
+                        WorkSheet1.Cells[recordIndex, 4].Value = items.IsActive == true ? "Active" : "Inactive";
 
-                        WorkSheet1.Cells[recordIndex, 4].Value = items.CreatorName;
-                        WorkSheet1.Cells[recordIndex, 5].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
-                        WorkSheet1.Cells[recordIndex, 5].Value = items.CreatedOn;
+                        WorkSheet1.Cells[recordIndex, 5].Value = items.CreatorName;
+                        WorkSheet1.Cells[recordIndex, 6].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                        WorkSheet1.Cells[recordIndex, 6].Value = items.CreatedOn;
 
                         recordIndex += 1;
                     }
@@ -1768,6 +1791,7 @@ namespace CasaAPI.Controllers.Admin
                     WorkSheet1.Column(3).AutoFit();
                     WorkSheet1.Column(4).AutoFit();
                     WorkSheet1.Column(5).AutoFit();
+                    WorkSheet1.Column(6).AutoFit();
 
                     excelExportData.SaveAs(msExportDataFile);
                     msExportDataFile.Position = 0;

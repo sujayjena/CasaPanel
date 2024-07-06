@@ -49,5 +49,7 @@
         public const string FlapGSMImportFormatFileName = "FlapGSMMasterImportFileFormat.xlsx";
         public const string InnerGSMImportFormatFileName = "InnerGSMMasterImportFileFormat.xlsx";
         public const string TitleProcessImportFormatFileName = "TitleProcessImportFormatFileName.xlsx";
+        public const string CalanderMasterImportFileFormat = "CalanderMasterImportFileFormat.xlsx";
+        public const string BaseDesignImportFormatFileName = "BaseDesignImportFormatFileName.xlsx";
     }
 }

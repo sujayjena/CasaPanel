@@ -125,7 +125,10 @@ namespace CasaAPI.Controllers
                     data.Showroom = record.Showroom;
                     data.PresentShowroomSqFt = record.PresentShowroomSqFt;
                     data.CurrentHandlingBrandOrCompany = record.CurrentHandlingBrandOrCompany;
+                    data.StatusId = record.StatusId;
+                    data.StatusName = record.StatusName;
                     data.TotalRecords = record.TotalRecords;
+
                     if (record?.BusinessCardUpload?.Length > 0)
                     {
                         data.BusinessCardUpload = Convert.ToBase64String(_fileManager.GetProfilePicture(record.BusinessCardUpload));
@@ -143,6 +146,7 @@ namespace CasaAPI.Controllers
                 }
             }
             _response.Data = datalist.ToList();
+            _response.Total = request.pagination.Total;
             return _response;
         }
 
@@ -212,7 +216,9 @@ namespace CasaAPI.Controllers
                     data.EmailId = dealer.EmailId;
                     data.DistanceFromShowroomToGodown = dealer.DistanceFromShowroomToGodown;
                     data.CurrentHandlingBrandOrCompany = dealer.CurrentHandlingBrandOrCompany;
-                    data.TotalRecords = dealer.TotalRecords;
+                    data.StatusId = dealer.StatusId;
+                    data.StatusName = dealer.StatusName;
+
                     if (dealer?.BusinessCardUpload?.Length > 0)
                     {
                         data.BusinessCardUpload = Convert.ToBase64String(_fileManager.GetProfilePicture(dealer.BusinessCardUpload));
@@ -229,6 +235,25 @@ namespace CasaAPI.Controllers
                 }
             }
 
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> UpdateDealerStatus(DealerStatusUpdate Request)
+        {
+            int result = await _dealerService.UpdateDealerStatus(Request);
+            _response.IsSuccess = false;
+
+            if (result == (int)SaveEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result > 0)
+            {
+                _response.IsSuccess = true;
+                _response.Message = "Dealer Status Update Sucessfully";
+            }
             return _response;
         }
 

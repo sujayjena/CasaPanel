@@ -113,18 +113,18 @@ namespace CasaAPI.Controllers.Admin
             else
             {
                 referral = await _adminService.GetReferralDetailsById(id);
-                if (referral != null)
-                {
-                    if (!string.IsNullOrWhiteSpace(referral.AadharSaveFileName))
-                    {
-                        referral.AadharFileUrl = host + _fileManager.GetReferralDocumentsFile(referral.AadharSaveFileName);
-                    }
+                //if (referral != null)
+                //{
+                //    if (!string.IsNullOrWhiteSpace(referral.AadharSaveFileName))
+                //    {
+                //        referral.AadharFileUrl = host + _fileManager.GetReferralDocumentsFile(referral.AadharSaveFileName);
+                //    }
 
-                    if (!string.IsNullOrWhiteSpace(referral.PanCardSaveFileName))
-                    {
-                        referral.PanCardFileUrl = host + _fileManager.GetReferralDocumentsFile(referral.PanCardSaveFileName);
-                    }
-                }
+                //    if (!string.IsNullOrWhiteSpace(referral.PanCardSaveFileName))
+                //    {
+                //        referral.PanCardFileUrl = host + _fileManager.GetReferralDocumentsFile(referral.PanCardSaveFileName);
+                //    }
+                //}
                 _response.Data = referral;
             }
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -62,6 +63,24 @@ namespace CasaAPI.Models
 
         public string FinishName { get; set; }
 
+        [DefaultValue("")]
+        public string TilesImageFileName { get; set; }
+
+        [DefaultValue("")]
+        public string TilesImageSavedFileName { get; set; }
+
+        [DefaultValue("")]
+        public string TilesImageSavedFileName_Base64 { get; set; }
+
+        [DefaultValue("")]
+        public string TilesPreviewFileName { get; set; }
+
+        [DefaultValue("")]
+        public string TilesPreviewSavedFileName { get; set; }
+
+        [DefaultValue("")]
+        public string TilesPreviewSavedFileName_Base64 { get; set; }
+
         public List<IFormFile>? DesignFiles { get; set; }
         public List<ProductDesignFiles> ProductDesignFiles { get; set; }
 
@@ -103,6 +122,12 @@ namespace CasaAPI.Models
         public decimal BoxCoverageAreaSqFoot { get; set; }
         public decimal BoxCoverageAreaSqMeter { get; set; }
         public string FinishName { get; set; }
+        public string TilesImageFileName { get; set; }
+        public string TilesImageSavedFileName { get; set; }
+        public string TilesImageFileURL { get; set; }
+        public string TilesPreviewFileName { get; set; }
+        public string TilesPreviewSavedFileName { get; set; }
+        public string TilesPreviewFileURL { get; set; }
     }
 
     public class ProductDesignDetailsResponse : ProductDesignResponse

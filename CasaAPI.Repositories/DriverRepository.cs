@@ -23,8 +23,9 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@DriverId", parameters.DriverId);
             queryParameters.Add("@DriverName", parameters.DriverName.SanitizeValue().ToUpper());
             queryParameters.Add("@MobileNumber", parameters.MobileNumber.SanitizeValue());
-            queryParameters.Add("@ProfilePath", parameters.ProfilePath.SanitizeValue());
             queryParameters.Add("@VehicleNumber", parameters.VehicleNumber.SanitizeValue().ToUpper());
+            queryParameters.Add("@ProfileFileName", parameters.ProfileFileName);
+            queryParameters.Add("@ProfileSavedFileName", parameters.ProfileSavedFileName);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
             return await SaveByStoredProcedure<int>("SaveDriverDetails", queryParameters);
@@ -34,12 +35,17 @@ namespace CasaAPI.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@PageNo", parameters.pagination.PageNo);
             queryParameters.Add("@PageSize", parameters.pagination.PageSize);
-            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
-            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            //queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            //queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
             queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
 
-            return await ListByStoredProcedure<DriverDetailsResponse>("GetDriverrsList", queryParameters);
+            var result = await ListByStoredProcedure<DriverDetailsResponse>("GetDriversList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
         }
         public async Task<DriverDetailsResponse?> GetDriverDetailsById(long id)
         {

@@ -51,6 +51,7 @@ namespace CasaAPI.Models
         public int SurfaceId { get; set; }
         public int ThicknessId { get; set; }
         public int Quantity { get; set; }
+        public bool IsActive { get; set; }
     }
     public class OrderSearchParameters
     {
@@ -138,6 +139,7 @@ namespace CasaAPI.Models
         [DefaultValue("")]
         public string ValueForSearch { get; set; } = null;
         public int OrderId { get; set; }
+        public bool? IsActive { get; set; }
     }
 
     public class OrderDetailsByIdResponse
@@ -214,6 +216,7 @@ namespace CasaAPI.Models
         public string? ImageOriginalFileName { get; set; }
         public string? ImageURL { get; set; }
         public int Quantity { get; set; }
+        public bool IsActive { get; set; }
         public string CreatorName { get; set; }
         public long CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }

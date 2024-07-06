@@ -1,0 +1,8 @@
+2024-07-02 21:40:01
+Error Message:
+A connection was successfully established with the server, but then an error occurred during the pre-login handshake. (provider: SSL Provider, error: 0 - The wait operation timed out.)
+Full Exception Details:
+{"Error":"A connection was successfully established with the server, but then an error occurred during the pre-login handshake. (provider: SSL Provider, error: 0 - The wait operation timed out.)","Type":"SqlException","InnerException":{"Error":"The wait operation timed out.","Type":"Win32Exception"}}
+
+*************************************************************************
+

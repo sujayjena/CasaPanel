@@ -1,0 +1,8 @@
+2024-07-02 21:11:28
+Error Message:
+Procedure or function GetDriversList has too many arguments specified.
+Full Exception Details:
+{"Error":"Procedure or function GetDriversList has too many arguments specified.","Type":"SqlException"}
+
+*************************************************************************
+

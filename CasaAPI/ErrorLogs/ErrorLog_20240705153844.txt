@@ -1,0 +1,8 @@
+2024-07-05 15:38:44
+Error Message:
+Conversion failed when converting the nvarchar value 'RUP' to data type int.
+Full Exception Details:
+{"Error":"Conversion failed when converting the nvarchar value \u0027RUP\u0027 to data type int.","Type":"SqlException"}
+
+*************************************************************************
+

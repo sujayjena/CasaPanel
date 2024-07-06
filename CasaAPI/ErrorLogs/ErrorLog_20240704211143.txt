@@ -1,0 +1,8 @@
+2024-07-04 21:11:43
+Error Message:
+Procedure or function 'GetManageBoxSizeList' expects parameter '@Total', which was not supplied.
+Full Exception Details:
+{"Error":"Procedure or function \u0027GetManageBoxSizeList\u0027 expects parameter \u0027@Total\u0027, which was not supplied.","Type":"SqlException"}
+
+*************************************************************************
+

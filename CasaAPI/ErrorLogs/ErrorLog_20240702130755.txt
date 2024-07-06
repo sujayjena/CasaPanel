@@ -1,0 +1,8 @@
+2024-07-02 13:07:55
+Error Message:
+@IsExport is not a parameter for procedure GetDealerList.
+Full Exception Details:
+{"Error":"@IsExport is not a parameter for procedure GetDealerList.","Type":"SqlException"}
+
+*************************************************************************
+

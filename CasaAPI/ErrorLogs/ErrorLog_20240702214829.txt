@@ -1,0 +1,8 @@
+2024-07-02 21:48:29
+Error Message:
+Connection Timeout Expired.  The timeout period elapsed during the post-login phase.  The connection could have timed out while waiting for server to complete the login process and respond; Or it could have timed out while attempting to create multiple active connections.  The duration spent while attempting to connect to this server was - [Pre-Login] initialization=946; handshake=7623; [Login] initialization=0; authentication=2; [Post-Login] complete=6010; 
+Full Exception Details:
+{"Error":"Connection Timeout Expired.  The timeout period elapsed during the post-login phase.  The connection could have timed out while waiting for server to complete the login process and respond; Or it could have timed out while attempting to create multiple active connections.  The duration spent while attempting to connect to this server was - [Pre-Login] initialization=946; handshake=7623; [Login] initialization=0; authentication=2; [Post-Login] complete=6010; ","Type":"SqlException","InnerException":{"Error":"The wait operation timed out.","Type":"Win32Exception"}}
+
+*************************************************************************
+

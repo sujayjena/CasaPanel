@@ -1,6 +1,7 @@
 ﻿using CasaAPI.Helpers;
 using CasaAPI.Interfaces.Repositories;
 using CasaAPI.Models;
+using CasaAPI.Models.Enums;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -60,6 +61,7 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@ImageUpload", parameters?.ImageUpload);
             queryParameters.Add("@Dealershowroom", parameters?.Dealershowroom);
             queryParameters.Add("@Rating", parameters?.Rating);
+            queryParameters.Add("@StatusId", parameters?.StatusId);
             queryParameters.Add("@IsActive", parameters?.IsActive);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
             return await SaveByStoredProcedure<int>("SaveDealerDetails", queryParameters);
@@ -69,13 +71,19 @@ namespace CasaAPI.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@PageNo", parameters.pagination.PageNo);
             queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
             queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
             queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
             queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
+            queryParameters.Add("@StatusId", parameters.StatusId);
             queryParameters.Add("@IsActive", parameters.IsActive);
-            queryParameters.Add("@IsExport", parameters.IsExport);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            //queryParameters.Add("@IsExport", parameters.IsExport);
 
-            return await ListByStoredProcedure<DealerDetailsResponse>("GetDealerList", queryParameters);
+            var result = await ListByStoredProcedure<DealerDetailsResponse>("GetDealerList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
         }
 
         public async Task<DealerDetailsResponse?> GetDealerDetailsById(long id)
@@ -84,6 +92,14 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@Id", id);
 
             return (await ListByStoredProcedure<DealerDetailsResponse>("GetDealerDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<int> UpdateDealerStatus(DealerStatusUpdate parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", parameters.Id);
+            queryParameters.Add("@StatusId", parameters.StatusId);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("UpdateDealerStatus", queryParameters);
         }
         #endregion
         #region DealerAddress

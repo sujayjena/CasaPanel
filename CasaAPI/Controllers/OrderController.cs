@@ -133,6 +133,7 @@ namespace CasaAPI.Controllers
                         SurfaceId = item.SurfaceId,
                         ThicknessId = item.ThicknessId,
                         Quantity = item.Quantity,
+                        IsActive = item.IsActive,
                     };
 
                     int result_OrderDetails = await _orderService.SaveOrderDetails(vOrderDetailsSaveParameters);

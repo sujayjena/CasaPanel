@@ -13,6 +13,7 @@ namespace CasaAPI.Interfaces.Services
         Task<int> SaveDealer(DealerSaveParameters request);
         Task<IEnumerable<DealerDetailsResponse>> GetDealerList(DealerSearchParameters request);
         Task<DealerDetailsResponse?> GetDealerDetailsById(long id);
+        Task<int> UpdateDealerStatus(DealerStatusUpdate request);
         #endregion
 
         #region DealerAddress
@@ -20,6 +21,7 @@ namespace CasaAPI.Interfaces.Services
         Task<IEnumerable<DealerAddressDetailsResponse>> GetDealerAddressList(DealerAddressSearchParameters request);
         Task<DealerAddressDetailsResponse?> GetDealerAddressDetailsById(long id);
         #endregion
+
         #region DealerContactDetails
         Task<int> SaveDealerContactDetails(DealerContactDetailsSaveParameters request);
         Task<IEnumerable<DealerContactDetailsResponse>> GetDealerContactDetailsList(DealerContactDetailsSearchParameters request);

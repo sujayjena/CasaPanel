@@ -63,7 +63,9 @@ namespace CasaAPI.Controllers.Admin
             //        datalist.Add(data);
             //    }
             //}
-                    _response.Data = lstProductDesigns.ToList();
+
+            _response.Data = lstProductDesigns.ToList();
+            _response.Total = request.pagination.Total;
             return _response;
         }
 
@@ -101,10 +103,8 @@ namespace CasaAPI.Controllers.Admin
           //  List<string> invalidFileNames = new List<string>();
             _response.IsSuccess = false;
 
-           
             List<ProductDesignFiles> listToAdd = new List<ProductDesignFiles>();
 
-           
             if (parameter?.DesignFiles?.Count > 0)
             {
                 parameter.DesignName = parameter.DesignName;
@@ -160,6 +160,28 @@ namespace CasaAPI.Controllers.Admin
                 return _response;
             }
             #endregion
+
+            //Tiles Image Upload
+            if (!string.IsNullOrWhiteSpace(parameter.TilesImageSavedFileName_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameter.TilesImageSavedFileName_Base64, "\\Uploads\\ProductDesign\\", parameter.TilesImageFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameter.TilesImageSavedFileName = vUploadFile;
+                }
+            }
+
+            //Tiles Preview Upload
+            if (!string.IsNullOrWhiteSpace(parameter.TilesPreviewSavedFileName_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(parameter.TilesPreviewSavedFileName_Base64, "\\Uploads\\ProductDesign\\", parameter.TilesPreviewFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    parameter.TilesPreviewSavedFileName = vUploadFile;
+                }
+            }
 
             result = await _adminService.SaveProductDesign(parameter);
             _response.IsSuccess = false;

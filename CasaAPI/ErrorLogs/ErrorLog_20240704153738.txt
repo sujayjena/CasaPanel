@@ -1,0 +1,8 @@
+2024-07-04 15:37:38
+Error Message:
+Procedure or function 'SaveImportCollectionDetails' expects parameter '@XmlCollectionData', which was not supplied.
+Full Exception Details:
+{"Error":"Procedure or function \u0027SaveImportCollectionDetails\u0027 expects parameter \u0027@XmlCollectionData\u0027, which was not supplied.","Type":"SqlException"}
+
+*************************************************************************
+

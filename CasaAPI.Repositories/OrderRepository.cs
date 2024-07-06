@@ -158,6 +158,7 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@SurfaceId", parameters.SurfaceId);
             queryParameters.Add("@ThicknessId", parameters.ThicknessId);
             queryParameters.Add("@Quantity", parameters.Quantity);
+            queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
             return await SaveByStoredProcedure<int>("SaveOrderDetails", queryParameters);
         }
@@ -173,6 +174,7 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
             queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
             queryParameters.Add("@OrderId", parameters.OrderId);
+            queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
 
             var result = await ListByStoredProcedure<OrderDetailsResponse>("GetOrderDetailsList", queryParameters);

@@ -1411,7 +1411,7 @@ namespace CasaAPI.Controllers
             }
             else if (result == (int)SaveEnums.NameExists)
             {
-                _response.Message = "Area mapping Name is already exists";
+                _response.Message = "Area mapping is already exists";
             }
             else if (result == (int)SaveEnums.NoResult)
             {
@@ -1431,6 +1431,7 @@ namespace CasaAPI.Controllers
         {
             IEnumerable<AreaMappingResponse> lstArea = await _manageTerritorService.GetAreaTerritoryList(request);
             _response.Data = lstArea.ToList();
+            _response.Total = request.pagination.Total;
             return _response;
         }
        

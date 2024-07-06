@@ -5,6 +5,7 @@ using CasaAPI.Models;
 using CasaAPI.Repositories;
 using static CasaAPI.Models.BloodModel;
 using static CasaAPI.Models.BrandModel;
+using static CasaAPI.Models.CalanderModel;
 using static CasaAPI.Models.CategoryModel;
 using static CasaAPI.Models.Collection_PanelModel;
 using static CasaAPI.Models.ContactTypeModel;
@@ -885,6 +886,25 @@ namespace CasaAPI.Services
         public async Task<ExpenseTypeResponse?> GetExpenseTypeDetailsById(long id)
         {
             return await _adminRepository.GetExpenseTypeDetailsById(id);
+        }
+        #endregion
+
+        #region Calander
+        public async Task<int> SaveCalander(CalanderSaveParameters request)
+        {
+            return await _adminRepository.SaveCalander(request);
+        }
+        public async Task<IEnumerable<CalanderDetailsResponse>> GetCalanderList(CalanderSearchParameters request)
+        {
+            return await _adminRepository.GetCalanderList(request);
+        }
+        public async Task<CalanderDetailsResponse?> GetCalanderDetailsById(long id)
+        {
+            return await _adminRepository.GetCalanderDetailsById(id);
+        }
+        public async Task<IEnumerable<CalanderFailToImportValidationErrors>> ImportCalandersDetails(List<CalanderImportSaveParameters> request)
+        {
+            return await _adminRepository.ImportCalandersDetails(request);
         }
         #endregion
     }

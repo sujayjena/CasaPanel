@@ -299,9 +299,20 @@ namespace CasaAPI.Controllers.Admin
         #region Driver Details
         [Route("[action]")]
         [HttpPost]
-        public async Task<ResponseModel> SaveDriver(DriverSaveParameters Request)
+        public async Task<ResponseModel> SaveDriver(DriverSaveParameters request)
         {
-            int result = await _driverService.SaveDriver(Request);
+            //Image Upload
+            if (!string.IsNullOrWhiteSpace(request.ProfileSavedFileName_Base64))
+            {
+                var vUploadFile = _fileManager.UploadDocumentsBase64ToFile(request.ProfileSavedFileName_Base64, "\\Uploads\\Driver\\", request.ProfileFileName);
+
+                if (!string.IsNullOrWhiteSpace(vUploadFile))
+                {
+                    request.ProfileSavedFileName = vUploadFile;
+                }
+            }
+
+            int result = await _driverService.SaveDriver(request);
             _response.IsSuccess = false;
 
             if (result == (int)SaveEnums.NoRecordExists)
@@ -329,6 +340,7 @@ namespace CasaAPI.Controllers.Admin
         {
             IEnumerable<DriverDetailsResponse> lstDrivers = await _driverService.GetDriversList(request);
             _response.Data = lstDrivers.ToList();
+            _response.Total = request.pagination.Total;
             return _response;
         }
         [Route("[action]")]
@@ -379,9 +391,9 @@ namespace CasaAPI.Controllers.Admin
 
                 if (!string.Equals(workSheet.Cells[1, 1].Value.ToString(), "DriverName", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(workSheet.Cells[1, 2].Value.ToString(), "VehicleNumber", StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(workSheet.Cells[1, 3].Value.ToString(), "ProfilePath", StringComparison.OrdinalIgnoreCase) ||
-                     !string.Equals(workSheet.Cells[1, 4].Value.ToString(), "MobileNumber", StringComparison.OrdinalIgnoreCase) ||
-                   !string.Equals(workSheet.Cells[1, 5].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
+                    //!string.Equals(workSheet.Cells[1, 3].Value.ToString(), "ProfilePath", StringComparison.OrdinalIgnoreCase) ||
+                     !string.Equals(workSheet.Cells[1, 3].Value.ToString(), "MobileNumber", StringComparison.OrdinalIgnoreCase) ||
+                   !string.Equals(workSheet.Cells[1, 4].Value.ToString(), "IsActive", StringComparison.OrdinalIgnoreCase))
                 {
                     _response.IsSuccess = false;
                     _response.Message = "Please upload a valid excel file. Please Download Format file for reference";
@@ -394,9 +406,9 @@ namespace CasaAPI.Controllers.Admin
                     {
                         DriverName = workSheet.Cells[rowIterator, 1].Value?.ToString(),
                         VehicleNumber = workSheet.Cells[rowIterator, 2].Value?.ToString(),
-                        ProfilePath = workSheet.Cells[rowIterator, 3].Value?.ToString(),
-                        MobileNumber = workSheet.Cells[rowIterator, 4].Value?.ToString(),
-                        IsActive = workSheet.Cells[rowIterator, 5].Value?.ToString()
+                        //ProfilePath = workSheet.Cells[rowIterator, 3].Value?.ToString(),
+                        MobileNumber = workSheet.Cells[rowIterator, 3].Value?.ToString(),
+                        IsActive = workSheet.Cells[rowIterator, 4].Value?.ToString()
                     };
 
                     fileDataValidationRes = ModelStateHelper.GetValidationErrorsList(model: tempDriverImport);
@@ -411,7 +423,7 @@ namespace CasaAPI.Controllers.Admin
                         {
                             DriverName = tempDriverImport.DriverName,
                             VehicleNumber = tempDriverImport.VehicleNumber,
-                            ProfilePath = tempDriverImport.ProfilePath,
+                            //ProfilePath = tempDriverImport.ProfilePath,
                             MobileNumber = tempDriverImport.MobileNumber,
                             IsActive = tempDriverImport.IsActive,
                             ValidationMessage = fileDataValidationRes.Message
@@ -465,9 +477,9 @@ namespace CasaAPI.Controllers.Admin
                     WorkSheet1.Cells[1, 1].Value = "DriverName";
                     WorkSheet1.Cells[1, 2].Value = "MobileNumber";
                     WorkSheet1.Cells[1, 3].Value = "VehicleNumber";
-                    WorkSheet1.Cells[1, 4].Value = "ProfilePath";
-                    WorkSheet1.Cells[1, 5].Value = "IsActive";
-                    WorkSheet1.Cells[1, 6].Value = "ValidationMessage";
+                    //WorkSheet1.Cells[1, 4].Value = "ProfilePath";
+                    WorkSheet1.Cells[1, 4].Value = "IsActive";
+                    WorkSheet1.Cells[1, 5].Value = "ValidationMessage";
 
                     recordIndex = 6;
 
@@ -476,9 +488,9 @@ namespace CasaAPI.Controllers.Admin
                         WorkSheet1.Cells[recordIndex, 1].Value = record.DriverName;
                         WorkSheet1.Cells[recordIndex, 2].Value = record.MobileNumber;
                         WorkSheet1.Cells[recordIndex, 3].Value = record.VehicleNumber;
-                        WorkSheet1.Cells[recordIndex, 4].Value = record.ProfilePath;
-                        WorkSheet1.Cells[recordIndex, 5].Value = record.IsActive;
-                        WorkSheet1.Cells[recordIndex, 6].Value = record.ValidationMessage;
+                        //WorkSheet1.Cells[recordIndex, 4].Value = record.ProfilePath;
+                        WorkSheet1.Cells[recordIndex, 4].Value = record.IsActive;
+                        WorkSheet1.Cells[recordIndex, 5].Value = record.ValidationMessage;
 
                         recordIndex += 1;
                     }
@@ -488,7 +500,7 @@ namespace CasaAPI.Controllers.Admin
                     WorkSheet1.Column(3).AutoFit();
                     WorkSheet1.Column(4).AutoFit();
                     WorkSheet1.Column(5).AutoFit();
-                    WorkSheet1.Column(6).AutoFit();
+                    //WorkSheet1.Column(6).AutoFit();
 
                     excelInvalidData.SaveAs(msInvalidDataFile);
                     msInvalidDataFile.Position = 0;
@@ -559,18 +571,18 @@ namespace CasaAPI.Controllers.Admin
                     excelWorksheet.Cells[1, 1].Value = "Driver Group";
                     excelWorksheet.Cells[1, 2].Value = "Mobile Number";
                     excelWorksheet.Cells[1, 3].Value = "Vehicle Number";
-                    excelWorksheet.Cells[1, 4].Value = "Profile Path";
-                    excelWorksheet.Cells[1, 5].Value = "Is Active?";
+                    //excelWorksheet.Cells[1, 4].Value = "Profile Path";
+                    excelWorksheet.Cells[1, 4].Value = "Is Active?";
 
-                    recordIndex = 5;
+                    recordIndex = 2;
 
                     foreach (DriverDetailsResponse record in lstDriversToImport)
                     {
                         excelWorksheet.Cells[recordIndex, 1].Value = record.DriverName;
                         excelWorksheet.Cells[recordIndex, 2].Value = record.MobileNumber;
                         excelWorksheet.Cells[recordIndex, 3].Value = record.VehicleNumber;
-                        excelWorksheet.Cells[recordIndex, 4].Value = record.ProfilePath;
-                        excelWorksheet.Cells[recordIndex, 5].Value = record.IsActive;
+                        //excelWorksheet.Cells[recordIndex, 4].Value = record.ProfilePath;
+                        excelWorksheet.Cells[recordIndex, 4].Value = record.IsActive;
                         recordIndex += 1;
                     }
 
@@ -578,7 +590,7 @@ namespace CasaAPI.Controllers.Admin
                     excelWorksheet.Column(2).AutoFit();
                     excelWorksheet.Column(3).AutoFit();
                     excelWorksheet.Column(4).AutoFit();
-                    excelWorksheet.Column(5).AutoFit();
+                    //excelWorksheet.Column(5).AutoFit();
 
 
                     excelData.SaveAs(msDataFile);

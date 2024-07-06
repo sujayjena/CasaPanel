@@ -25,6 +25,7 @@ using static CasaAPI.Models.TitleGSMModel;
 using static CasaAPI.Models.FlapGSMModel;
 using static CasaAPI.Models.InnerGSMModel;
 using static CasaAPI.Models.TitleProcessModel;
+using static CasaAPI.Models.CalanderModel;
 
 namespace CasaAPI.Repositories
 {
@@ -558,13 +559,18 @@ namespace CasaAPI.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@PageNo", parameters.pagination.PageNo);
             queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
             queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
             queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
             queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@IsExport", parameters.IsExport);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
 
-            return await ListByStoredProcedure<ProductDesignResponse>("GetProductDesignList", queryParameters);
+            var result = await ListByStoredProcedure<ProductDesignResponse>("GetProductDesignList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
         }
 
         public async Task<ProductDesignDetailsResponse?> GetProductDesignDetailsById(long id)
@@ -607,6 +613,10 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@BoxCoverageAreaSqMeter", parameters?.BoxCoverageAreaSqMeter);
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@FinishName", parameters.FinishName);
+            queryParameters.Add("@TilesImageFileName", parameters.TilesImageFileName);
+            queryParameters.Add("@TilesImageSavedFileName", parameters.TilesImageSavedFileName);
+            queryParameters.Add("@TilesPreviewFileName", parameters.TilesPreviewFileName);
+            queryParameters.Add("@TilesPreviewSavedFileName", parameters.TilesPreviewSavedFileName);
             queryParameters.Add("@XmlProductDesignFiles", xmlProductDesignFiles);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
 
@@ -629,11 +639,13 @@ namespace CasaAPI.Repositories
             DynamicParameters queryParameters = new DynamicParameters();
             queryParameters.Add("@PageNo", parameters.pagination.PageNo);
             queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
             queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
             queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
             queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
             queryParameters.Add("@IsActive", parameters.IsActive);
             queryParameters.Add("@IsExport", parameters.IsExport);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
 
             return await ListByStoredProcedure<ManageBoxSizeResponse>("GetManageBoxSizeList", queryParameters);
         }
@@ -1445,10 +1457,10 @@ namespace CasaAPI.Repositories
         public async Task<IEnumerable<CollectionDataValidationErrors>> ImportCollection(List<ImportedCollection> parameters)
         {
             DynamicParameters queryParameters = new DynamicParameters();
-            string xmlCategoryData = ConvertListToXml(parameters);
-            queryParameters.Add("@XmlCategoryData", xmlCategoryData);
+            string xmlCollectionData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlCollectionData", xmlCollectionData);
             queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
-            return await ListByStoredProcedure<CollectionDataValidationErrors>("SaveImportCollection", queryParameters);
+            return await ListByStoredProcedure<CollectionDataValidationErrors>("SaveImportCollectionDetails", queryParameters);
         }
         #endregion
 
@@ -1751,6 +1763,50 @@ namespace CasaAPI.Repositories
             queryParameters.Add("@Id", id);
 
             return (await ListByStoredProcedure<ExpenseTypeResponse>("GetExpenseTypeDetailsById", queryParameters)).FirstOrDefault();
+        }
+        #endregion
+
+        #region Calander
+        public async Task<int> SaveCalander(CalanderSaveParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@CalanderId", parameters.CalanderId);
+            queryParameters.Add("@CalanderName", parameters.CalanderName.SanitizeValue().ToUpper());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await SaveByStoredProcedure<int>("SaveCalanderDetails", queryParameters);
+        }
+        public async Task<IEnumerable<CalanderDetailsResponse>> GetCalanderList(CalanderSearchParameters parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@PageNo", parameters.pagination.PageNo);
+            queryParameters.Add("@PageSize", parameters.pagination.PageSize);
+            queryParameters.Add("@Total", parameters.pagination.Total, null, System.Data.ParameterDirection.Output);
+            queryParameters.Add("@SortBy", parameters.pagination.SortBy.SanitizeValue());
+            queryParameters.Add("@OrderBy", parameters.pagination.OrderBy.SanitizeValue());
+            queryParameters.Add("@ValueForSearch", parameters.ValueForSearch.SanitizeValue());
+            queryParameters.Add("@IsActive", parameters.IsActive);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+
+            var result = await ListByStoredProcedure<CalanderDetailsResponse>("GetCalanderList", queryParameters);
+            parameters.pagination.Total = queryParameters.Get<int>("Total");
+
+            return result;
+        }
+        public async Task<CalanderDetailsResponse?> GetCalanderDetailsById(long id)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            queryParameters.Add("@Id", id);
+
+            return (await ListByStoredProcedure<CalanderDetailsResponse>("GetCalanderDetailsById", queryParameters)).FirstOrDefault();
+        }
+        public async Task<IEnumerable<CalanderFailToImportValidationErrors>> ImportCalandersDetails(List<CalanderImportSaveParameters> parameters)
+        {
+            DynamicParameters queryParameters = new DynamicParameters();
+            string xmlCalanderData = ConvertListToXml(parameters);
+            queryParameters.Add("@XmlCalanderData", xmlCalanderData);
+            queryParameters.Add("@LoggedInUserId", SessionManager.LoggedInUserId);
+            return await ListByStoredProcedure<CalanderFailToImportValidationErrors>("SaveImportCalanderDetails", queryParameters);
         }
         #endregion
     }

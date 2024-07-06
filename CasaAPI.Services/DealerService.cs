@@ -34,6 +34,10 @@ namespace CasaAPI.Services
         {
             return await _dealerRepository.GetDealerDetailsById(id);
         }
+        public async Task<int> UpdateDealerStatus(DealerStatusUpdate request)
+        {
+            return await _dealerRepository.UpdateDealerStatus(request);
+        }
         #endregion
 
         #region DealerAddress

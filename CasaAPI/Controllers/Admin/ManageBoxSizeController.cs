@@ -31,6 +31,7 @@ namespace CasaAPI.Controllers.Admin
         {
             IEnumerable<ManageBoxSizeResponse> lstManageBoxSizes = await _adminService.GetManageBoxSizeList(request);
             _response.Data = lstManageBoxSizes.ToList();
+            _response.Total = request.pagination.Total;
             return _response;
         }
 

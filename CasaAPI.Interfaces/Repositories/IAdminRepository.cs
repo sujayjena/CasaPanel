@@ -1,6 +1,7 @@
 ﻿using CasaAPI.Models;
 using static CasaAPI.Models.BloodModel;
 using static CasaAPI.Models.BrandModel;
+using static CasaAPI.Models.CalanderModel;
 using static CasaAPI.Models.CategoryModel;
 using static CasaAPI.Models.Collection_PanelModel;
 using static CasaAPI.Models.ContactTypeModel;
@@ -326,6 +327,14 @@ namespace CasaAPI.Interfaces.Repositories
         Task<int> SaveExpenseType(ExpenseTypeRequest parameters);
         Task<IEnumerable<ExpenseTypeResponse>> GetExpenseTypeList(SearchExpenseTypeRequest parameters);
         Task<ExpenseTypeResponse?> GetExpenseTypeDetailsById(long id);
+
+        #endregion
+
+        #region Calander
+        Task<int> SaveCalander(CalanderSaveParameters parameters);
+        Task<IEnumerable<CalanderDetailsResponse>> GetCalanderList(CalanderSearchParameters parameters);
+        Task<CalanderDetailsResponse?> GetCalanderDetailsById(long id);
+        Task<IEnumerable<CalanderFailToImportValidationErrors>> ImportCalandersDetails(List<CalanderImportSaveParameters> parameters);
 
         #endregion
     }

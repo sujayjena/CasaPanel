@@ -1,0 +1,9 @@
+2024-07-04 16:02:22
+Error Message:
+Cannot insert the value NULL into column 'CollectionNameId', table 'db_a749f3_casapanel.dbo.CollectionMaster'; column does not allow nulls. INSERT fails.
+The statement has been terminated.
+Full Exception Details:
+{"Error":"Cannot insert the value NULL into column \u0027CollectionNameId\u0027, table \u0027db_a749f3_casapanel.dbo.CollectionMaster\u0027; column does not allow nulls. INSERT fails.\r\nThe statement has been terminated.","Type":"SqlException"}
+
+*************************************************************************
+

@@ -1,0 +1,9 @@
+2024-07-02 16:19:16
+Error Message:
+Cannot insert the value NULL into column 'IsDeleted', table 'db_a749f3_casapanel.dbo.CalanderMaster'; column does not allow nulls. INSERT fails.
+The statement has been terminated.
+Full Exception Details:
+{"Error":"Cannot insert the value NULL into column \u0027IsDeleted\u0027, table \u0027db_a749f3_casapanel.dbo.CalanderMaster\u0027; column does not allow nulls. INSERT fails.\r\nThe statement has been terminated.","Type":"SqlException"}
+
+*************************************************************************
+

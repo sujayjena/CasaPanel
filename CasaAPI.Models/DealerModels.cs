@@ -59,12 +59,12 @@ namespace CasaAPI.Models
         public string Dealershowroom { get; set; }
         public IFormFile? UploadDealershowroomfiles { get; set; }
         public int? Rating { get; set; }
+        public int? StatusId { get; set; }
         public bool? IsActive { get; set; }
     }
 
     public class DealerDetailsResponse : LogParameters
     {
-
         public int Id { get; set; }
         public string CompanyName { get; set; }
         public string EmailId { get; set; }
@@ -114,16 +114,25 @@ namespace CasaAPI.Models
         public string ImageUpload { get; set; }
         public string Dealershowroom { get; set; }
         public int Rating { get; set; }
+        public int? StatusId { get; set; }
+        public string StatusName { get; set; }
 
     }
     public class DealerSearchParameters
     {
         public PaginationParameters pagination { get; set; }
         public string ValueForSearch { get; set; } = null;
+        public int? StatusId { get; set; }
         public bool? IsActive { get; set; }
 
         [JsonIgnore]
         public bool? IsExport { get; set; }
+    }
+    public class DealerStatusUpdate
+    {
+        public int? Id { get; set; }
+        public int? StatusId { get; set; }
+
     }
     #endregion
     #region DealerAddress

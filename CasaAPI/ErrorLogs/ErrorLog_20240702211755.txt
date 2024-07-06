@@ -1,0 +1,8 @@
+2024-07-02 21:17:55
+Error Message:
+Invalid column name 'ProfilePath'.
+Full Exception Details:
+{"Error":"Invalid column name \u0027ProfilePath\u0027.","Type":"SqlException"}
+
+*************************************************************************
+

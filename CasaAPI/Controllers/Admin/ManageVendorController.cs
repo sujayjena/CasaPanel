@@ -1430,6 +1430,7 @@ namespace CasaAPI.Controllers.Admin
             }
             return _response;
         }
+      
         [Route("[action]")]
         [HttpPost]
         public async Task<ResponseModel> GetAllVendorList(AllVendorSearchParameters request)

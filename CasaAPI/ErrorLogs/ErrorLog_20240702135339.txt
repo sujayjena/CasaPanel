@@ -1,0 +1,8 @@
+2024-07-02 13:53:39
+Error Message:
+Procedure or function 'UpdateDealerStatus' expects parameter '@DealerId', which was not supplied.
+Full Exception Details:
+{"Error":"Procedure or function \u0027UpdateDealerStatus\u0027 expects parameter \u0027@DealerId\u0027, which was not supplied.","Type":"SqlException"}
+
+*************************************************************************
+
