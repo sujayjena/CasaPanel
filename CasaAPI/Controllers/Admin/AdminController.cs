@@ -1870,5 +1870,62 @@ namespace CasaAPI.Controllers.Admin
         }
 
         #endregion
+
+        #region Marital Status
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> SaveMaritalStatus(MaritalStatus_Request parameters)
+        {
+            int result = await _adminService.SaveMaritalStatus(parameters);
+
+            if (result == (int)SaveEnums.NoRecordExists)
+            {
+                _response.Message = "No record exists";
+            }
+            else if (result == (int)SaveEnums.NameExists)
+            {
+                _response.Message = "Expense Type Name is already exists";
+            }
+            else if (result == (int)SaveEnums.NoResult)
+            {
+                _response.Message = "Something went wrong, please try again";
+            }
+            else
+            {
+                _response.Message = "Record details saved sucessfully";
+            }
+            return _response;
+        }
+
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetMaritalStatusList(SearchMaritalStatus_Request request)
+        {
+            IEnumerable<MaritalStatus_Response> lst = await _adminService.GetMaritalStatusList(request);
+            _response.Data = lst.ToList();
+            _response.Total = request.pagination.Total;
+            return _response;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<ResponseModel> GetMaritalStatusById(int Id)
+        {
+            if (Id <= 0)
+            {
+                _response.Message = "Id is required";
+            }
+            else
+            {
+                var vResultObj = await _adminService.GetMaritalStatusById(Id);
+                _response.Data = vResultObj;
+            }
+            return _response;
+        }
+
+        #endregion
+
     }
 }
