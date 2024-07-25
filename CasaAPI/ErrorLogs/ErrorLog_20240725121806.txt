@@ -1,0 +1,8 @@
+2024-07-25 12:18:06
+Error Message:
+The ConnectionString property has not been initialized.
+Full Exception Details:
+{"Error":"The ConnectionString property has not been initialized.","Type":"InvalidOperationException"}
+
+*************************************************************************
+

@@ -907,5 +907,20 @@ namespace CasaAPI.Services
             return await _adminRepository.ImportCalandersDetails(request);
         }
         #endregion
+
+        #region Marital Status
+        public async Task<int> SaveMaritalStatus(MaritalStatus_Request request)
+        {
+            return await _adminRepository.SaveMaritalStatus(request);
+        }
+        public async Task<IEnumerable<MaritalStatus_Response>> GetMaritalStatusList(SearchMaritalStatus_Request request)
+        {
+            return await _adminRepository.GetMaritalStatusList(request);
+        }
+        public async Task<MaritalStatus_Response?> GetMaritalStatusById(int id)
+        {
+            return await _adminRepository.GetMaritalStatusById(id);
+        }
+        #endregion
     }
 }

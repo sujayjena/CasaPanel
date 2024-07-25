@@ -339,5 +339,12 @@ namespace CasaAPI.Interfaces.Services
         Task<IEnumerable<CalanderFailToImportValidationErrors>> ImportCalandersDetails(List<CalanderImportSaveParameters> request);
 
         #endregion
+
+        #region Marital Status
+        Task<int> SaveMaritalStatus(MaritalStatus_Request request);
+        Task<IEnumerable<MaritalStatus_Response>> GetMaritalStatusList(SearchMaritalStatus_Request request);
+        Task<MaritalStatus_Response?> GetMaritalStatusById(int id);
+
+        #endregion
     }
 }

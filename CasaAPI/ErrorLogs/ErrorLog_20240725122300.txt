@@ -1,0 +1,8 @@
+2024-07-25 12:23:00
+Error Message:
+Could not find stored procedure 'GetMaritalStatusById'.
+Full Exception Details:
+{"Error":"Could not find stored procedure \u0027GetMaritalStatusById\u0027.","Type":"SqlException"}
+
+*************************************************************************
+
